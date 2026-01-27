@@ -1,0 +1,26 @@
+.wrapper{
+    width: 100%;
+    font-family: Lexend;
+    background-color: #f0f1f2;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.inner_wrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 40px 64px;
+}
+
+@media (max-width: 1350px) {
+  .inner_wrapper { padding: 16px 24px; }
+}
+
+@media (max-width: 770px){
+    .wrapper{
+        background-image: none;
+    }
+}

@@ -1,0 +1,197 @@
+@background: #f7f7f7;
+@accent: #E30613;
+.wrapper {
+    width: 100%;
+    background-color: @background;
+    font-family: Lexend;
+}
+
+.inner_wrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px 64px;
+}
+
+.hero_grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 5px;
+}
+
+.side_col {
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+  gap: 5px;
+}
+
+/* === CARD BASE === */
+.card {
+  position: relative;
+  overflow: hidden;
+  background: #ddd; 
+}
+
+/* чтобы слева было большое */
+.hero {
+    min-height: 520px;
+}
+
+/* справа верх и низ одинаковые */
+.sideTop{
+    min-height: 400px;
+}
+.sideBottom {
+     min-height: 102px;
+}
+
+/* картинка внутри карточки */
+.image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* затемнение чтобы текст читался */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.26), rgba(0,0,0,0.1));
+}
+
+/* текст слева снизу */
+.contentLeft {
+    position: absolute;
+    left: 32px;
+    bottom: 32px;
+    z-index: 2;
+    color: #fff;
+    max-width: 80%;
+}
+
+.contentLeft h2 {
+    font-size: 60px;
+    font-weight: bold;
+    line-height: 1.05;
+    margin: 0 0 12px 0;
+}
+
+.contentLeft h3 {
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 1.1;
+    margin: 0 0 12px 0;
+}
+
+/* кнопки */
+.btn {
+    border: 0;
+    border-radius: 2px;
+    color: @accent;
+    font-size: 20px;
+    font-weight: bold;
+    background: #fff;
+    padding: 8px 20px;
+    cursor: pointer;
+    width: fit-content;   
+    align-self: flex-start;
+    display: inline-flex;
+}
+
+.btnPrimary {
+    border: 0;
+    border-radius: 2px;
+    background: @accent;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+/* OUTLET блок */
+.sideBottom {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.outletText {
+  color: #fff;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.bottom_row {
+  grid-column: 1 / -1;          // растянуть на всю ширину grid
+  display: grid;
+  grid-template-columns: 2fr 3fr; // слева меньше, справа больше
+  gap: 5px;
+
+}
+
+/* высоты нижнего ряда */
+.bottomLeftCard,
+.bottomRightCard {
+  min-height: 260px;
+}
+
+.contentLeftButton {
+    position: absolute;
+    left: 32px;
+    bottom: 32px;
+    font-size: 30px;
+    font-weight: bold;
+    z-index: 2;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 80%;
+}
+
+.contentRightButton{
+    position: absolute;
+    right: 32px;
+    bottom: 32px;
+    z-index: 2;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+
+    max-width: 80%;
+}
+
+
+/* === RESPONSIVE === */
+@media (max-width: 1350px) {
+  .inner_wrapper { padding: 16px 24px; }
+}
+
+@media (max-width: 1100px) {
+  .hero_grid, .bottom_row {
+    grid-template-columns: 1fr;
+  }
+
+  .side_col {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .hero { min-height: 420px; }
+  .sideTop, .sideBottom { min-height: 220px; }
+
+  .contentLeft {
+    left: 16px;
+    bottom: 16px;
+    max-width: 90%;
+  }
+
+  .contentLeft h2 { font-size: 40px; }
+}

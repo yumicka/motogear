@@ -1,0 +1,45 @@
+@gray: #f7f7f7;
+
+.categories{
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    font-size: 15px;
+    background: @gray;
+    padding: 20px 30px;
+    border-radius: 5px;
+}
+
+.link {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px 0;
+}
+
+.active {
+    font-weight: 700;
+}
+
+.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: currentColor;
+}
+
+
+.showMore {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 6px 0;
+  text-decoration: underline;
+}

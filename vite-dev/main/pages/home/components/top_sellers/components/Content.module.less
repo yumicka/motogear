@@ -1,0 +1,143 @@
+@accent: #E30613;
+@gray: #dddddd;
+
+
+.content_box{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    img{
+        width: 100%;
+        height: 350px;
+         object-fit: cover;
+    }
+}
+
+.discounted_price{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    color: @accent;
+
+    h3{
+        font-size: 18px;
+        font-style: italic;
+    }
+
+    span{
+        border: @gray 1px solid;
+        padding: 1px 5px;
+        border-radius: 5px;
+    }
+}
+
+.original_price{
+    text-decoration: line-through;
+}
+
+.reviews{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+
+    .review_stars{
+        font-size: 18px;
+    }
+}
+
+.product_name{
+    h2{
+        font-size: 16px;
+    }
+}
+
+.carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.viewport {
+    overflow: hidden;
+    width: 100%;
+    min-width: 0;
+}
+
+.galleryGrid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    min-width: 0;
+}
+
+.galleryGrid::-webkit-scrollbar {
+    display: none;
+}
+
+.content_box {
+    min-width: 260px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
+
+  img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+  }
+}
+
+/* стрелки */
+.arrow {
+    position: absolute;
+    top: 35%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 28px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.carousel:hover .arrow {
+    opacity: 1;
+}
+
+.arrowLeft {
+    left: 8px;
+}
+
+.arrowRight {
+    right: 8px;
+}
+
+@media (max-width: 1024px) {
+  .arrow {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .arrow {
+    display: none;
+  }
+}

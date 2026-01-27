@@ -1,0 +1,19 @@
+{  
+    "moduleResolution": "node",
+    "compilerOptions": {
+        "module": "commonjs",
+        "jsx": "react-jsx",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "checkJs": true,
+        "baseUrl": ".",
+        "noImplicitAny": false,
+        "paths": {
+            "main/*": ["main/*"],
+            "*": ["/*","modules/*","app/*"],
+         
+        },
+    },
+    "noImplicitAny": false,
+    "exclude": ["node_modules", "**/node_modules/*"]
+}

@@ -1,0 +1,245 @@
+@accent: #E30613;
+@bg: #0f0f10;
+@panel: rgba(255,255,255,0.06);
+@border: rgba(255,255,255,0.10);
+@text: rgba(255,255,255,0.86);
+@muted: rgba(255,255,255,0.62);
+
+.footer {
+  font-family: Lexend;
+  background: @bg;
+  color: @text;
+}
+
+.inner {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 56px 64px 24px;
+}
+
+.topGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* CTA */
+.ctaCard {
+    border: 1px solid @border;
+    // background: rgba(227,6,19,0.16);
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.ctaTitle {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.ctaText {
+    margin: 0 0 16px;
+    color: @muted;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.ctaActions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 10px 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ctaPrimary {
+    background: @accent;
+    color: #fff;
+
+    &:hover { 
+        transform: translateY(-1px); 
+    }
+}
+
+.ctaSecondary {
+    background: transparent;
+    border: 1px solid @border;
+    color: #fff;
+
+    &:hover {
+        border-color: rgba(255,255,255,0.22);
+    }
+}
+
+/* Columns */
+.colTitle {
+    margin: 4px 0 14px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.link {
+    color: @muted;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s ease;
+
+    &:hover { 
+        color: #fff; 
+    }
+}
+
+.contactBox {
+    // background: @panel;
+    border: 1px solid @border;
+    border-radius: 16px;
+    padding: 16px;
+    display: grid;
+    gap: 12px;
+}
+
+.contactRow {
+    display: grid;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.muted { color: @muted; font-size: 12px; }
+
+.supportBtn {
+  margin-top: 6px;
+  display: inline-flex;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid @border;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.22); }
+}
+
+/* Meta row */
+.metaRow {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid @border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  border: 1px solid @border;
+  background: rgba(255,255,255,0.04);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  color: @muted;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social {
+  color: @muted;
+  text-decoration: none;
+  font-size: 13px;
+
+  &:hover { color: #fff; }
+}
+
+/* Bottom */
+.bottom {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.48);
+  font-size: 15px;
+}
+
+.legalLeft { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    text-align: center;
+}
+
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .inner { padding: 48px 24px 22px; }
+  .topGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .topGrid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .col {
+    align-items: center;
+  }
+
+  .list {
+    align-items: center;
+  }
+
+  .contactBox {
+    align-items: center;
+    text-align: center;
+  }
+
+  .ctaActions {
+    justify-content: center;
+  }
+
+  .metaRow {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .badges,
+  .socials {
+    justify-content: center;
+  }
+}

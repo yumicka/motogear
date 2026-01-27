@@ -1,0 +1,92 @@
+@gray: #505050;
+@light: #f7f7f7;
+
+.content{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 12px;
+}
+
+.contentBox {
+    width: 100%;
+    margin: 0;
+    
+
+    .text{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 20px;
+        padding: 25px;
+
+        h2{
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        p{
+            font-size: 15px;
+            max-width: 420px;
+            line-height: 1.6;
+        }
+
+
+    }
+}
+
+.ctaButton{
+    border-radius: 8px;
+    padding: 10px 15px;
+    align-self: flex-end;
+    width: auto;    
+}
+
+.firstButton{
+    border: #fff 2px solid;
+}
+
+.secondButton{
+    border: @gray 2px solid;
+}
+
+.image {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.firstBox{
+    background-color: @gray;
+    color: #fff;
+}
+
+.secondBox{
+    background-color: @light;
+    color: @gray;
+}
+
+@media (max-width: 768px) {
+  .image {
+    height: auto;          // убираем фикс 400px
+    aspect-ratio: 4 / 3;   // вертикальная картинка (можешь менять)
+  }
+
+  .image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .ctaButton {
+    align-self: stretch;
+    width: 100%;
+  }
+}

@@ -1,0 +1,69 @@
+@background: #f7f7f7;
+@color: #646464;
+
+.wrapper {
+    width: 100%;
+}
+
+.inner_wrapper {
+   width: 100%;
+    max-width: none;
+    margin: 0;
+
+    form {
+        width: 100%;
+    }
+}
+
+.search_input {
+    position: relative;
+    width: 100%;
+    
+    svg {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        color: @color;
+    }
+
+    input {
+        width: 100%;
+        height: 50px;
+        padding: 10px 90px 10px 50px;
+        font-size: 14px;
+        color: @color;
+        background: @background;
+        border-radius: 30px;
+        box-sizing: border-box;
+
+        &::placeholder {
+        color: @color;
+        opacity: 1;
+    }
+    }
+
+}
+
+
+@media (max-width: 768px) {
+  .inner_wrapper {
+    max-width: 100%;
+    padding: 0 16px;   // 🔑 вместо 90%
+  }
+
+  .search_input input {
+    height: 44px;      // 🔑 не меньше
+    font-size: 15px;
+    padding: 10px 14px 10px 44px;
+    border-radius: 22px;
+  }
+
+  .search_input svg {
+    left: 14px;
+    width: 16px;
+    height: 16px;
+  }
+}
