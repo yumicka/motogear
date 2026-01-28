@@ -3,7 +3,7 @@ import styles from './Categories_gallery.module.less';
 import Image from 'ui/media/image';
 import getMainUrl from 'helpers/getMainUrl';
 import { useRef } from 'react';
-import Link from 'core/navigation/link';
+import { Link } from 'react-router-dom';
 
 const helmet = getMainUrl()+'img/categories/helmet.jpg';
 const clothes = getMainUrl()+'img/categories/motocross_clothing.jpg';
@@ -17,7 +17,7 @@ const frame = getMainUrl()+'img/categories/Frame.jpg';
 const oils = getMainUrl()+'img/categories/oil_lubricants.jpg';
 
 const items = [
-	{ title: 'Motocross helmets', img: helmet, href: '#' },
+	{ title: 'Motocross helmets', img: helmet, href: '/shopHelmet' },
 	{ title: 'Motocross clothing kits', img: clothes, href: '#' },
 	{ title: 'Motocross goggles', img: goggles, href: '#' },
 	{ title: 'Motocross boots', img: boots, href: '#' },

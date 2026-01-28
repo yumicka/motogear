@@ -2,7 +2,7 @@ import styles from './ShopHelmets.module.less';
 import { Outlet } from 'react-router-dom';
 import Elements from './components/Elements/Element';
 
-const PlasticKitsSample = () => {
+const ShopHelmet = () => {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.innerWrapper}>
@@ -18,4 +18,4 @@ const PlasticKitsSample = () => {
 	);
 };
 
-export default PlasticKitsSample;
+export default ShopHelmet;

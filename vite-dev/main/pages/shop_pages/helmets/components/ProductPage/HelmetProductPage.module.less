@@ -1,9 +1,15 @@
 @background: #f7f7f7;
+@mob_background: #fff;
 
 .wrapper{
     width: 100%;
     font-family: Lexend;
     background: @background;
+
+    @media (max-width: 1024px) {
+        background: @mob_background;
+}
+
 }
 
 .inner_wrapper {
@@ -11,7 +17,6 @@
     max-width: 1500px;
     margin: 0 auto;
     padding: 40px 64px;
-
     display: flex;
     flex-direction: column;
     gap: 15px;

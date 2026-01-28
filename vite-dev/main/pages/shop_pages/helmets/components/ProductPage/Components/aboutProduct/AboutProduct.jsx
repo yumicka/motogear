@@ -2,6 +2,29 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './AboutProduct.module.less';
 import { useState } from 'react';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import items from '../../../../helmets_items.json';
+import { useParams } from 'react-router-dom';
+
+import ShippingAndReturns from './components/ShippingAndReturns';
+import AskQuestion from './components/AskQuestion';
+//Discription
+import OnealDiscription from './components/Oneal/Oneal_Description';
+
+//Size Guide
+import Oneal_SizeGuide from './components/Oneal/Oneal_SizeGuide';
+
+//About Brand
+import Oneal_AboutBrand from './components/Oneal/Oneal_AboutBrand';
+
+const brandComponents = {
+	'O\'Neal': {
+		Discription: OnealDiscription, 
+		SizeGuide: Oneal_SizeGuide,
+		AboutBrand: Oneal_AboutBrand
+	}
+	// "Raven": RavenDiscription,
+	// "HJC": HJCDiscription,
+};
 
 // eslint-disable-next-line react/prop-types
 const DropdownItem = ({ title, children }) => {
@@ -22,38 +45,16 @@ const DropdownItem = ({ title, children }) => {
 };
 
 const AboutProduct = () => {
+	const { id } = useParams();
+	const product = items.find((item) => item.id === Number(id));
+	const componentsForBrand = brandComponents[product.brand] || {};
+
 	return (
 		<div className={styles.content}>
 			<div className={styles.inner_content}>
 				<div className={styles.dropdowns}>
 					<DropdownItem title="Description">
-						<div>
-							<p>
-								On the bike, you always need to be able to rely on your
-								equipment and with the O’NEAL 2SRS MX helmet, you can! This
-								motocross helmet is comfortable, safe, and stylish, making it
-								your perfect companion for any amount of action. The soft
-								interior is removable and washable, which helps keep the helmet
-								fresh longer. Simply a great value-for-money helmet!
-							</p>
-						</div>
-
-						<div>
-							<p>
-								Features:
-								<ul>
-									<li>Durable helmet shell made of ABS plastic</li>
-									<li>Soft, padded, moisture-repelling and washable lining</li>
-									<li>Double D-ring bracket with easy strap adjustment</li>
-									<li>Adjustable helmet peak</li>
-									<li>
-										Goggles rest securely in place on ridge at back of shell
-									</li>
-									<li>Meets ECE 22.06 safety standards</li>
-									<li>Weight: 1450g +/- 50g</li>
-								</ul>
-							</p>
-						</div>
+						{componentsForBrand.Discription ? <componentsForBrand.Discription /> : <p>No description</p>}
 					</DropdownItem>
 
 					<DropdownItem title="Product specifications">
@@ -61,25 +62,25 @@ const AboutProduct = () => {
 					</DropdownItem>
 
 					<DropdownItem title="Size guide">
-						<p>text</p>
+						{componentsForBrand.SizeGuide ? <componentsForBrand.SizeGuide /> : <p>No size guide</p>}
 					</DropdownItem>
 
 					<DropdownItem title="Shipping & returns">
-						<p>text</p>
+						<ShippingAndReturns />
 					</DropdownItem>
 
 					<DropdownItem title="Questions about the product">
-						<p>text</p>
+						<AskQuestion />
 					</DropdownItem>
 
 					<DropdownItem title="About the brand">
-						<p>text</p>
+						{componentsForBrand.AboutBrand ? <componentsForBrand.AboutBrand /> : <p>No description</p>}
 					</DropdownItem>
 				</div>
 
 				<div className={styles.popular}>
 					<div className={styles.title}>
-						<span>Popular by ONeal</span>
+						<span>Popular by {product.brand}</span>
 					</div>
 				</div>
 			</div>

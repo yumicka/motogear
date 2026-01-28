@@ -7,7 +7,9 @@
         "discount": 17,
         "reviews": 38,
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/motocross_helmets/GLITCH_Helmet.jpg"
+        "preview_image": "img/store/helmets/motocross_helmets/GLITCH_Helmet.jpg",
+        "type": "helmet",
+        "brand": "O'Neal"
     },
     {
         "id": 2,
@@ -17,7 +19,9 @@
         "discount": 47,
         "reviews": "0",
         "rating": "☆☆☆☆☆",
-        "preview_image": "img/store/helmets/motocross_helmets/Helmet _Cold_Weather_Gloves.jpg"
+        "preview_image": "img/store/helmets/motocross_helmets/Helmet _Cold_Weather_Gloves.jpg",
+        "type": "helmet",
+        "brand": "Raven"
     },
     {
         "id": 3,
@@ -27,7 +31,9 @@
         "discount": 43,
         "reviews": "0",
         "rating": "☆☆☆☆☆",
-        "preview_image": "img/store/helmets/motocross_helmets/raven_airborne_Helmet_Helmet_Bag.jpg"
+        "preview_image": "img/store/helmets/motocross_helmets/raven_airborne_Helmet_Helmet_Bag.jpg",
+        "type": "helmet",
+        "brand": "Raven"
     },
     {
         "id": 4,
@@ -37,7 +43,9 @@
         "discount": 46,
         "reviews": "469",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/motocross_helmets/Raven_Airborne_Evo_MX_Helmet.jpg"
+        "preview_image": "img/store/helmets/motocross_helmets/Raven_Airborne_Evo_MX_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Raven"
     },
     {
         "id": 5,
@@ -47,7 +55,9 @@
         "discount": 45,
         "reviews": "9",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet_Sierra_Adventure_Helmet.jpg"
+        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet_Sierra_Adventure_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Course Drift"
     },
     {
         "id": 6,
@@ -57,7 +67,9 @@
         "discount": 41,
         "reviews": "5",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet_ONeal_Sierra_Flat_V_Adventure_Helmet.jpg"
+        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet_ONeal_Sierra_Flat_V_Adventure_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Course Drift"
     },
     {
         "id": 7,
@@ -67,7 +79,9 @@
         "discount": 35,
         "reviews": "2",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet_ONeal_Sierra_R_Adventure_Helmet.jpg"
+        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet_ONeal_Sierra_R_Adventure_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Course Drift"
     },
     {
         "id": 8,
@@ -77,7 +91,9 @@
         "discount": 50,
         "reviews": "116",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet.jpg"
+        "preview_image": "img/store/helmets/adventure_helmets/Course_Drift_Adventure_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Course Drift"
     },
     {
         "id": 9,
@@ -87,7 +103,9 @@
         "discount": 55,
         "reviews": "11",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/motocross_helmets/Raven_Airborne_Evo_MX_Helmet_Black-White_Edge_MX_Goggle.jpg"
+        "preview_image": "img/store/helmets/motocross_helmets/Raven_Airborne_Evo_MX_Helmet_Black-White_Edge_MX_Goggle.jpg",
+        "type": "helmet",
+        "brand": "Raven"
     },
     {
         "id": 10,
@@ -97,7 +115,9 @@
         "discount": 40,
         "reviews": "2",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/adventure_helmets/ONeal_SIERRA_FLAT_V.23_Adventure_Helmet_Black.jpg"
+        "preview_image": "img/store/helmets/adventure_helmets/ONeal_SIERRA_FLAT_V.23_Adventure_Helmet_Black.jpg",
+        "type": "helmet",
+        "brand": "O'Neal"
     },
     {
         "id": 11,
@@ -107,7 +127,9 @@
         "discount": 35,
         "reviews": "102",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/motocross_helmets/ONeal_F-SRS_Synthy_MX_Helmet.jpg"
+        "preview_image": "img/store/helmets/motocross_helmets/ONeal_F-SRS_Synthy_MX_Helmet.jpg",
+        "type": "helmet",
+        "brand": "O'Neal"
     },
     {
         "id": 12,
@@ -117,7 +139,9 @@
         "discount": 20,
         "reviews": "22",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Airoh"
     },
     {
         "id": 13,
@@ -127,7 +151,9 @@
         "discount": 20,
         "reviews": "22",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Rose_Helmet.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Rose_Helmet.jpg",
+        "type": "helmet",
+        "brand": "Airoh"
     },
     {
         "id": 14,
@@ -137,7 +163,9 @@
         "discount": 30,
         "reviews": "1",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/trial_helmets/Hebo_Zone_5_Helmet_Monocolor.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/Hebo_Zone_5_Helmet_Monocolor.jpg",
+        "type": "helmet",
+        "brand": "Hebo"
     },
     {
         "id": 15,
@@ -147,7 +175,9 @@
         "discount": 20,
         "reviews": "21",
         "rating": "★★★★★",
-        "preview_image": "img/store/helmets/trial_helmets/Hebo_Zone_Pro_Trial_Helmet_Monocolor.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/Hebo_Zone_Pro_Trial_Helmet_Monocolor.jpg",
+        "type": "helmet",
+        "brand": "Hebo"
     },
     {
         "id": 16,
@@ -157,7 +187,9 @@
         "discount": 20,
         "reviews": "211",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet_White.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet_White.jpg",
+        "type": "helmet",
+        "brand": "Airoh"
     },
     {
         "id": 17,
@@ -167,7 +199,9 @@
         "discount": 20,
         "reviews": "210",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet_Green.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet_Green.jpg",
+        "type": "helmet",
+        "brand": "Airoh"
     },
     {
         "id": 18,
@@ -177,7 +211,9 @@
         "discount": 10,
         "reviews": "108",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/trial_helmets/HJC_F31_Bask_Open_Helmet_White.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/HJC_F31_Bask_Open_Helmet_White.jpg",
+        "type": "helmet",
+        "brand": "HJC"
     },
     {
         "id": 19,
@@ -187,7 +223,9 @@
         "discount": 10,
         "reviews": "103",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/trial_helmets/hjc-f31-bask-open-helmet_black.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/hjc-f31-bask-open-helmet_black.jpg",
+        "type": "helmet",
+        "brand": "HJC"
     },
     {
         "id": 20,
@@ -197,7 +235,9 @@
         "discount": 15,
         "reviews": "13",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/trial_helmets/hjc-v31-firo-open-helmet.jpg"
+        "preview_image": "img/store/helmets/trial_helmets/hjc-v31-firo-open-helmet.jpg",
+        "type": "helmet",
+        "brand": "HJC"
     },
     {
         "id": 21,
@@ -207,7 +247,9 @@
         "discount": 50,
         "reviews": "3",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/parts_accessories/raven-aspireipsum-evo-mx-helmet-lining-black-red.jpg"
+        "preview_image": "img/store/helmets/parts_accessories/raven-aspireipsum-evo-mx-helmet-lining-black-red.jpg",
+        "type": "helmet",
+        "brand": "HJC"
     },
     {
         "id": 22,
@@ -217,7 +259,9 @@
         "discount": 30,
         "reviews": "37",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/parts_accessories/fxr-clutch-x-mx-helmet-dual-shield.jpg"
+        "preview_image": "img/store/helmets/parts_accessories/fxr-clutch-x-mx-helmet-dual-shield.jpg",
+        "type": "helmet",
+        "brand": "FXR"
     },
     {
         "id": 23,
@@ -227,7 +271,9 @@
         "discount": 10,
         "reviews": "7",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/parts_accessories/acerbis-steel-carbonx-pro-interior-replacement-black-grey.jpg"
+        "preview_image": "img/store/helmets/parts_accessories/acerbis-steel-carbonx-pro-interior-replacement-black-grey.jpg",
+        "type": "helmet",
+        "brand": "Acerbis"
     },
     {
         "id": 24,
@@ -237,7 +283,9 @@
         "discount": 30,
         "reviews": "70",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/parts_accessories/raven-airborne-evo-peak-mx-helmet.jpg"
+        "preview_image": "img/store/helmets/parts_accessories/raven-airborne-evo-peak-mx-helmet.jpg",
+        "type": "helmet",
+        "brand": "Raven"
     },
     {
         "id": 25,
@@ -247,7 +295,9 @@
         "discount": 20,
         "reviews": "7",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/parts_accessories/airoh-aviator-3-mx-helmet-peak.jpg"
+        "preview_image": "img/store/helmets/parts_accessories/airoh-aviator-3-mx-helmet-peak.jpg",
+        "type": "helmet",
+        "brand": "Airoh"
     },
     {
         "id": 26,
@@ -257,6 +307,7 @@
         "discount": 10,
         "reviews": "9",
         "rating": "★★★★☆",
-        "preview_image": "img/store/helmets/parts_accessories/alpinestars-visor-s-m10-22-fam-mg.jpg"
+        "preview_image": "img/store/helmets/parts_accessories/alpinestars-visor-s-m10-22-fam-mg.jpg","type": "helmet",
+        "brand": "Alpinestars"
     }
 ]

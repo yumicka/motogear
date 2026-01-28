@@ -1,0 +1,281 @@
+@background: #fff;
+@btn: #2bbc68;
+@accent: #E30613;
+
+.content{
+    background: @background;
+    width: 100%;
+    padding: 15px 24px;
+
+    @media (max-width: 1024px){
+        padding: 0;
+    }
+}
+
+.inner_content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    @media (max-width: 1350px) {
+        padding: 16px 24px;   
+    }
+
+    @media (max-width: 1024px){
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    @media (max-width: 480px){
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+.dropdowns,
+.popular{
+    width: 100%;
+}
+
+.item{
+    border-radius: 2px;
+    transition: .2s;
+}
+
+.header{
+    border-bottom: 1px solid #eee;
+    border-radius: 5px;
+    padding: 15px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 18px;
+    transition: .2s;
+    &:hover{
+        background: #eee;
+        transition: .2s;
+    }
+
+    @media (max-width: 1024px){
+        padding: 15px 0;
+
+        &:hover{
+        background: #fff;
+        transition: .2s;
+    }
+    }
+}
+
+.body{
+    padding: 15px 10px;
+    text-align: justify;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-size: 15px;
+    line-height: 1.6;
+
+    ul{
+        padding: 0 15px;
+        li{
+            list-style:disc;
+        }
+    }
+
+    @media (max-width: 1024px){  // планшеты
+        padding: 10px 0px;
+    }
+
+    
+}
+
+.popular{
+    font-size: 18px;
+    padding: 15px 10px;
+    font-weight: bold;
+    text-align: center;
+
+    .title{
+        position: relative;
+        text-align: center;
+        margin-bottom: 15px;
+
+        span{
+            background: #fff;
+            padding: 0 10px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before{
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #eee;
+            z-index: 0;
+        }
+    }
+}
+
+.ShippingAndReturns{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    .text_box{
+        h3{
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
+
+        a{
+            color: @accent;
+            padding: 0 5px;
+            
+
+            &:hover{
+                font-weight: bold;
+            }
+        }
+
+    }
+}
+
+.askQuestion {
+    .inputWrapper {
+        position: relative;
+
+        input,
+        textarea {
+            width: 100%;
+            padding-left: 44px; // ключевая строка
+            padding-right: 12px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+
+            &::placeholder {
+            color: #aaa;
+            }
+
+            &:focus {
+            border-color: #007bff;
+            outline: none;
+            }
+        }
+    }
+
+    .inputIcon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        color: #999;
+        pointer-events: none;
+    }
+
+    .inputIconTextarea {
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        font-size: 14px;
+        color: #999;
+        pointer-events: none;
+    }
+
+    .inputWrapper:focus-within .inputIcon,
+    .inputWrapper:focus-within .inputIconTextarea {
+        color: @btn;
+    }
+
+
+    .title {
+        h3 {
+            font-size: 15px;
+            font-weight: bold;
+            text-align: left;
+            padding-bottom: 15px;
+        }
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+
+            input,
+            textarea {
+                margin-top: 5px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+                transition: all 0.2s;
+
+                &:focus {
+                border-color: @btn;
+                box-shadow: 0 0 5px rgba(0,123,255,0.3);
+                outline: none;
+                }
+            }
+
+            textarea {
+                resize: vertical;
+            }
+        }
+
+        button {
+            padding: 12px;
+            background: @btn;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #c9c9c9;
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        padding: 15px;
+
+        .title h3 {
+            font-size: 18px;
+        }
+
+        .form input,
+        .form textarea {
+            font-size: 13px;
+        }
+
+        .form button {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+}
+

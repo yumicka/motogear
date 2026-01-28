@@ -1,7 +1,8 @@
 import styles from './HelmetProductPage.module.less';
 import ProductWindow from './Components/ProductWindow';
 import Recomendations from './Components/Recomendations';
-import AboutProduct from './Components/AboutProduct';
+import AboutProduct from './Components/aboutProduct/AboutProduct';
+import HelmetFitting from './Components/helmetFitting/HelmetFitting';
 import { Link, useParams } from 'react-router-dom';
 import items from '../../helmets_items.json';
 
@@ -38,6 +39,10 @@ const HelmetProductPage = () => {
 
 				<section className={styles.aboutProduct}>
 					<AboutProduct />
+				</section>
+
+				<section className={styles.helmetFitting}>
+					<HelmetFitting />
 				</section>
 			</div>
 		</div>
