@@ -1,6 +1,7 @@
 import styles from './HelmetProductPage.module.less';
 import ProductWindow from './Components/ProductWindow';
 import Recomendations from './Components/Recomendations';
+import AboutProduct from './Components/AboutProduct';
 import { Link, useParams } from 'react-router-dom';
 import items from '../../helmets_items.json';
 
@@ -33,6 +34,10 @@ const HelmetProductPage = () => {
 
 				<section className={styles.recomendations}>
 					<Recomendations />
+				</section>
+
+				<section className={styles.aboutProduct}>
+					<AboutProduct />
 				</section>
 			</div>
 		</div>
