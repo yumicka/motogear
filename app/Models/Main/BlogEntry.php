@@ -19,7 +19,7 @@ class BlogEntry extends Model
      *
      * @var string
      */
-    protected $table = 'blog_entries';
+    protected $table = 'products';
 
 
     /**

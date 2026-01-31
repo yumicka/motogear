@@ -95,14 +95,14 @@ class PublicPagesController extends Controller
     }
     
     /**
-    * Contacts
+    * Shop
     *
     * @access public       
     * @return \Illuminate\Http\Response 
     */
-    public function contacts($lang) {
-    //<editor-fold defaultstate="collapsed" desc="contacts">                 
-        return view('public.main', ['state' => Pages::contacts($lang)]);
+    public function shop($lang) {
+    //<editor-fold defaultstate="collapsed" desc="shop">                 
+        return view('public.main', ['state' => Pages::shop($lang)]);
     //</editor-fold>    
     }
     

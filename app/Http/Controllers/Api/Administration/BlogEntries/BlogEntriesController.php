@@ -37,21 +37,23 @@ class BlogEntriesController extends Controller
     */
     public function search(Request $request) {
     //<editor-fold defaultstate="collapsed" desc="search">
-        $query = DB::connection('main')->table('blog_entries as b');
+        $query = DB::connection('main')->table('products as p');
 
         //columns
         $columns = [
-            'b.id' => 'id',
-            'b.created_at' => 'created_at',
-            'b.updated_at' => 'updated_at',
+            'p.id' => 'id',
+            'p.created_at' => 'created_at',
+            'p.updated_at' => 'updated_at',
             'blog_entry_lv.title' => 'blog_entry_name',
-            'b.active' => 'active',
-            'b.pinned' => 'pinned',
-            'b.image_id' => 'image',
-            'b.categories' => 'categories',
+            'p.product_price' => 'product_price',
+            'p.product_discount' => 'product_discount',
+            'p.active' => 'active',
+            'p.pinned' => 'pinned',
+            'p.image_id' => 'image',
+            'p.categories' => 'categories',
         ];
 
-        ContentTranslations::leftJoin($query, ['lv'], 'b.id', ContentTranslationsTypes::blog_entry->value, 'blog_entry_');
+        ContentTranslations::leftJoin($query, ['lv'], 'p.id', ContentTranslationsTypes::blog_entry->value, 'blog_entry_');
 
         # ========================================================================#
         #
@@ -72,7 +74,7 @@ class BlogEntriesController extends Controller
         $options = [
             'results_per_page' => 10,
             'order' => [
-                'r.id' => 'desc',
+                'p.id' => 'desc',
             ]
         ];
 
@@ -103,7 +105,7 @@ class BlogEntriesController extends Controller
                     $item = BlogEntry::find($request->id);
 
                     if (empty($item)) {
-                        return Response::error("BlogEntry with id {$request->id} doesn't exist!");
+                        return Response::error("Product with id {$request->id} doesn't exist!");
                     }
 
                     $image = Images::getImageById($item->image_id);
@@ -141,11 +143,13 @@ class BlogEntriesController extends Controller
                     $categories_ids = array_map('intval', $categories_ids);
                     $categories = BlogCategory::whereIn('id', $categories_ids)->get();
                     $categories_ids = $categories->pluck('id')->all();
-                    
+
                     $item->categories = $categories_ids;                     
                     $item->position = $position;  
                     $item->active = $request->active;
                     $item->pinned = $request->pinned;
+                    $item->product_price = $request->product_price;
+                    $item->product_discount = $request->product_discount;
                     
                     $item->save();
 
@@ -157,12 +161,18 @@ class BlogEntriesController extends Controller
                     $langs = Langs::getAll();
 
                     foreach($langs as $lang) {
+                        //$item->product_price = $request[$lang.'_product_price'] ?: 0;
+                        //$item->product_discount = $request[$lang.'_product_discount'] ?: 0;
                         $content_translation = ContentTranslations::getContainer(ContentTranslationsTypes::blog_entry, $item->id, $lang);
                         $content_translation->title = $request[$lang.'_title'];
                         $content_translation->data = [
+                           
                             'content' => base64_decode($request[$lang.'_content']),
+                            //'product_price' => $request[$lang.'_product_price'],
+                            //'product_discount' => $request[$lang.'_product_discount'],
                             'meta_title' => $request[$lang.'_meta_title'],
                             'meta_description' => $request[$lang.'_meta_description'],
+                            
                         ];
                         $content_translation->save();
                     }
@@ -194,7 +204,12 @@ class BlogEntriesController extends Controller
                     $categories = BlogCategory::whereIn('id', $categories_ids)->get();
                     $categories_ids = $categories->pluck('id')->all();
                     
-                    $item->categories = $categories_ids;                
+                    
+                    $item->categories = $categories_ids;   
+                    
+                    $item->product_price = $request->product_price;
+                    $item->product_discount = $request->product_discount;
+                    
                     $item->active = $request->active;
                     $item->pinned = $request->pinned;
                     
@@ -246,7 +261,7 @@ class BlogEntriesController extends Controller
                     $item->delete();
 
                     return Response::success([
-                        'msg' => 'Blogs ir izdzēsts veiksmīgi!',
+                        'msg' => 'Produkts ir izdzēsts veiksmīgi!',
                     ]);
                 //</editor-fold>
                 },
@@ -258,4 +273,4 @@ class BlogEntriesController extends Controller
     //</editor-fold>
     }
 
-}
+} 

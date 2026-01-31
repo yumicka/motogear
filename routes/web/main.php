@@ -19,12 +19,7 @@ Route::group(['middleware' => 'check_lang'], function () {
     
     
     Route::get('{lang}/home', 'PublicPagesController@home');
-    Route::get('{lang}/par-mums', 'PublicPagesController@about_us');
-    Route::get('{lang}/buvnieciba', 'PublicPagesController@building');
-    Route::get('{lang}/renovacija', 'PublicPagesController@renovation');
-    Route::get('{lang}/cenu-kalkulators', 'PublicPagesController@priceCalculator');
-    Route::get('{lang}/projekti', 'PublicPagesController@blog');
-    Route::get('{lang}/kontakti', 'PublicPagesController@contacts');
+    Route::get('{lang}/veikals', 'PublicPagesController@shop');
     
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     

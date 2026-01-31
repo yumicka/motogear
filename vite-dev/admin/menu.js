@@ -10,6 +10,13 @@ menu.push({
 });
 
 menu.push({
+	name: 'categories',
+	title: 'Produktu kategorijas',
+	url: baseName + '/blog/blog_categories',
+	icon: _g.getMainUrl() + 'assets/icons/users.svg',
+});
+
+menu.push({
 	name: 'users',
 	title: 'Lietotāji',
 	url: baseName + '/users',

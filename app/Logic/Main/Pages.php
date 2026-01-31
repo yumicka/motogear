@@ -66,16 +66,11 @@ class Pages
     //<editor-fold defaultstate="collapsed" desc="home"> 
 
         $content = array_merge(self::getCommonContent(), [
-           'home_hero',
-           'home_divider',
-           'reviews_content',
-           'home_questions',
+           
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
-            'reviews' => [
-                'results_per_page' => 'all'
-            ],
+
         ]);
       
         $state = self::getCommonState($lang);
@@ -90,7 +85,7 @@ class Pages
         $state['Menu'] = ['current' => 'home'];
 
         $state['Page'] = [];
-        $state['projects'] = Blog\BlogEntries::getAll($lang);
+     
         $state['Page']['current'] = 'home';
         
         $meta_data = MetaData::get($lang, 'home');
@@ -322,17 +317,17 @@ class Pages
     }
     
      /**
-     * Contacts page
+     * Shop page
      *
      * @access public           
      * @param  string $lang - current lang 
      * @return array
     */
-    public static function contacts($lang) {
-    //<editor-fold defaultstate="collapsed" desc="contacts"> 
+    public static function shop($lang) {
+    //<editor-fold defaultstate="collapsed" desc="shop"> 
 
         $content = array_merge(self::getCommonContent(), [
-           'contacts_hero',
+           
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -347,12 +342,12 @@ class Pages
         
         $state = array_merge($state, $data);
           
-        $state['Menu'] = ['current' => 'contacts'];
+        $state['Menu'] = ['current' => 'shop'];
 
         $state['Page'] = [];
-        $state['Page']['current'] = 'contacts';
+        $state['Page']['current'] = 'shop';
         
-        $meta_data = MetaData::get($lang, 'contacts');
+        $meta_data = MetaData::get($lang, 'shop');
         
         MetaHelper::setTitle($meta_data['title']);
         MetaHelper::setDescription($meta_data['description']);

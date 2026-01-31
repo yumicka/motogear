@@ -4,8 +4,6 @@ namespace App\Schema;
 class Main
 {
     public static function get($schema){
-        
-
     /*
     |--------------------------------------------------------------------------
     |                             profile
@@ -32,21 +30,20 @@ class Main
     
     $table->addColumn('completed', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Is profile completed']);
 
-
-
     $table->setPrimaryKey(['id']);
     $table->addIndex(['user_id'],'idx_user_id');
     $table->addIndex(['avatar_image_id'], 'idx_avatar_image_id');
     //</editor-fold>
     
+    
     /*
     |--------------------------------------------------------------------------
-    |                             expenses
+    |                             products
     |--------------------------------------------------------------------------|
     */ 
-    //<editor-fold defaultstate="collapsed" desc="expenses"> 
-    $table = $schema->createTable('expenses');
-    $table->addOption('comment', 'Expenses');
+    //<editor-fold defaultstate="collapsed" desc="products"> 
+    $table = $schema->createTable('products');
+    $table->addOption('comment', 'Products');
     $table->addOption('collate', 'utf8mb4_unicode_ci');//utf8_unicode_ci
     $table->addOption('engine', 'InnoDB'); 
     $table->addOption('row_format', 'DYNAMIC');
@@ -56,56 +53,10 @@ class Main
     $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
     $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
     
-    $table->addColumn('project_type', 'integer', ['notnull' => false, 'default' => null, 'comment' => 'Project type']);    
-    
-    $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
-    
-    $table->setPrimaryKey(['id']);
-    //</editor-fold>
-    
-    /*
-    |--------------------------------------------------------------------------
-    |                             expenses_items
-    |--------------------------------------------------------------------------|
-    */ 
-    //<editor-fold defaultstate="collapsed" desc="expenses_items"> 
-    $table = $schema->createTable('expenses_items');
-    $table->addOption('comment', 'Expenses Items');
-    $table->addOption('collate', 'utf8mb4_unicode_ci');//utf8_unicode_ci
-    $table->addOption('engine', 'InnoDB'); 
-    $table->addOption('row_format', 'DYNAMIC');
-    $table->addOption('charset', 'utf8mb4');//utf8
-
-    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
-    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
-    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
-    
-    $table->addColumn('expenses_id', 'integer', ['notnull' => false, 'default' => null, 'comment' => 'Expenses ID']);
-    
-    $table->addColumn('price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull' => false, 'default' => null, 'comment' => 'Item price']);
-    $table->addColumn('price_per_unit', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Price per unit']);
-    
-    $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
-    
-    $table->setPrimaryKey(['id']);
-    //</editor-fold>
-    
-    /*
-    |--------------------------------------------------------------------------
-    |                             blog_entries
-    |--------------------------------------------------------------------------|
-    */ 
-    //<editor-fold defaultstate="collapsed" desc="blog_entries"> 
-    $table = $schema->createTable('blog_entries');
-    $table->addOption('comment', 'Blog entries');
-    $table->addOption('collate', 'utf8mb4_unicode_ci');//utf8_unicode_ci
-    $table->addOption('engine', 'InnoDB'); 
-    $table->addOption('row_format', 'DYNAMIC');
-    $table->addOption('charset', 'utf8mb4');//utf8
-
-    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
-    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
-    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
+    //Added
+    $table->addColumn('product_price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull' => true, 'default' => 0, 'comment' => 'Original price']);
+    $table->addColumn('product_discount', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Discount in percent']);
+//    $table->addColumn('calculated_price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull' => true, 'default' => 0, 'comment' => 'Calculated price']);    
 
     $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
@@ -139,46 +90,6 @@ class Main
     $table->setPrimaryKey(['id']);
     //</editor-fold>
     
-    /*
-    |--------------------------------------------------------------------------
-    |                             expense_records
-    |--------------------------------------------------------------------------|
-    */ 
-    //<editor-fold defaultstate="collapsed" desc="expense_records"> 
-    $table = $schema->createTable('expense_records');
-    $table->addOption('comment', 'Expense records with project details');
-    $table->addOption('collate', 'utf8mb4_unicode_ci');
-    $table->addOption('engine', 'InnoDB'); 
-    $table->addOption('row_format', 'DYNAMIC');
-    $table->addOption('charset', 'utf8mb4');
-
-    // Primary key
-    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
-
-    // Timestamps
-    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
-    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
-
-    // Contact information
-    $table->addColumn('full_name', 'string', ['length' => 255, 'notnull' => true, 'comment' => 'Full name of the contact person']);
-    $table->addColumn('email', 'string', ['length' => 255, 'notnull' => true, 'comment' => 'Email address']);
-    $table->addColumn('phone', 'string', ['length' => 50, 'notnull' => false, 'default' => null, 'comment' => 'Phone number']);
-
-    // Expenses data (JSON column)
-    $table->addColumn('expenses', 'json', [
-        'notnull' => true,
-        'comment' => 'Stores expense data including project details, items, and totals'
-    ]);
-
-    $table->setPrimaryKey(['id']);
-
-    // Indexes for better query performance
-    $table->addIndex(['email'], 'idx_expense_records_email');
-    $table->addIndex(['phone'], 'idx_expense_records_phone');
-    //</editor-fold>
-        
-
- 
 
         return $schema;
     }

@@ -11,9 +11,9 @@ const propTypes = {};
 const defaultProps = {};
 
 const config = {
-	title: 'Pievienojiet jaunu ierakstu',
-	popupName: 'blog_entry',
-	tableName: 'dt_blog_entries',
+	title: 'Pievienojiet jaunu produktu',
+	popupName: 'products_entry',
+	tableName: 'products',
 	action: 'administration/blog/actions',
 	search: 'administration/blog/search',
 };
@@ -26,7 +26,7 @@ class BlogEntries extends Component {
 	render() {
 		return (
 			<Card>
-				<Title>Bloga ieraksti</Title>
+				<Title>Veikala ieraksti</Title>
 				<AddButton {...config} />
 				<Table {...config} />
 			</Card>

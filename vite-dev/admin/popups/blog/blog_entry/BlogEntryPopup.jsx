@@ -10,7 +10,7 @@ import Delete from './components/delete';
 import { get, has } from 'lodash-es';
 
 const containerName = 'BlogEntryAdministration';
-const popupName = 'blog_entry';
+const popupName = 'products_entry';
 const tableName = 'dt_blog_entries';
 const url = 'administration/blog/actions';
 const tabsUrlKey = 'tab';

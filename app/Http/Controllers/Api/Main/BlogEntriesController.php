@@ -59,7 +59,7 @@ class BlogEntriesController extends Controller
         $options = [
             'results_per_page' => 999,
             'order' => [
-                'b.position' => 'asc',
+                'p.position' => 'asc',
             ]
         ];        
 

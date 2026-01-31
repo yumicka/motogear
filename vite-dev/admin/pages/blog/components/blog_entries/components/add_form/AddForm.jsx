@@ -70,7 +70,7 @@ class AddForm extends Component {
 		return (
 			<Fragment>
 				<Field
-					label={'Bloga kategorija'}
+					label={'Produkta kategorija'}
 					name={'categories'}
 					component={Select}
 					componentProps={{
@@ -85,6 +85,29 @@ class AddForm extends Component {
 
 				<Field label="Aktīvs" name="active" component={Checkbox} value="1" />
 				<Field label="Pin" name="pinned" component={Checkbox} />
+
+				<Field
+					label='Produkta cena'
+					name='product_price'
+					component={Input}
+					componentProps={{
+						type: 'number',
+						min: 0,
+						step: '0.01',
+					}}
+				/>
+
+				<Field
+					label='Produkta atlaide'
+					name='product_discount'
+					component={Input}
+					componentProps={{
+						type: 'number',
+						min: 0,
+						max: 100,
+						step: 1,
+					}}
+				/>
 			</Fragment>
 		);
 		//</editor-fold>
@@ -95,10 +118,11 @@ class AddForm extends Component {
 		return (
 			<Fragment>
 				<Field
-					label={'Bloga nosaukums'}
+					label={'Produkta nosaukums'}
 					name={`${lang}_title`}
 					component={Input}
 				/>
+
 				<Field
 					label={'Apraksts'}
 					name={`${lang}_content`}

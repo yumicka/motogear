@@ -90,12 +90,12 @@ class Edit extends Component {
 	renderFields = () => {
 		//<editor-fold defaultstate="collapsed" desc="renderFields">
 		const { item } = this.props;
-		const { categories, active, pinned } = item;
+		const { categories, active, pinned, product_price, product_discount } = item;
 
 		return (
 			<Fragment>
 				<Field
-					label={'Bloga kategorija'}
+					label={'Produkta kategorija'}
 					name={'categories'}
 					component={Select}
 					value={categories}
@@ -115,6 +115,31 @@ class Edit extends Component {
 					value={active}
 				/>
 				<Field label="Pin" name="pinned" component={Checkbox} value={pinned} />
+
+				<Field
+					label='Produkta cena'
+					name='product_price'
+					component={Input}
+					value={product_price}
+					componentProps={{
+						type: 'number',
+						min: 0,
+						step: '0.01',
+					}}
+				/>
+
+				<Field
+					label='Produkta atlaide'
+					name='product_discount'
+					component={Input}
+					value={product_discount}
+					componentProps={{
+						type: 'number',
+						min: 0,
+						max: 100,
+						step: 1,
+					}}
+				/>
 			</Fragment>
 		);
 		//</editor-fold>
@@ -130,11 +155,12 @@ class Edit extends Component {
 		return (
 			<Fragment>
 				<Field
-					label={'Bloga nosaukums'}
+					label={'Produkta nosaukums'}
 					name={`${lang}_title`}
 					component={Input}
 					value={title}
 				/>
+
 				<Field
 					label={'Apraksts'}
 					name={`${lang}_content`}
