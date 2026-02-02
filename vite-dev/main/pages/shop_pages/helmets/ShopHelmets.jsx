@@ -1,21 +1,36 @@
-import styles from './ShopHelmets.module.less';
-import { Outlet } from 'react-router-dom';
+import { useState } from 'react';
 import Elements from './components/Elements/Element';
+import styles from './ShopHelmets.module.less';
+import WithUi from 'hoc/store/ui';
 
-const ShopHelmet = () => {
+
+const uiProps = (ownProps) => {
+	return{
+		categories: 'categories'
+	};
+};
+
+const ShopHelmet = ({categories}) => {
+	const [activeId, setActiveId] = useState(null);
+
+	const searchParams = new URLSearchParams(window.location.search);
+	const categoryId = Number(searchParams.get('categoryId'));
+
+	// const title = CATEGORY_TITLES[categoryId] ?? 'Shop';
+
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.innerWrapper}>
 				<div className={styles.header}>
-					<Elements />
+					<Elements categoryId={categoryId} activeId={activeId} setActiveId={setActiveId} categories={categories}/>
 				</div>
 
 				<div className={styles.content}>
-					<Outlet />
+					{/* products list */}
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default ShopHelmet;
+export default WithUi(uiProps)(ShopHelmet);

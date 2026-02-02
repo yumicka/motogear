@@ -15,7 +15,7 @@ const propTypes = {};
 const defaultProps = {};
 
 const config = {
-	title: 'Pievienot jaunu Bloga kategoriju',
+	title: 'Pievienot jaunu produkta kategoriju',
 	popupName: 'blog_category',
 	tableName: 'dt_blog_categories',
 	action: 'administration/blog/categories/actions',
@@ -36,7 +36,7 @@ class BlogCategories extends Component {
 				hideOnOverlayClick: false,
 				showCloseControl: false,
 				maxWidth: '600px',
-				title: 'Pārkārtot Bloga kategorijas',
+				title: 'Pārkārtot produkta kategorijas',
 			},
 			component: Reorder,
 		});
@@ -46,14 +46,14 @@ class BlogCategories extends Component {
 	render() {
 		return (
 			<Card>
-				<Title>Bloga Kategorijas</Title>
+				<Title>Produktu Kategorijas</Title>
 				<div className={styles.wrapper}>
 					<div>
 						<AddButton {...config} />
 					</div>
 					<div>
 						<Button
-							title="Pārkārtot Bloga kategorijas"
+							title="Pārkārtot produkta kategorijas"
 							theme="primary"
 							icon={{
 								provider: 'icomoon',

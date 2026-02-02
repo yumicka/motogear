@@ -85,6 +85,8 @@ class Main
     $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
     $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
     
+    $table->addColumn('parent_id', 'integer', ['unsigned' => true, 'notnull'=> false, 'default' => null, 'comment'=>'Item\'s position']);
+    
     $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
 
     $table->setPrimaryKey(['id']);

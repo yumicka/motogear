@@ -347,6 +347,8 @@ class Pages
         $state['Page'] = [];
         $state['Page']['current'] = 'shop';
         
+        $state['categories'] = Blog\BlogCategories::get($lang);
+        
         $meta_data = MetaData::get($lang, 'shop');
         
         MetaHelper::setTitle($meta_data['title']);

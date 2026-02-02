@@ -46,6 +46,11 @@ class Table extends Component {
 		});
 
 		columns.push({
+			name: 'parent_id',
+			title: 'Parent ID',
+		});
+
+		columns.push({
 			name: 'created_at',
 			title: 'Datums',
 		});
@@ -93,6 +98,10 @@ class Table extends Component {
 		//<editor-fold defaultstate="collapsed" desc="getColumnRenderers">
 		const { popupName } = this.props;
 		const columnRenderers = {};
+
+		columnRenderers.parent_id = ({ cell }) => {
+			return cell ? `#${cell}` : '—';
+		};
 
 		columnRenderers.created_at = ({ cell, id }) => {
 			return (

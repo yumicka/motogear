@@ -8,6 +8,7 @@ import Field from 'ui/form/field';
 import Input from 'ui/inputs/input';
 import LangsTab from 'ui/common/langs_tab';
 import { get, upperCase } from 'lodash-es';
+import Select from 'ui/inputs/select';
 
 const propTypes = {
 	id: PropTypes.number.isRequired,
@@ -65,6 +66,30 @@ class Edit extends Component {
 		//</editor-fold>
 	};
 
+	renderFields = () => {
+		const { item } = this.props;
+		const { parent_id } = item;
+
+		return (
+			<Fragment>
+				<Field
+					label={'Produkta kategorija'}
+					name={'parent_id'}
+					component={Select}
+					value={parent_id}
+					componentProps={{
+						multi: false,
+						optionsUrl: 'administration/blog/categories/actions',
+						valueKey: 'id',
+						searchable: true,
+						labelKey: 'title',
+						extraData: { action: 'get_options' },
+					}}
+				/>
+			</Fragment>
+		);
+	};
+
 	renderLangTab = (lang) => {
 		//<editor-fold defaultstate="collapsed" desc="renderLangTab">
 		const { translations } = this.props;
@@ -94,11 +119,12 @@ class Edit extends Component {
 					action: 'update',
 					id: id,
 				}}
-				onBeforeSubmit={this.onBeforeSubmit}
+				// onBeforeSubmit={this.onBeforeSubmit}
 				onSuccess={this.onSuccess}
 				submit={{
 					title: 'Saglabāt',
 				}}>
+				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
 			</Form>
 		);

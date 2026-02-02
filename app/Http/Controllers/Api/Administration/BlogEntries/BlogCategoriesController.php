@@ -44,6 +44,7 @@ class BlogCategoriesController extends Controller
         //columns
         $columns = [
             'b.id' => 'id',
+            'b.parent_id' => 'parent_id',
             'b.created_at' => 'created_at',
             'b.updated_at' => 'updated_at',
             'b.position' => 'position',
@@ -109,6 +110,7 @@ class BlogCategoriesController extends Controller
                     if (empty($item)) {
                         return Response::error("Blog Category with id {$request->id} doesn't exist!");
                     }
+                    
 
                     $langs = Langs::getAll();
                     $translations = ContentTranslations::get($langs, ContentTranslationsTypes::blog_category, $item->id);
@@ -139,7 +141,7 @@ class BlogCategoriesController extends Controller
                     }
 
                     $item->position = $position;  
-
+                    $item->parent_id = $request->parent_id !== null ? (int)$request->parent_id : null;
                     $item->save();
 
                     $langs = Langs::getAll();
@@ -173,6 +175,9 @@ class BlogCategoriesController extends Controller
                         return Response::error("Item with id {$request->id} doesn't exist!");
                     }
 
+                    $item->parent_id = $request->parent_id !== null ? (int)$request->parent_id : null;
+                    $item->save();
+                    
                     $langs = Langs::getAll();
 
                     foreach($langs as $lang) {
@@ -204,7 +209,7 @@ class BlogCategoriesController extends Controller
                         return Response::error("Item with id {$request->id} doesn't exist!");
                     }
                     
-                    if (BlogEntry::where('category_id', $item->id)->exists()) {
+                    if (BlogEntry::where('id', $item->id)->exists()) {
                         return Response::error("Ieraksts tiek izmantots!");
                     }
 
@@ -215,7 +220,7 @@ class BlogCategoriesController extends Controller
 
                     return Response::success([
                         'msg' => 'Item is deleted!',
-                        'blogCategories' => BlogCategory::getOptions(),
+                        'blogCategories' =>  BlogCategories::get('lv'),
                     ]);
                 //</editor-fold>
                 },

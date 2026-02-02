@@ -1,25 +1,17 @@
-import { useParams } from 'react-router-dom';
 import styles from './ContentHeader.module.less';
 
-const CATEGORY_TITLES = {
-	'motocross': 'Motocross Helmets',
-	'adventure': 'Adventure Helmets',
-	'trial': 'Trial Helmets',
-	'accessories': 'Helmets Parts & Accessories',
-};
+const ContentHeader = ({ activeId, categories }) => {
+	const activeCategory = categories.find(
+		(category) => category.id === activeId,
+	);
 
-const ContentHeader = () => {
-	const { category } = useParams();
-
-	const title = category
-		? CATEGORY_TITLES[category]
-		: 'All Helmets';
+	const title = activeCategory?.label || 'Shop';
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.innerWrapper}>
 				<div>
-					<p>Helmets /</p>
+					<p>{title} /</p>
 				</div>
 
 				<div>

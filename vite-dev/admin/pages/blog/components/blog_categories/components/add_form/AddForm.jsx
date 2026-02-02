@@ -9,6 +9,7 @@ import Input from 'ui/inputs/input';
 import LangsTab from 'ui/common/langs_tab';
 
 import { upperCase } from 'lodash-es';
+import Select from 'ui/inputs/select';
 
 const propTypes = {
 	popupName: PropTypes.string.isRequired,
@@ -40,6 +41,27 @@ class AddForm extends Component {
 		//</editor-fold>
 	};
 
+	renderFields = () => {
+		return (
+			<Fragment>
+				<Field
+					label={'Produkta kategorija'}
+					name={'parent_id'}
+					component={Select}
+					componentProps={{
+						multi: false,
+						optionsUrl: 'administration/blog/categories/actions',
+						valueKey: 'id',
+						labelKey: 'title',
+						searchable: true,
+						extraData: { action: 'get_options' },
+						getValue: (option) => (option ? option.id : null), // <- ключевой момент
+					}}
+				/>
+			</Fragment>
+		);
+	};
+
 	renderLangTab = (lang) => {
 		//<editor-fold defaultstate="collapsed" desc="renderLangTab">
 		return (
@@ -68,6 +90,7 @@ class AddForm extends Component {
 				submit={{
 					title: 'Pievienot',
 				}}>
+				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
 			</Form>
 		);

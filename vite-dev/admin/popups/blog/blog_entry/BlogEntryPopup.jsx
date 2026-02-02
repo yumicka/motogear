@@ -11,7 +11,7 @@ import { get, has } from 'lodash-es';
 
 const containerName = 'BlogEntryAdministration';
 const popupName = 'products_entry';
-const tableName = 'dt_blog_entries';
+const tableName = 'products';
 const url = 'administration/blog/actions';
 const tabsUrlKey = 'tab';
 
