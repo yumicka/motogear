@@ -348,6 +348,7 @@ class Pages
         $state['Page']['current'] = 'shop';
         
         $state['categories'] = Blog\BlogCategories::get($lang);
+        $state['products'] = Blog\BlogEntries::get($lang);
         
         $meta_data = MetaData::get($lang, 'shop');
         

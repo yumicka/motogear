@@ -22,7 +22,7 @@ class BlogEntries
     */
     public static function getQuery($lang) {
     //<editor-fold defaultstate="collapsed" desc="getQuery"> 
-        $query = DB::connection('main')->table('blog_entries as b');
+        $query = DB::connection('main')->table('products as b');
         
         $columns = self::getColumns($lang);
         
@@ -53,6 +53,8 @@ class BlogEntries
             'b.pinned' => 'pinned',
             'b.active' => 'active',
             'b.image_id' => 'image_id',
+            'b.product_price' => 'product_price',
+            'b.product_discount' => 'product_discount',
             'b.categories' => 'categories',
             "blog_entry_$lang.data" => 'lang_data',
             "blog_entry_$lang.title" => 'title',
@@ -71,31 +73,47 @@ class BlogEntries
      * @param  string $lang - language
      * @return array
      */
-    public static function formatResponseData($item, $lang) {
-    //<editor-fold defaultstate="collapsed" desc="formatResponseData">        
-        $categories_id = extractTags($item->categories);
-        $categories_id = array_map('intval', $categories_id);
-        $category_query = BlogCategories::get($lang);
-        $filteredItems = array_filter($category_query, function($item) use ($categories_id) {
-            return in_array($item['id'], $categories_id);
-        });
-        $categories = array_map(function($item) {
-            return $item;
-        }, $filteredItems);
-        
-        $url = url($lang.'/projekti/'.Str::slug($item->id.'-'.$item->title));
-        
+    public static function formatResponseData($item, $lang)
+    {
+        $categoryIds = extractTags($item->categories);
+        $categoryIds = array_map('intval', $categoryIds);
+
+        $allCategories = BlogCategories::get($lang);
+
+        $categories = [];
+        $category = null;
+        $subCategory = null;
+
+        foreach ($allCategories as $cat) {
+            if (!in_array($cat['id'], $categoryIds)) {
+                continue;
+            }
+
+            $categories[] = $cat;
+
+            if ($cat['parent_id'] === null) {
+                $category = $cat['id'];
+            } else {
+                $subCategory = $cat['id'];
+            }
+        }
+
+        $url = url($lang . '/projekti/' . Str::slug($item->id . '-' . $item->title));
+
         $lang_data = [];
-        
         if (!empty($item->lang_data)) {
             $lang_data = json_decode($item->lang_data, true);
         }
-        
+
         $image = Images::getImageById($item->image_id);
-        
+
         return [
             'id' => $item->id,
-            'categories' => $categories,
+            'category' => $category,
+            'subCategory' => $subCategory,
+            'categories' => array_values($categories),
+            'product_price' => $item->product_price,
+            'product_discount' => $item->product_discount,
             'pinned' => $item->pinned,
             'active' => $item->active,
             'url' => $url,
@@ -103,8 +121,10 @@ class BlogEntries
             'lang_data' => $lang_data,
             'image' => $image,
         ];
-    //</editor-fold>
     }
+
+    //</editor-fold>
+    
     
      /**
      * Get all data
@@ -113,17 +133,18 @@ class BlogEntries
      * @param  string $lang - lang
      * @return array
      */
-    public static function getAll($lang) {
+    public static function get($lang) {
     //<editor-fold defaultstate="collapsed" desc="getAll">
         $query = self::getQuery($lang);
 
-        $items = $query->take(3)->get();
+        $items = $query->get();
 
         return $items->map(function($item) use ($lang) {
             return self::formatResponseData($item, $lang);
         })->all();   
     //</editor-fold>
     }
+   
     
          /**
      * Get all data

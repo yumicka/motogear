@@ -2,17 +2,16 @@ import { useState } from 'react';
 import Elements from './components/Elements/Element';
 import styles from './ShopHelmets.module.less';
 import WithUi from 'hoc/store/ui';
-
+import HelmetsPage from './components/ShopHelmetsPages/HelmetsPage';
 
 const uiProps = (ownProps) => {
-	return{
-		categories: 'categories'
+	return {
+		categories: 'categories',
 	};
 };
 
-const ShopHelmet = ({categories}) => {
+const ShopHelmet = ({ categories }) => {
 	const [activeId, setActiveId] = useState(null);
-
 	const searchParams = new URLSearchParams(window.location.search);
 	const categoryId = Number(searchParams.get('categoryId'));
 
@@ -22,11 +21,16 @@ const ShopHelmet = ({categories}) => {
 		<div className={styles.wrapper}>
 			<div className={styles.innerWrapper}>
 				<div className={styles.header}>
-					<Elements categoryId={categoryId} activeId={activeId} setActiveId={setActiveId} categories={categories}/>
+					<Elements
+						categoryId={categoryId}
+						activeId={activeId}
+						setActiveId={setActiveId}
+						categories={categories}
+					/>
 				</div>
 
 				<div className={styles.content}>
-					{/* products list */}
+					<HelmetsPage categoryId={activeId ?? categoryId} />
 				</div>
 			</div>
 		</div>

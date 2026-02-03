@@ -14,7 +14,7 @@ const Categories = ({ categories }) => {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
-				{categories.map((category) => {
+				{categories.filter(category => category.parent_id == null).map((category) => {
 					return (
 						<Link
 							key={category.id}

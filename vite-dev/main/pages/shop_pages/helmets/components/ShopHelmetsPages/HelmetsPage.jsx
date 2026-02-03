@@ -4,36 +4,50 @@ import getMainUrl from 'helpers/getMainUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import { Link, useParams } from 'react-router-dom';
-import items from '../../helmets_items.json';
+import WithUi from 'hoc/store/ui';
 
 const formatPrice = (n) => Number(n).toFixed(2);
 
-const CATEGORY_MAP = {
-	'motocross': 'Motocross Helmets',
-	'adventure': 'Adventure Helmets',
-	'trial': 'Trial Helmets',
-	'accessories': 'Helmets Parts & Accessories',
+
+
+const uiProps = (ownProps) => {
+	return {
+		products: 'products',
+	};
 };
 
 
-const HelmetsPage = () => {
-	const { category } = useParams();
+const HelmetsPage = ({categoryId, products}) => {
+	console.log(products);
 
-	const categoryName = category ? CATEGORY_MAP[category] : null;
+	const filtredProducts = products.filter((product) => {
+		if (product.subCategory === categoryId) {
+			return true;
+		}
 
-	const filteredItems = categoryName
-		? items.filter((item) => item.category === categoryName)
-		: items;
+		if (product.category === categoryId) {
+			return true;
+		}
+
+		return false;
+	});
+	// const { category } = useParams();
+
+	// const categoryName = category ? CATEGORY_MAP[category] : null;
+
+	// const filteredItems = categoryName
+	// 	? items.filter((item) => item.category === categoryName)
+	// 	: items;
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.innerWrapper}>
 				<div className={styles.container}>
-					{filteredItems.map((item) => {
-						const imgSrc = getMainUrl() + item.preview_image;
+					{filtredProducts.map((item) => {
+						const imgSrc = item.image?.image;
 
-						const oldPrice = item.discount
-							? item.price / (1 - item.discount / 100)
+						const oldPrice = item.product_discount
+							? item.product_price / (1 - item.product_discount / 100)
 							: null;
 
 						return (
@@ -41,7 +55,7 @@ const HelmetsPage = () => {
 								<div className={styles.imageWrap}>
 									<Image
 										src={imgSrc}
-										alt={item.name}
+										alt={item.title}
 										className={styles.image}
 									/>
 								</div>
@@ -50,11 +64,11 @@ const HelmetsPage = () => {
 									<div className={styles.actual_price}>
 										<p className={styles.price_now}>
 											<FontAwesomeIcon icon={faEuroSign} />{' '}
-											{formatPrice(item.price)}
+											{formatPrice(item.product_price)}
 										</p>
 
-										{item.discount && (
-											<p className={styles.discount}>-{item.discount}%</p>
+										{item.product_discount && (
+											<p className={styles.discount}>-{item.product_discount}%</p>
 										)}
 									</div>
 
@@ -71,7 +85,7 @@ const HelmetsPage = () => {
 									</div>
 
 									<div className={styles.title}>
-										<p>{item.name}</p>
+										<p>{item.title}</p>
 									</div>
 								</div>
 							</Link>
@@ -83,4 +97,4 @@ const HelmetsPage = () => {
 	);
 };
 
-export default HelmetsPage;
+export default WithUi(uiProps)(HelmetsPage);

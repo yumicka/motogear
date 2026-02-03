@@ -21,7 +21,9 @@ class BlogCategories
         
         $columns = [
             'b.id' => 'id',
+            'b.parent_id' => 'parent_id',
             "$lang.title" => 'title',
+            
         ];
         
         foreach ($columns as $column => $alias) {
@@ -47,6 +49,7 @@ class BlogCategories
         return [
             'id' => $item->id,
             'title' => $item->title,
+            'parent_id' => $item->parent_id,
         ];
     //</editor-fold>
     }
