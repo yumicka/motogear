@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styles from './ProductWindow.module.less';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,34 +9,31 @@ import {
 	faRepeat,
 	faEuroSign,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import Image from 'ui/media/image';
-import getMainUrl from 'helpers/getMainUrl';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import items from '../../../helmets_items.json';
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
 
-const ProductWindow = () => {
-	const { id } = useParams();
-	const product = items.find((item) => item.id === Number(id));
+const ProductWindow = ({ product }) => {
+	// const { id } = useParams();
+	const productId = product.id;
+	// const product = items.find((item) => item.id === Number(id));
 
-	if (!product) {
+	if (!productId) {
 		return <div>Product not found</div>;
 	}
 
-	const title = product.name;
-	const rating = product.rating;
-	const reviews = product.reviews;
-	const imageSrc = getMainUrl() + product.preview_image;
-	const discount = product.discount;
-	const price = product.price;
-
-	const oldPrice = product.discount
-		? product.price / (1 - product.discount / 100)
-		: null;
-
-	const savings = oldPrice - price;
+	const title = product.title;
+	const rating = product.rating || 4;
+	const reviews = product.reviews || 10;
+	const imageSrc = product.image?.image;
+	const price = parseFloat(product.product_price);
+	const discount = parseFloat(product.product_discount);
+	const discountedPrice = discount ? price * (1 - discount / 100) : price;
+	const savings = discount ? price - discountedPrice : 0;
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [size, setSize] = useState('');
@@ -45,7 +43,13 @@ const ProductWindow = () => {
 				<h1 className={styles.title}>{title}</h1>
 
 				<div className={styles.reviews}>
-					<span className={styles.stars}>{rating}</span>
+					{[...Array(5)].map((_, i) => (
+						<FontAwesomeIcon
+							key={i}
+							icon={i < rating ? fasStar : farStar}
+							className={styles.star}
+						/>
+					))}
 					<span className={styles.text}>{reviews} Reviews</span>
 				</div>
 
@@ -94,12 +98,12 @@ const ProductWindow = () => {
 			<div className={styles.price}>
 				<p className={styles.discount}>-{discount}%</p>
 				<h2 className={styles.discounted_price}>
-					<FontAwesomeIcon icon={faEuroSign} /> {price.toFixed(2)}
+					<FontAwesomeIcon icon={faEuroSign} /> {discountedPrice.toFixed(2)}
 				</h2>
 				<div className={styles.price_box}>
 					<span className={styles.price_now}>
 						<FontAwesomeIcon icon={faEuroSign} />
-						{oldPrice.toFixed(2)}
+						{price.toFixed(2)}
 					</span>
 					<span className={styles.save}>
 						You save <FontAwesomeIcon icon={faEuroSign} /> {savings.toFixed(2)}

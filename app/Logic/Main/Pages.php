@@ -325,7 +325,6 @@ class Pages
     */
     public static function shop($lang) {
     //<editor-fold defaultstate="collapsed" desc="shop"> 
-
         $content = array_merge(self::getCommonContent(), [
            
         ]);
@@ -358,6 +357,49 @@ class Pages
         return Store::setState($lang, $state);
     //</editor-fold>
     }
+    
+    
+    //Product page opens
+    
+     /**
+     * Product page
+     *
+     * @access public           
+     * @param  string $lang - current lang 
+     * @return array
+    */
+    public static function shopProduct($lang, $product_id) {
+       //<editor-fold defaultstate="collapsed" desc="shopProduct"> 
+        $id = intval(head(explode('-', $product_id)));
+
+        $product = Blog\BlogEntries::getQuery($lang)->where('b.id', $id)->first();
+
+        if (empty($product)) {
+            return null;
+        }
+        
+        $product = Blog\BlogEntries::formatResponseData($product, $lang);
+
+        $state = self::getCommonState($lang);
+
+        $data = Data::get($lang, [
+            'content' => self::getCommonContent(),
+            'collections' => self::getCommonCollections()
+        ]);
+
+        $state = array_merge($state, $data);
+
+        $state['categories'] = Blog\BlogCategories::get($lang);
+        $state['product'] = $product;
+
+        $state['Menu'] = ['current' => 'shop'];
+        $state['Page'] = [];
+        $state['Page']['current'] = 'shop_product';
+
+        return Store::setState($lang, $state);
+        //</editor-fold>
+    }
+
     
     /**
      * privacy_policy

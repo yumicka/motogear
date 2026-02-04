@@ -1,14 +1,12 @@
+/* eslint-disable react/prop-types */
 import Image from 'ui/media/image';
-import styles from './HelmetsPage.module.less';
-import getMainUrl from 'helpers/getMainUrl';
+import styles from './Page.module.less';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
-import { Link, useParams } from 'react-router-dom';
+import Link from 'core/navigation/link';
 import WithUi from 'hoc/store/ui';
 
 const formatPrice = (n) => Number(n).toFixed(2);
-
-
 
 const uiProps = (ownProps) => {
 	return {
@@ -16,9 +14,7 @@ const uiProps = (ownProps) => {
 	};
 };
 
-
-const HelmetsPage = ({categoryId, products}) => {
-	console.log(products);
+const Page = ({ categoryId, products }) => {
 
 	const filtredProducts = products.filter((product) => {
 		if (product.subCategory === categoryId) {
@@ -31,13 +27,6 @@ const HelmetsPage = ({categoryId, products}) => {
 
 		return false;
 	});
-	// const { category } = useParams();
-
-	// const categoryName = category ? CATEGORY_MAP[category] : null;
-
-	// const filteredItems = categoryName
-	// 	? items.filter((item) => item.category === categoryName)
-	// 	: items;
 
 	return (
 		<div className={styles.wrapper}>
@@ -45,13 +34,12 @@ const HelmetsPage = ({categoryId, products}) => {
 				<div className={styles.container}>
 					{filtredProducts.map((item) => {
 						const imgSrc = item.image?.image;
-
-						const oldPrice = item.product_discount
-							? item.product_price / (1 - item.product_discount / 100)
-							: null;
+						const price = parseFloat(item.product_price); // обычная цена
+						const discount = parseFloat(item.product_discount); // % скидки
+						const discountedPrice = discount ? price * (1 - discount / 100) : price;
 
 						return (
-							<Link to={`/shopHelmet/product/${item.id}`} className={styles.card} key={item.id}>
+							<Link to={item.url} className={styles.card} key={item.id}>
 								<div className={styles.imageWrap}>
 									<Image
 										src={imgSrc}
@@ -64,18 +52,20 @@ const HelmetsPage = ({categoryId, products}) => {
 									<div className={styles.actual_price}>
 										<p className={styles.price_now}>
 											<FontAwesomeIcon icon={faEuroSign} />{' '}
-											{formatPrice(item.product_price)}
+											{formatPrice(discountedPrice)}
 										</p>
 
 										{item.product_discount && (
-											<p className={styles.discount}>-{item.product_discount}%</p>
+											<p className={styles.discount}>
+												-{discount}%
+											</p>
 										)}
 									</div>
 
-									{oldPrice && (
+									{discountedPrice && (
 										<p className={styles.price_old}>
 											<FontAwesomeIcon icon={faEuroSign} />{' '}
-											{formatPrice(oldPrice)}
+											{formatPrice(price)}
 										</p>
 									)}
 
@@ -97,4 +87,4 @@ const HelmetsPage = ({categoryId, products}) => {
 	);
 };
 
-export default WithUi(uiProps)(HelmetsPage);
+export default WithUi(uiProps)(Page);

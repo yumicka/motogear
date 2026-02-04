@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './AboutProduct.module.less';
 import { useState } from 'react';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import items from '../../../../helmets_items.json';
+// import items from '../../../../helmets_items.json';
 import { useParams } from 'react-router-dom';
 
 import ShippingAndReturns from './components/ShippingAndReturns';

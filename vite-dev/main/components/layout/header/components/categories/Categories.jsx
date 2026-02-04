@@ -2,7 +2,6 @@ import Link from 'core/navigation/link';
 import styles from './Categories.module.less';
 import getMainUrl from 'helpers/getMainUrl';
 import WithUi from 'hoc/store/ui';
-// import { Link } from 'react-router-dom';
 
 const uiProps = (ownProps) => {
 	return {

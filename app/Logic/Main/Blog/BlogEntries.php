@@ -98,7 +98,7 @@ class BlogEntries
             }
         }
 
-        $url = url($lang . '/projekti/' . Str::slug($item->id . '-' . $item->title));
+        $url = url($lang . '/veikals/' . Str::slug($item->id . '-' . $item->title));
 
         $lang_data = [];
         if (!empty($item->lang_data)) {

@@ -2,7 +2,8 @@ import WithUi from 'hoc/store/ui';
 import { get } from 'lodash-es';
 import PrivacyPolicy from 'main/info_pages/privacy_policy/PrivacyPolicy';
 import HomePage from 'main/pages/home/HomePage';
-import ShopHelmet from 'main/pages/shop_pages/helmets/ShopHelmets';
+import ProductPage from 'main/pages/shop_pages/helmets/components/ProductPage/ProductPage';
+import Shop from 'main/pages/shop_pages/helmets/Shop';
 import PropTypes from 'prop-types';
 
 const uiProps = (ownProps) => {
@@ -18,8 +19,8 @@ function Content(props) {
 
 	const pageRenderer = {
 		home: <HomePage />,
-		shop: <ShopHelmet />,
-
+		shop: <Shop />,
+		shop_product: <ProductPage />,
 		//privacy pages
 		privacy_policy: <PrivacyPolicy />,
 	};

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styles from './ContentHeader.module.less';
 
 const ContentHeader = ({ categoryId, activeId, categories }) => {

@@ -1,4 +1,4 @@
-import styles from './HelmetFitting.module.less';
+import styles from './Fitting.module.less';
 
 const HelmetFitting = () => {
 	return (

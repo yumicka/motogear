@@ -101,10 +101,29 @@ class PublicPagesController extends Controller
     * @return \Illuminate\Http\Response 
     */
     public function shop($lang) {
-    //<editor-fold defaultstate="collapsed" desc="shop">                 
+    //<editor-fold defaultstate="collapsed" desc="shop">  
         return view('public.main', ['state' => Pages::shop($lang)]);
     //</editor-fold>    
     }
+    
+    //Product opens
+    
+    /**
+    * Product page
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function shopProduct($lang, $product_id) {
+    //<editor-fold defaultstate="collapsed" desc="shopProduct">  
+        $state = Pages::shopProduct($lang, $product_id);
+        if (empty($state)) {
+            abort(404);
+        }
+        return view('public.main', ['state' => $state]);
+    }
+    //</editor-fold>  
+    
     
     /**
     * Price calculator
