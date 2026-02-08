@@ -21,6 +21,8 @@ Route::group(['middleware' => 'check_lang'], function () {
     Route::get('{lang}/home', 'PublicPagesController@home');
     Route::get('{lang}/veikals', 'PublicPagesController@shop');
     Route::get('{lang}/veikals/{id}', 'PublicPagesController@shopProduct');
+    Route::get('products/search', 'ProductsController@search');
+
     
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     

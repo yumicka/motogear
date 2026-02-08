@@ -1,30 +1,30 @@
+/* eslint-disable react/prop-types */
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './AboutProduct.module.less';
 import { useState } from 'react';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 // import items from '../../../../helmets_items.json';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 import ShippingAndReturns from './components/ShippingAndReturns';
 import AskQuestion from './components/AskQuestion';
 //Discription
-import OnealDiscription from './components/Oneal/Oneal_Description';
+import Description from './components/Description';
 
 //Size Guide
-import Oneal_SizeGuide from './components/Oneal/Oneal_SizeGuide';
+import SizeGuide from './components/SizeGuide';
 
 //About Brand
-import Oneal_AboutBrand from './components/Oneal/Oneal_AboutBrand';
+import AboutBrand from './components/AboutBrand';
 
-const brandComponents = {
-	'O\'Neal': {
-		Discription: OnealDiscription, 
-		SizeGuide: Oneal_SizeGuide,
-		AboutBrand: Oneal_AboutBrand
-	}
-	// "Raven": RavenDiscription,
-	// "HJC": HJCDiscription,
-};
+// const brandComponents = {
+// 	'O\'Neal': {
+// 		Discription: Description, 
+// 		SizeGuide: SizeGuide,
+// 		AboutBrand: AboutBrand
+// 	}
+	
+// };
 
 // eslint-disable-next-line react/prop-types
 const DropdownItem = ({ title, children }) => {
@@ -44,17 +44,21 @@ const DropdownItem = ({ title, children }) => {
 	);
 };
 
-const AboutProduct = () => {
-	const { id } = useParams();
-	const product = items.find((item) => item.id === Number(id));
-	const componentsForBrand = brandComponents[product.brand] || {};
+const AboutProduct = ({product}) => {
+	// const { id } = useParams();
+	const productId = product.id;
+	// const product = items.find((item) => item.id === Number(id));
+
+	if (!productId) {
+		return <div>Product not found</div>;
+	}
 
 	return (
 		<div className={styles.content}>
 			<div className={styles.inner_content}>
 				<div className={styles.dropdowns}>
 					<DropdownItem title="Description">
-						{componentsForBrand.Discription ? <componentsForBrand.Discription /> : <p>No description</p>}
+						<Description product={product}/>
 					</DropdownItem>
 
 					<DropdownItem title="Product specifications">
@@ -62,7 +66,7 @@ const AboutProduct = () => {
 					</DropdownItem>
 
 					<DropdownItem title="Size guide">
-						{componentsForBrand.SizeGuide ? <componentsForBrand.SizeGuide /> : <p>No size guide</p>}
+						<SizeGuide />
 					</DropdownItem>
 
 					<DropdownItem title="Shipping & returns">
@@ -74,7 +78,7 @@ const AboutProduct = () => {
 					</DropdownItem>
 
 					<DropdownItem title="About the brand">
-						{componentsForBrand.AboutBrand ? <componentsForBrand.AboutBrand /> : <p>No description</p>}
+						<AboutBrand />
 					</DropdownItem>
 				</div>
 

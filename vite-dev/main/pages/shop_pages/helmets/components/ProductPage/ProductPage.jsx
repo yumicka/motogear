@@ -49,13 +49,13 @@ const ProductPage = ({ product, categories }) => {
 					<ProductWindow product={product} />
 				</section>
 
-				{/* <section className={styles.recomendations}>
+				<section className={styles.recomendations}>
 					<Recomendations />
 				</section>
 
 				<section className={styles.aboutProduct}>
-					<AboutProduct />
-				</section> */}
+					<AboutProduct product={product}/>
+				</section>
 
 				<section className={styles.helmetFitting}>
 					<Fitting />

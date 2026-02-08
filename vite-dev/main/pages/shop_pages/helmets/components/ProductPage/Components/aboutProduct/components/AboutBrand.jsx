@@ -1,10 +1,10 @@
 import Image from 'ui/media/image';
 import getMainUrl from 'helpers/getMainUrl';
-import styles from '../../AboutProduct.module.less';
+import styles from '../AboutProduct.module.less';
 
 const logo = getMainUrl() + 'img/brands_logo/oneal.png';
 
-const Oneal_AboutBrand = () => {
+const AboutBrand = () => {
 	return (
 		<div className={styles.AboutBrand}>
 			<div className={styles.text}>
@@ -23,4 +23,4 @@ const Oneal_AboutBrand = () => {
 	);
 };
 
-export default Oneal_AboutBrand;
+export default AboutBrand;

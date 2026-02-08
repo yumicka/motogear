@@ -51,3 +51,15 @@ Route::group(['prefix' => 'expenses'], function () {
     Route::post('search', 'ExpensesController@search');  
     
 });
+
+# ========================================================================#
+#
+#                           Products
+#    
+# ========================================================================# 
+
+Route::group(['prefix' => 'products'], function () {
+
+    Route::post('search', 'ProductsController@search');
+
+});

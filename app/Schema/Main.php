@@ -68,6 +68,132 @@ class Main
     $table->setPrimaryKey(['id']);
     //</editor-fold>
     
+    
+    /*
+    |--------------------------------------------------------------------------
+    |                             product_specs
+    |--------------------------------------------------------------------------
+    */
+    $table = $schema->createTable('product_specs');
+    $table->addOption('comment', 'Product specifications');
+    $table->addOption('collate', 'utf8mb4_unicode_ci');
+    $table->addOption('engine', 'InnoDB');
+    $table->addOption('row_format', 'DYNAMIC');
+    $table->addOption('charset', 'utf8mb4');
+
+    $table->addColumn('id', 'integer', [
+        'unsigned' => true,
+        'notnull' => true,
+        'autoincrement' => true
+    ]);
+
+    $table->addColumn('created_at', 'datetime', [
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Created timestamp'
+    ]);
+
+    $table->addColumn('updated_at', 'datetime', [
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Updated timestamp'
+    ]);
+
+    //saistiba šeit !!
+    $table->addColumn('product_id', 'integer', [
+        'unsigned' => true,
+        'notnull' => true,
+        'comment' => 'FK to products.id'
+    ]);
+
+    $table->addColumn('rotational_force_protection', 'boolean', [
+        'notnull' => true,
+        'default' => 0,
+        'comment' => 'Rotational Force Protection'
+    ]);
+
+    $table->addColumn('intercom', 'boolean', [
+        'notnull' => true,
+        'default' => 0,
+        'comment' => 'Intercom ready'
+    ]);
+
+    $table->addColumn('product_weight', 'decimal', [
+        'precision' => 10,
+        'scale' => 2,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Weight in grams or kg'
+    ]);
+
+    $table->addColumn('product_type', 'string', [
+        'length' => 255,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Product type'
+    ]);
+
+    $table->addColumn('closure', 'string', [
+        'length' => 255,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Closure type'
+    ]);
+
+    $table->addColumn('ride_style', 'string', [
+        'length' => 255,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Ride style'
+    ]);
+
+    $table->addColumn('material', 'string', [
+        'length' => 255,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Material'
+    ]);
+
+    $table->addColumn('sunvisor', 'boolean', [
+        'notnull' => true,
+        'default' => 0,
+        'comment' => 'Has sunvisor'
+    ]);
+
+    $table->addColumn('colour', 'string', [
+        'length' => 255,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Colour'
+    ]);
+
+    $table->addColumn('removable_lining', 'boolean', [
+        'notnull' => true,
+        'default' => 0,
+        'comment' => 'Removable lining'
+    ]);
+
+    $table->addColumn('pinlock', 'boolean', [
+        'notnull' => true,
+        'default' => 0,
+        'comment' => 'Pinlock ready'
+    ]);
+
+    $table->addColumn('brand', 'string', [
+        'length' => 255,
+        'notnull' => false,
+        'default' => null,
+        'comment' => 'Brand'
+    ]);
+
+    $table->addColumn('emergency_release_system', 'boolean', [
+        'notnull' => true,
+        'default' => 0,
+        'comment' => 'Emergency Release System'
+    ]);
+
+    $table->setPrimaryKey(['id']);
+
     /*
     |--------------------------------------------------------------------------
     |                             blog_categories

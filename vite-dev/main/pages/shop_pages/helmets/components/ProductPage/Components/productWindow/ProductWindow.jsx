@@ -18,6 +18,7 @@ import { useState } from 'react';
 const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
 
 const ProductWindow = ({ product }) => {
+	console.log(product);
 	// const { id } = useParams();
 	const productId = product.id;
 	// const product = items.find((item) => item.id === Number(id));

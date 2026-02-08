@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import Link from 'core/navigation/link';
 import WithUi from 'hoc/store/ui';
+import { useEffect, useState } from 'react';
+import { ThreeDots } from 'react-loader-spinner';
 
 const formatPrice = (n) => Number(n).toFixed(2);
 
@@ -14,29 +16,53 @@ const uiProps = (ownProps) => {
 	};
 };
 
-const Page = ({ categoryId, products }) => {
+const Page = ({ categoryId }) => {
+	const [loading, setLoading] = useState(true);
+	const [products, setProducts] = useState([]);
+	const [lastPage, setLastPage] = useState(1);
 
-	const filtredProducts = products.filter((product) => {
-		if (product.subCategory === categoryId) {
-			return true;
-		}
+	useEffect(() => {
+		setLoading(true);
 
-		if (product.category === categoryId) {
-			return true;
-		}
+		remoteRequest({
+			url: 'products/search',
+			data: {
+				category_id: categoryId,
+				results_per_page: 30,
+				page: 1,
+			},
+			onSuccess: (response) => {
+				setLoading(false);
+				setProducts(response.rows || []);
+				setLastPage(response.lastPage || 1);
+			},
+			onError: () => {
+				setLoading(false);
+				setProducts([]);
+			},
+		});
+	}, [categoryId]);
+	
+	console.log(categoryId);
 
-		return false;
-	});
+	if (loading)
+		return (
+			<div style={{ padding: 40, display: 'flex', justifyContent: 'center' }}>
+				<ThreeDots height="80" width="80" color="#adadad" />
+			</div>
+		);
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.innerWrapper}>
 				<div className={styles.container}>
-					{filtredProducts.map((item) => {
+					{products.map((item) => {
 						const imgSrc = item.image?.image;
-						const price = parseFloat(item.product_price); // обычная цена
-						const discount = parseFloat(item.product_discount); // % скидки
-						const discountedPrice = discount ? price * (1 - discount / 100) : price;
+						const price = parseFloat(item.product_price);
+						const discount = parseFloat(item.product_discount);
+						const discountedPrice = discount
+							? price * (1 - discount / 100)
+							: price;
 
 						return (
 							<Link to={item.url} className={styles.card} key={item.id}>
@@ -56,16 +82,13 @@ const Page = ({ categoryId, products }) => {
 										</p>
 
 										{item.product_discount && (
-											<p className={styles.discount}>
-												-{discount}%
-											</p>
+											<p className={styles.discount}>-{discount}%</p>
 										)}
 									</div>
 
 									{discountedPrice && (
 										<p className={styles.price_old}>
-											<FontAwesomeIcon icon={faEuroSign} />{' '}
-											{formatPrice(price)}
+											<FontAwesomeIcon icon={faEuroSign} /> {formatPrice(price)}
 										</p>
 									)}
 
