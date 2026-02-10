@@ -4,7 +4,7 @@ namespace App\Models\Main;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BlogEntry extends Model
+class Specification extends Model
 {
     /**
      * Database connection.
@@ -16,10 +16,10 @@ class BlogEntry extends Model
 
     /**
      * The table associated with the model.
-     *
+     * 
      * @var string
      */
-    protected $table = 'products';
+    protected $table = 'helmet_specifications';
 
 
     /**
@@ -51,29 +51,5 @@ class BlogEntry extends Model
      *
      * @var array
      */
-    protected $casts = [  
-        'active' => 'boolean',    
-    ];    
-    
-    /**
-    * Get categories
-    *
-    * @param  string $value
-    * @return array
-    */
-    public function getCategoriesAttribute($value)
-    {
-        return extractTags($value);
-    }
-    
-    /**
-    * Set categories
-    *
-    * @param  array  $value
-    * @return string
-    */
-    public function setCategoriesAttribute($value)
-    {
-        $this->attributes['categories'] = compressTags($value);        
-    }
+    protected $casts = [];    
 }

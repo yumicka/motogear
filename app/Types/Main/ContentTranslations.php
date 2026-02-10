@@ -12,6 +12,7 @@ enum ContentTranslations: string
     //blogs
     case blog_entry = 'blog_entry';
     case blog_category = 'blog_category';
+    case specifications = 'specifications';
     
     //expenses
     case expenses = 'expenses';
