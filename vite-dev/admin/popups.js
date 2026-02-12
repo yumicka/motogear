@@ -64,6 +64,18 @@ popups[ChangePasswordPopupSettings.name] = {
 	popup: ChangePasswordPopup,
 	settings: ChangePasswordPopupSettings,
 };
+
+/*
+ * SpecificationsPopup
+ */
+import SpecificationsPopup, {
+	settings as SpecificationsPopupSettings,
+} from 'admin/popups/product/specifications';
+popups[SpecificationsPopupSettings.name] = {
+	popup: SpecificationsPopup,
+	settings: SpecificationsPopupSettings,
+};
+
 // /*
 //  * CMSPopup
 //  */

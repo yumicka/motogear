@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Administration\Products;
+namespace App\Http\Controllers\Api\Administration\BlogEntries;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
 use App\Logic\Media\Images;
 
-use App\Logic\Main\Products\Specifications;
+use App\Logic\Main\Blog\Specifications;
 
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
@@ -83,7 +83,7 @@ class SpecificationsController extends Controller
         $options = [
             'results_per_page' => 10,
             'order' => [
-                'r.id' => 'desc',
+                'c.id' => 'desc',
             ]
         ];
 

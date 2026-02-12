@@ -12,7 +12,7 @@ import Checkbox from 'ui/inputs/checkbox';
 import CKEditor from 'ui/editors/ckeditor';
 import LangsTab from 'ui/common/langs_tab';
 import TextArea from 'ui/inputs/textarea';
-import { forEach, map, replace } from 'lodash-es';
+import { forEach, replace } from 'lodash-es';
 import Select from 'ui/inputs/select';
 
 const propTypes = {
@@ -85,10 +85,9 @@ class AddForm extends Component {
 
 				<Field label="Aktīvs" name="active" component={Checkbox} value="1" />
 				<Field label="Pin" name="pinned" component={Checkbox} />
-
 				<Field
-					label='Produkta cena'
-					name='product_price'
+					label="Produkta cena"
+					name="product_price"
 					component={Input}
 					componentProps={{
 						type: 'number',
@@ -98,8 +97,8 @@ class AddForm extends Component {
 				/>
 
 				<Field
-					label='Produkta atlaide'
-					name='product_discount'
+					label="Produkta atlaide"
+					name="product_discount"
 					component={Input}
 					componentProps={{
 						type: 'number',
@@ -128,6 +127,7 @@ class AddForm extends Component {
 					name={`${lang}_content`}
 					component={CKEditor}
 				/>
+
 				<Field
 					label={'Meta tituls'}
 					name={`${lang}_meta_title`}
@@ -151,6 +151,7 @@ class AddForm extends Component {
 				action={action}
 				extraData={{
 					action: 'create',
+					
 				}}
 				refresh={true}
 				onBeforeSubmit={this.onBeforeSubmit}
@@ -160,6 +161,7 @@ class AddForm extends Component {
 				}}>
 				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
+
 			</Form>
 		);
 	}
@@ -169,6 +171,7 @@ AddForm.propTypes = propTypes;
 
 AddForm.defaultProps = defaultProps;
 
+// @ts-ignore
 AddForm = WithUi(uiProps)(AddForm);
 
 export default AddForm;

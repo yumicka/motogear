@@ -416,8 +416,12 @@ class PopupContainer extends Component {
 
 	renderPopup = (level) => {
 		//<editor-fold defaultstate="collapsed" desc="renderPopup">
+		const popup_data = get(this.popups, level, null);
+		if (isNull(popup_data)) {
+			return null;
+		}
 
-		const { name, popup, component, data, settings } = get(this.popups, level);
+		const { name, popup, component, data, settings } = popup_data;
 
 		const extra = {};
 
@@ -426,7 +430,7 @@ class PopupContainer extends Component {
 		}
 
 		const key = name + '-' + hash({ ...extra, ...data });
-		this.popups[level].key = key;
+		popup_data.key = key;
 
 		const props = {
 			key: key,

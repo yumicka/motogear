@@ -39,11 +39,17 @@ Route::group(['namespace' => 'BlogEntries', 'prefix' => 'blog'], function () {
     Route::post('actions', 'BlogEntriesController@actions');
     
     Route::group(['prefix' => 'categories'], function () {
-//komentars
         Route::post('search', 'BlogCategoriesController@search');
         Route::post('actions', 'BlogCategoriesController@actions');
-
+     
     });
+    
+    Route::group(['prefix' => 'specifications'], function () {
+        Route::post('search', 'SpecificationsController@search');
+        Route::post('actions', 'SpecificationsController@actions');
+    });
+
+
 });
 
 # ========================================================================#

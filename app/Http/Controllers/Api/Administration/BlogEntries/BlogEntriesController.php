@@ -161,15 +161,11 @@ class BlogEntriesController extends Controller
                     $langs = Langs::getAll();
 
                     foreach($langs as $lang) {
-                        //$item->product_price = $request[$lang.'_product_price'] ?: 0;
-                        //$item->product_discount = $request[$lang.'_product_discount'] ?: 0;
                         $content_translation = ContentTranslations::getContainer(ContentTranslationsTypes::blog_entry, $item->id, $lang);
                         $content_translation->title = $request[$lang.'_title'];
                         $content_translation->data = [
                            
                             'content' => base64_decode($request[$lang.'_content']),
-                            //'product_price' => $request[$lang.'_product_price'],
-                            //'product_discount' => $request[$lang.'_product_discount'],
                             'meta_title' => $request[$lang.'_meta_title'],
                             'meta_description' => $request[$lang.'_meta_description'],
                             

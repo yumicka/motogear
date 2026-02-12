@@ -60,7 +60,7 @@ class Main
     $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
     $table->addColumn('categories', 'text', ['notnull' => false, 'default' => null, 'comment' => '[category_id],[category_id]']);  
-    $table->addColumn('specifications', 'text', ['notnull' => false, 'default' => null, 'comment' => '[category_id],[category_id]']);  
+//    $table->addColumn('specifications', 'text', ['notnull' => false, 'default' => null, 'comment' => '[category_id],[category_id]']);  
 
     
     $table->addColumn('pinned', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Pinned']);

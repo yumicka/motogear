@@ -5,15 +5,17 @@ import WithUi from 'hoc/store/ui';
 
 import { Base64 } from 'js-base64';
 
+import styles from './Edit.module.less';
+
 import Form from 'ui/form';
 import Field from 'ui/form/field';
 import Input from 'ui/inputs/input';
 import Checkbox from 'ui/inputs/checkbox';
-import DateTimePicker from 'ui/inputs/datetime_picker';
 import CKEditor from 'ui/editors/ckeditor';
 import LangsTab from 'ui/common/langs_tab';
 import TextArea from 'ui/inputs/textarea';
-import { forEach, get, replace, upperCase } from 'lodash-es';
+import { forEach, get, replace } from 'lodash-es';
+import SpecificationsAddForm from 'admin/pages/product/specifications/SpecificationsAddForm';
 import Select from 'ui/inputs/select';
 
 const propTypes = {
@@ -46,6 +48,17 @@ const uiProps = (ownProps) => {
 class Edit extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			is_discounted: false,
+		};
+	}
+
+	componentDidMount() {
+		const { item } = this.props;
+		this.setState({
+			is_discounted: Number(item?.product_discount) > 0,
+			initialized: true,
+		});
 	}
 
 	onBeforeSubmit = ({ data }) => {
@@ -64,6 +77,10 @@ class Edit extends Component {
 				}
 			}
 		});
+
+		if (!this.state.is_discounted) {
+			data.product_discount = 0;
+		}
 		//</editor-fold>
 	};
 
@@ -90,56 +107,91 @@ class Edit extends Component {
 	renderFields = () => {
 		//<editor-fold defaultstate="collapsed" desc="renderFields">
 		const { item } = this.props;
-		const { categories, active, pinned, product_price, product_discount } = item;
+		const { categories, active, pinned, product_price, product_discount } =
+			item;
 
 		return (
 			<Fragment>
-				<Field
-					label={'Produkta kategorija'}
-					name={'categories'}
-					component={Select}
-					value={categories}
-					componentProps={{
-						multi: true,
-						optionsUrl: 'administration/blog/categories/actions',
-						valueKey: 'id',
-						searchable: true,
-						labelKey: 'title',
-						extraData: { action: 'get_options' },
-					}}
-				/>
-				<Field
-					label="Aktīvs"
-					name="active"
-					component={Checkbox}
-					value={active}
-				/>
-				<Field label="Pin" name="pinned" component={Checkbox} value={pinned} />
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Pamata informācija</h3>
+					<p className={styles.sectionDescription}>
+						Produkta kategorijas un statuss
+					</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label={'Produkta kategorija'}
+							name={'categories'}
+							component={Select}
+							value={categories}
+							componentProps={{
+								multi: true,
+								optionsUrl: 'administration/blog/categories/actions',
+								valueKey: 'id',
+								searchable: true,
+								labelKey: 'title',
+								extraData: { action: 'get_options' },
+							}}
+						/>
+						<Field
+							label="Aktīvs"
+							name="active"
+							component={Checkbox}
+							value={active}
+						/>
+						<Field
+							label="Pin"
+							name="pinned"
+							component={Checkbox}
+							value={pinned}
+						/>
+					</div>
+				</div>
 
-				<Field
-					label='Produkta cena'
-					name='product_price'
-					component={Input}
-					value={product_price}
-					componentProps={{
-						type: 'number',
-						min: 0,
-						step: '0.01',
-					}}
-				/>
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Produkta cena</h3>
+					<p className={styles.sectionDescription}>Produkta cena un atlaide</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label="Standarta produkta cena"
+							name="product_price"
+							component={Input}
+							value={product_price}
+							componentProps={{
+								type: 'number',
+								min: 0,
+								step: '0.01',
+							}}
+						/>
 
-				<Field
-					label='Produkta atlaide'
-					name='product_discount'
-					component={Input}
-					value={product_discount}
-					componentProps={{
-						type: 'number',
-						min: 0,
-						max: 100,
-						step: 1,
-					}}
-				/>
+						<div>
+							<Checkbox
+								value={this.state.is_discounted}
+								onChange={(val) => {
+									const checked = val?.target ? val.target.checked : val;
+									this.setState({ is_discounted: !!checked });
+								}}
+								helpText="Iespējot atlaidi šim produktam"
+							/>
+						</div>
+
+						{this.state.is_discounted && (
+							<Field
+								label="Atlaides % (1-100)"
+								name="product_discount"
+								component={Input}
+								value={product_discount}
+								componentProps={{
+									number: {
+										allowNegative: false,
+										allowDecimal: false,
+									},
+									max: 100,
+									helpText: 'Atlaides procents',
+								}}
+							/>
+						)}
+					</div>
+				</div>
 			</Fragment>
 		);
 		//</editor-fold>
@@ -154,31 +206,46 @@ class Edit extends Component {
 
 		return (
 			<Fragment>
-				<Field
-					label={'Produkta nosaukums'}
-					name={`${lang}_title`}
-					component={Input}
-					value={title}
-				/>
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Produkta saturs</h3>
+					<p className={styles.sectionDescription}>
+						Produkta nosaukums un apraksts
+					</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label={'Produkta nosaukums'}
+							name={`${lang}_title`}
+							component={Input}
+							value={title}
+						/>
 
-				<Field
-					label={'Apraksts'}
-					name={`${lang}_content`}
-					component={CKEditor}
-					value={content}
-				/>
-				<Field
-					label={'Meta tituls'}
-					name={`${lang}_meta_title`}
-					component={Input}
-					value={get(translations, `${lang}.data.meta_title`, '')}
-				/>
-				<Field
-					label={'Meta apraksts'}
-					name={`${lang}_meta_description`}
-					component={TextArea}
-					value={get(translations, `${lang}.data.meta_description`, '')}
-				/>
+						<Field
+							label={'Apraksts'}
+							name={`${lang}_content`}
+							component={CKEditor}
+							value={content}
+						/>
+					</div>
+				</div>
+
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Produkta meta</h3>
+					<p className={styles.sectionDescription}>Meta title un meta apraksts</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label={'Meta tituls'}
+							name={`${lang}_meta_title`}
+							component={Input}
+							value={get(translations, `${lang}.data.meta_title`, '')}
+						/>
+						<Field
+							label={'Meta apraksts'}
+							name={`${lang}_meta_description`}
+							component={TextArea}
+							value={get(translations, `${lang}.data.meta_description`, '')}
+						/>
+					</div>
+				</div>
 			</Fragment>
 		);
 		//</editor-fold>
@@ -201,6 +268,7 @@ class Edit extends Component {
 				}}>
 				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
+				<SpecificationsAddForm p_id={id} />
 			</Form>
 		);
 	}

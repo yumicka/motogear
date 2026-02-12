@@ -19,7 +19,7 @@ class Specification extends Model
      * 
      * @var string
      */
-    protected $table = 'helmet_specifications';
+    protected $table = 'specifications';
 
 
     /**
