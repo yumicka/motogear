@@ -1,12 +1,30 @@
 import styles from './Fitting.module.less';
 
-const HelmetFitting = () => {
+const Fitting = ({ product }) => {
+	const categories = product?.categories || [];
+
+	const isHelmet = categories.some(
+		(cat) => cat.id === 1 
+	);
+
+	const videoSrc = () => {
+		if (isHelmet) {
+			return 'https://player.vimeo.com/video/879341401';
+		}
+
+		return null;
+	};
+
+	const src = videoSrc();
+
+	if (!src) return null;
+
 	return (
 		<div className={styles.content}>
 			<div className={styles.videoWrapper}>
 				<iframe
-					src="https://player.vimeo.com/video/879341401"
-					title="Helmet fitting video"
+					src={src}
+					title="Fitting video"
 					frameBorder="0"
 					allow="fullscreen; picture-in-picture"
 					allowFullScreen
@@ -26,4 +44,4 @@ const HelmetFitting = () => {
 	);
 };
 
-export default HelmetFitting;
+export default Fitting;

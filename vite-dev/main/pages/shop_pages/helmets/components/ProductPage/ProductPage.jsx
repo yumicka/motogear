@@ -60,7 +60,7 @@ const ProductPage = ({ product, categories, specifications }) => {
 				</section>
 
 				<section className={styles.helmetFitting}>
-					<Fitting />
+					<Fitting product={product}/>
 				</section>
 			</div>
 		</div>
