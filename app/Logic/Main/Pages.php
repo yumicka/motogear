@@ -391,6 +391,8 @@ class Pages
 
         $state['categories'] = Blog\BlogCategories::get($lang);
         $state['product'] = $product;
+        $state['specifications'] = Blog\Specifications::getById($lang, $product_id);
+
 
         $state['Menu'] = ['current' => 'shop'];
         $state['Page'] = [];

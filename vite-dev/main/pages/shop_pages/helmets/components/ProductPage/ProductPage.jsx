@@ -12,10 +12,12 @@ const uiProps = (ownProps) => {
 	return {
 		product: 'product',
 		categories: 'categories',
+		specifications: 'specifications',
 	};
 };
 
-const ProductPage = ({ product, categories }) => {
+
+const ProductPage = ({ product, categories, specifications }) => {
 	if (!product) return null;
 
 	const categoryId = product.category;
@@ -54,7 +56,7 @@ const ProductPage = ({ product, categories }) => {
 				</section>
 
 				<section className={styles.aboutProduct}>
-					<AboutProduct product={product}/>
+					<AboutProduct product={product} specifications={specifications} />
 				</section>
 
 				<section className={styles.helmetFitting}>

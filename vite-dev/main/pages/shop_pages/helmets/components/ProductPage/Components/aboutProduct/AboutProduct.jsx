@@ -12,19 +12,13 @@ import AskQuestion from './components/AskQuestion';
 import Description from './components/Description';
 
 //Size Guide
-import SizeGuide from './components/SizeGuide';
+import SizeGuide from './components/size_guide/SizeGuide';
 
 //About Brand
 import AboutBrand from './components/AboutBrand';
 
-// const brandComponents = {
-// 	'O\'Neal': {
-// 		Discription: Description, 
-// 		SizeGuide: SizeGuide,
-// 		AboutBrand: AboutBrand
-// 	}
-	
-// };
+//specification
+import Specification from './components/specification/Specification';
 
 // eslint-disable-next-line react/prop-types
 const DropdownItem = ({ title, children }) => {
@@ -44,30 +38,36 @@ const DropdownItem = ({ title, children }) => {
 	);
 };
 
-const AboutProduct = ({product}) => {
-	// const { id } = useParams();
+const AboutProduct = ({ product, specifications }) => {
 	const productId = product.id;
-	// const product = items.find((item) => item.id === Number(id));
 
 	if (!productId) {
 		return <div>Product not found</div>;
 	}
+
+	const isHelmet = product?.categories?.some(
+		(cat) => cat.id === 1 || cat.title?.toLowerCase() === 'helmets',
+	);
 
 	return (
 		<div className={styles.content}>
 			<div className={styles.inner_content}>
 				<div className={styles.dropdowns}>
 					<DropdownItem title="Description">
-						<Description product={product}/>
+						<Description product={product} />
 					</DropdownItem>
 
-					<DropdownItem title="Product specifications">
-						<p>text</p>
-					</DropdownItem>
+					{specifications.length > 0 && (
+						<DropdownItem title="Product specifications">
+							<Specification specifications={specifications} />
+						</DropdownItem>
+					)}
 
-					<DropdownItem title="Size guide">
-						<SizeGuide />
-					</DropdownItem>
+					{isHelmet && product?.brand && (
+						<DropdownItem title="Size guide">
+							<SizeGuide specifications={specifications} />
+						</DropdownItem>
+					)}
 
 					<DropdownItem title="Shipping & returns">
 						<ShippingAndReturns />
@@ -77,9 +77,11 @@ const AboutProduct = ({product}) => {
 						<AskQuestion />
 					</DropdownItem>
 
-					<DropdownItem title="About the brand">
-						<AboutBrand />
-					</DropdownItem>
+					{product?.brand ? (
+						<DropdownItem title="About the brand">
+							<AboutBrand specifications={specifications} />
+						</DropdownItem>
+					) : null}
 				</div>
 
 				<div className={styles.popular}>

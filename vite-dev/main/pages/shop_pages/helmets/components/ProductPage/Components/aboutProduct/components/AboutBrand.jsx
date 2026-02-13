@@ -4,7 +4,7 @@ import styles from '../AboutProduct.module.less';
 
 const logo = getMainUrl() + 'img/brands_logo/oneal.png';
 
-const AboutBrand = () => {
+const AboutBrand = ({specifications}) => {
 	return (
 		<div className={styles.AboutBrand}>
 			<div className={styles.text}>

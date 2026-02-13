@@ -1,0 +1,72 @@
+.wrapper {
+	width: 100%;
+}
+
+.table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: #fff;
+	border: 1px solid #e6e8ec;
+	border-radius: 12px;
+	overflow: hidden;
+}
+
+.table tr {
+	transition: background 0.15s ease;
+}
+
+.table tr:nth-child(even) {
+	background: #fafbfc;
+}
+
+.table tr:hover {
+	background: #f3f6ff;
+}
+
+.title {
+	width: 50%;
+	padding: 14px 16px;
+	font-weight: 600;
+	color: #111827;
+	border-bottom: 1px solid #e6e8ec;
+	vertical-align: top;
+}
+
+.content {
+	width: 50%;
+	padding: 14px 16px;
+	color: #374151;
+	border-bottom: 1px solid #e6e8ec;
+	vertical-align: top;
+	line-height: 1.4;
+    text-align: left;
+}
+
+.table tr:last-child .title,
+.table tr:last-child .content {
+	border-bottom: none;
+}
+
+/* мобилка */
+@media (max-width: 640px) {
+	.table {
+		border-radius: 10px;
+	}
+
+	.title,
+	.content {
+		display: block;
+		width: 100%;
+		padding: 12px 14px;
+	}
+
+	.title {
+		border-bottom: none;
+		padding-bottom: 6px;
+	}
+
+	.content {
+		padding-top: 0;
+	}
+}

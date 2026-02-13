@@ -43,7 +43,6 @@ const Page = ({ categoryId }) => {
 		});
 	}, [categoryId]);
 	
-	console.log(categoryId);
 
 	if (loading)
 		return (

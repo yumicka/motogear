@@ -74,10 +74,11 @@ class ProductsController extends Controller
         $filters = [];
       
         // Filter by category
-        $query = $query->when($request->has('category_id') && $request->category_id !== null, function ($q) use ($request) {
-    $categoryId = (int) $request->category_id;
-    return $q->where('b.categories', 'LIKE', '%[' . $categoryId . ']%');
-});
+        $query = $query->when($request->has('category_id') && 
+        $request->category_id !== null, function ($q) use ($request) {
+            $categoryId = (int) $request->category_id;
+            return $q->where('b.categories', 'LIKE', '%[' . $categoryId . ']%');
+        });
 
 
 
