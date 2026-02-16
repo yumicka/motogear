@@ -80,23 +80,23 @@ class ProductsController extends Controller
             return $q->where('b.categories', 'LIKE', '%[' . $categoryId . ']%');
         });
 
+        $orderBy = $request->get('order_by', 'b.position');
+        $orderDir = $request->get('order_dir', 'asc');
 
+        $allowedOrder = [
+            'id' => 'b.id',
+            'position' => 'b.position',
+            'created_at' => 'b.created_at',
+        ];
 
-
-
-        // Apply search filter if $request->parent_id is present
-//        ->when($request->parent_id, function ($q) use ($request, $lang) {
-//           $columnTitle = "products_{$lang}.title";
-//           return $q->where($columnTitle, 'LIKE', '%' . $request->search_data . '%');
-//        });
-        
+        $orderColumn = $allowedOrder[$orderBy] ?? 'b.position';
 
         $options = [
             'results_per_page' => 30,
             'order' => [
-                'b.position' => 'asc',
+                $orderColumn => $orderDir === 'desc' ? 'desc' : 'asc',
             ]
-        ];   
+        ];  
        
     
         $params = DataSource::parseRequest($request);
@@ -117,6 +117,52 @@ class ProductsController extends Controller
         return Response::success($response);
     //</editor-fold>
     }
+    
+    public function searchByBrand(Request $request)
+    { 
+        $lang = app()->getLocale();
+        $brand = trim($request->get('brand', ''));
+
+        if ($brand === '') {
+            return Response::success(['rows' => []]);
+        }
+
+        // 1) найти product_id по спецификациям
+        $productIds = DB::connection('main')
+            ->table('specifications as s')
+            ->join('content_translations as t', function($join) {
+                $join->on('t.container_id', '=', 's.id')
+                     ->where('t.container_name', '=', 'specifications');
+            })
+            ->whereRaw('LOWER(t.title) IN ("brand", "brends", "бренд")')
+            ->whereRaw('LOWER(t.content) = ?', [mb_strtolower($brand)])
+            ->pluck('s.product_id')
+            ->unique()
+            ->toArray();
+
+        if (empty($productIds)) {
+            return Response::success(['rows' => []]);
+        }
+
+        
+        $query = BlogEntries::getQuery($lang);
+
+        $query->whereIn('b.id', $productIds);
+
+        
+        $query->orderBy('b.id', 'desc');
+
+        $rows = $query->limit(4)->get();
+
+        
+        $formattedRows = [];
+        foreach ($rows as $row) {
+            $formattedRows[] = BlogEntries::formatResponseData((object)$row, $lang);
+        }
+
+        return Response::success(['rows' => $formattedRows]);
+    }
+    
     
 /**
  * Get all subcategory IDs including the selected category itself

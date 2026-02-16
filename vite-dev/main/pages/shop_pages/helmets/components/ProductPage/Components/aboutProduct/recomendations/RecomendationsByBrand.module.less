@@ -1,0 +1,52 @@
+@accent: #E30613;
+
+.container{
+    padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 5px;
+}
+
+.text{
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 15px;
+}
+
+.price_box{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.price_now_discounted{
+    color: @accent;
+}
+
+.price_now{
+    color: #000;
+}
+
+.discount{
+    border: #dadada 1px solid;
+    padding: 1px 10px;
+    border-radius: 5px;
+
+    color: @accent;
+}
+
+.price_old{
+    text-decoration: line-through;
+    font-size: 13px;
+    color: #666;
+}
+
+.name{
+    font-size: 13px;
+    text-align: left;
+}

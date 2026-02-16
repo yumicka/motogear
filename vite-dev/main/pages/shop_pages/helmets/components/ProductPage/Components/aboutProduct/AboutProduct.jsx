@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './AboutProduct.module.less';
 import { useState } from 'react';
-import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 // import items from '../../../../helmets_items.json';
 // import { useParams } from 'react-router-dom';
 
@@ -19,6 +19,7 @@ import AboutBrand from './components/AboutBrand';
 
 //specification
 import Specification from './components/specification/Specification';
+import RecomendationsByBrand from './recomendations/RecomendationsByBrand';
 
 // eslint-disable-next-line react/prop-types
 const DropdownItem = ({ title, children }) => {
@@ -30,7 +31,11 @@ const DropdownItem = ({ title, children }) => {
 				className={styles.header}
 				onClick={() => setOpen((prev) => !prev)}>
 				{title}
-				<FontAwesomeIcon icon={faAngleUp} />
+				{open ? (
+					<FontAwesomeIcon icon={faAngleUp} />
+				) : (
+					<FontAwesomeIcon icon={faAngleDown} />
+				)}
 			</button>
 
 			{open && <div className={styles.body}>{children}</div>}
@@ -49,6 +54,12 @@ const AboutProduct = ({ product, specifications }) => {
 		(cat) => cat.id === 1 || cat.title?.toLowerCase() === 'helmets',
 	);
 
+	const productBrand =
+		specifications.find((spec) => {
+			const title = spec.title.toLowerCase();
+			return title === 'brand' || title === 'brends' || title === 'бренд';
+		})?.content || '';
+
 	return (
 		<div className={styles.content}>
 			<div className={styles.inner_content}>
@@ -63,7 +74,7 @@ const AboutProduct = ({ product, specifications }) => {
 						</DropdownItem>
 					)}
 
-					{isHelmet && product?.brand && (
+					{isHelmet && productBrand && (
 						<DropdownItem title="Size guide">
 							<SizeGuide specifications={specifications} />
 						</DropdownItem>
@@ -77,7 +88,7 @@ const AboutProduct = ({ product, specifications }) => {
 						<AskQuestion />
 					</DropdownItem>
 
-					{product?.brand ? (
+					{productBrand ? (
 						<DropdownItem title="About the brand">
 							<AboutBrand specifications={specifications} />
 						</DropdownItem>
@@ -86,7 +97,10 @@ const AboutProduct = ({ product, specifications }) => {
 
 				<div className={styles.popular}>
 					<div className={styles.title}>
-						<span>Popular by {product.brand}</span>
+						<span>Popular by {productBrand}</span>
+					</div>
+					<div className={styles.brandRecomentations}>
+						<RecomendationsByBrand specifications={specifications} product={product} />
 					</div>
 				</div>
 			</div>

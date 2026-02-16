@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const Oneal_Description = ({product}) => {
+const Description = ({product}) => {
 	const description = product?.lang_data?.content || '';
 	return (
 		<div>
@@ -12,4 +12,4 @@ const Oneal_Description = ({product}) => {
 	);
 };
 
-export default Oneal_Description;
+export default Description;

@@ -52,7 +52,7 @@ const ProductPage = ({ product, categories, specifications }) => {
 				</section>
 
 				<section className={styles.recomendations}>
-					<Recomendations />
+					<Recomendations product={product} />
 				</section>
 
 				<section className={styles.aboutProduct}>

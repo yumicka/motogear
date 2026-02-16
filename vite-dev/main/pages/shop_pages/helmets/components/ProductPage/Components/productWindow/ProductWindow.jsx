@@ -31,10 +31,17 @@ const ProductWindow = ({ product }) => {
 	const rating = product.rating || 4;
 	const reviews = product.reviews || 10;
 	const imageSrc = product.image?.image;
-	const price = parseFloat(product.product_price);
+	const originalPrice = parseFloat(product.product_price);
 	const discount = parseFloat(product.product_discount);
-	const discountedPrice = discount ? price * (1 - discount / 100) : price;
-	const savings = discount ? price - discountedPrice : 0;
+	const hasDiscount = discount > 0;
+
+	let currentPrice = originalPrice;
+	let savings = 0;
+	if(hasDiscount){
+		currentPrice = originalPrice * (1 - discount / 100);
+		savings = originalPrice - currentPrice;
+	}
+	
 
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [size, setSize] = useState('');
@@ -97,19 +104,19 @@ const ProductWindow = ({ product }) => {
 			</div>
 
 			<div className={styles.price}>
-				<p className={styles.discount}>-{discount}%</p>
-				<h2 className={styles.discounted_price}>
-					<FontAwesomeIcon icon={faEuroSign} /> {discountedPrice.toFixed(2)}
+				{hasDiscount && <p className={styles.discount}>-{discount}%</p>}
+				<h2 className={hasDiscount ? styles.discounted_price : styles.normal_price}>
+					<FontAwesomeIcon icon={faEuroSign} /> {currentPrice.toFixed(2)}
 				</h2>
-				<div className={styles.price_box}>
+				{hasDiscount && <div className={styles.price_box}>
 					<span className={styles.price_now}>
 						<FontAwesomeIcon icon={faEuroSign} />
-						{price.toFixed(2)}
+						{originalPrice.toFixed(2)}
 					</span>
 					<span className={styles.save}>
-						You save <FontAwesomeIcon icon={faEuroSign} /> {savings.toFixed(2)}
+						You save <FontAwesomeIcon icon={faEuroSign} />{savings.toFixed(2)}
 					</span>
-				</div>
+				</div>}
 
 				<div className={styles.size_block}>
 					<select

@@ -22,7 +22,7 @@ Route::group(['middleware' => 'check_lang'], function () {
     Route::get('{lang}/veikals', 'PublicPagesController@shop');
     Route::get('{lang}/veikals/{id}', 'PublicPagesController@shopProduct');
     Route::get('products/search', 'ProductsController@search');
-
+    Route::get('products/searchByBrand', 'ProductsController@searchByBrand');
     
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     

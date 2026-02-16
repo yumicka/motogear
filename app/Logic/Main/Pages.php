@@ -390,6 +390,7 @@ class Pages
         $state = array_merge($state, $data);
 
         $state['categories'] = Blog\BlogCategories::get($lang);
+        $state['products'] = Blog\BlogEntries::get($lang);
         $state['product'] = $product;
         $state['specifications'] = Blog\Specifications::getById($lang, $product_id);
 

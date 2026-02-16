@@ -1,98 +1,96 @@
+/* eslint-disable react/prop-types */
 import Image from 'ui/media/image';
 import styles from './Recomendations.module.less';
-import getMainUrl from 'helpers/getMainUrl';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'core/navigation/link';
 
-const product =
-	getMainUrl() +
-	'img/store/helmets/trial_helmets/Airoh_Kombakt_Open_Face_Helmet.jpg';
+const formatPrice = (n) => Number(n).toFixed(2);
 
-	
-const Recomendations = () => {
-	const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
-	const [size, setSize] = useState('');
+const Recomendations = ({ product }) => {
+	const [items, setItems] = useState([]);
+
+	const helmetsCategoryId = useMemo(() => {
+		return product?.categories?.find(
+			(c) => c.title?.trim().toLowerCase() === 'helmets',
+		)?.id;
+	}, [product]);
+
+	useEffect(() => {
+		if (!helmetsCategoryId) {
+			setItems([]);
+			return;
+		}
+
+		remoteRequest({
+			url: 'products/search',
+			data: {
+				category_id: helmetsCategoryId,
+				results_per_page: 10,
+				page: 1,
+				order_by: 'id',
+				order_dir: 'desc',
+			},
+			onSuccess: (response) => {
+				const rows = response.rows || [];
+				const latest = rows.filter((p) => p.id !== product?.id).slice(0, 2);
+				setItems(latest);
+			},
+			onError: () => {
+				setItems([]);
+			},
+		});
+	}, [helmetsCategoryId, product?.id]);
+
+	if (!items.length) return null;
+
 	return (
 		<div className={styles.content}>
 			<div className={styles.title}>
-				<p>Do not forget to buy</p>
+				<p>You may also like...</p>
 			</div>
 
 			<div className={styles.container}>
-				<div className={styles.container_box}>
-					<div className={styles.images}>
-						<Image src={product} />
-					</div>
+				{items.map((item) => {
+					const imgSrc = item.image?.image;
+					const price = Number(item.product_price) || 0;
+					const discount = Number(item.product_discount) || 0;
 
-					<div className={styles.discription}>
-						<div className={styles.name}>
-							<h3>Airoh Kombakt Open Face Helmet</h3>
-						</div>
+					const hasDiscount = discount > 0;
+					const discountedPrice = hasDiscount
+						? price * (1 - discount / 100)
+						: price;
 
-						<div className={styles.size_block}>
-							<select
-								className={styles.size_select}
-								value={size}
-								onChange={(e) => setSize(e.target.value)}>
-								<option value="" disabled>
-									Select size
-								</option>
+					return (
+						<Link to={item.url} key={item.id} className={styles.container_box}>
+							<div className={styles.images}>
+								<Image src={imgSrc} alt={item.title} />
+							</div>
 
-								{SIZES.map((s) => (
-									<option key={s} value={s}>
-										{s}
-									</option>
-								))}
-							</select>
-						</div>
+							<div className={styles.discription}>
+								<div className={styles.name}>
+									<h3>{item.title}</h3>
+								</div>
 
-						<div className={styles.price}>
-							<h4>
-								<FontAwesomeIcon icon={faEuroSign} /> 66.67
-							</h4>
-						</div>
+								<div className={styles.price}>
+									<h4 className={hasDiscount ? styles.discounted_price : styles.normal_price}>
+										<FontAwesomeIcon icon={faEuroSign} />
+										{formatPrice(discountedPrice)}
+									</h4>
 
-						<button className={styles.btn}>Add to cart</button>
-					</div>
-				</div>
+									{hasDiscount && (
+										<p className={styles.old_price}>
+											<FontAwesomeIcon icon={faEuroSign} /> {formatPrice(price)}
+										</p>
+									)}
+								</div>
 
-				<div className={styles.container_box}>
-					<div className={styles.images}>
-						<Image src={product} />
-					</div>
-
-					<div className={styles.discription}>
-						<div className={styles.name}>
-							<h3>Airoh Kombakt Open Face Helmet</h3>
-						</div>
-
-						<div className={styles.size_block}>
-							<select
-								className={styles.size_select}
-								value={size}
-								onChange={(e) => setSize(e.target.value)}>
-								<option value="" disabled>
-									Select size
-								</option>
-
-								{SIZES.map((s) => (
-									<option key={s} value={s}>
-										{s}
-									</option>
-								))}
-							</select>
-						</div>
-
-						<div className={styles.price}>
-							<h4>
-								<FontAwesomeIcon icon={faEuroSign} /> 66.67
-							</h4>
-						</div>
-
-						<button className={styles.btn}>Add to cart</button>
-					</div>
-				</div>
+								<button className={styles.btn}>Add to cart</button>
+							</div>
+						</Link>
+					);
+				})}
 			</div>
 		</div>
 	);

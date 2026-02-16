@@ -45,7 +45,7 @@
 }
 
 .text{
-    padding: 15px 10px;
+    padding: 15px 5px;
 }
 
 .actual_price{
@@ -54,7 +54,6 @@
     justify-content: start;
     align-items: center;
     gap: 7px;
-    color: @accent;
     font-size: 18px;
 
     .discount{
@@ -62,8 +61,19 @@
         padding: 1px 10px;
         border-radius: 5px;
         font-size: 15px;
+        color: @accent;
+    }
+
+    price_now{
+        color: #000
+    }
+
+    .price_now_discounted{
+        color: @accent;
     }
 }
+
+
 
 .price_old{
     text-decoration: line-through;
@@ -83,5 +93,5 @@
 }
 
 .title{
-    font-size: 18px;
+    font-size: 17px;
 }

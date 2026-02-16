@@ -42,7 +42,6 @@ const Page = ({ categoryId }) => {
 			},
 		});
 	}, [categoryId]);
-	
 
 	if (loading)
 		return (
@@ -57,11 +56,18 @@ const Page = ({ categoryId }) => {
 				<div className={styles.container}>
 					{products.map((item) => {
 						const imgSrc = item.image?.image;
-						const price = parseFloat(item.product_price);
-						const discount = parseFloat(item.product_discount);
-						const discountedPrice = discount
-							? price * (1 - discount / 100)
-							: price;
+						const originalPrice = parseFloat(item.product_price);
+						const discount = parseFloat(item.product_discount) || 0;
+						const hasDiscount = discount != 0 && !isNaN(discount);
+						let currentPrice = 0;
+
+						if (hasDiscount) {
+							currentPrice = discount
+								? originalPrice * (1 - discount / 100)
+								: originalPrice;
+						} else {
+							currentPrice = originalPrice;
+						}
 
 						return (
 							<Link to={item.url} className={styles.card} key={item.id}>
@@ -75,26 +81,27 @@ const Page = ({ categoryId }) => {
 
 								<div className={styles.text}>
 									<div className={styles.actual_price}>
-										<p className={styles.price_now}>
-											<FontAwesomeIcon icon={faEuroSign} />{' '}
-											{formatPrice(discountedPrice)}
+										<p className={hasDiscount ? styles.price_now_discounted : styles.price_now}>
+											<FontAwesomeIcon icon={faEuroSign} />
+											{formatPrice(currentPrice)}
 										</p>
 
-										{item.product_discount && (
+										
+										{hasDiscount && (
 											<p className={styles.discount}>-{discount}%</p>
 										)}
 									</div>
 
-									{discountedPrice && (
+									{hasDiscount && (
 										<p className={styles.price_old}>
-											<FontAwesomeIcon icon={faEuroSign} /> {formatPrice(price)}
+											<FontAwesomeIcon icon={faEuroSign} /> {formatPrice(originalPrice)}
 										</p>
 									)}
 
-									<div className={styles.rating}>
+									{/* <div className={styles.rating}>
 										<span>{item.rating}</span>
 										<p>{item.reviews} Reviews</p>
-									</div>
+									</div> */}
 
 									<div className={styles.title}>
 										<p>{item.title}</p>

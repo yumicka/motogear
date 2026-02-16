@@ -1,4 +1,5 @@
 @btn: #2bbc68;
+@accent: #E30613;
 
 .content{
     background: #fff;
@@ -18,6 +19,7 @@
 .container{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     gap: 20px;
 }
 
@@ -68,7 +70,21 @@
     h4{
         font-size: 22px;
         font-weight: bold;
+
     }
+}
+
+.discounted_price{
+    color: @accent;
+}
+
+.normal_price{
+    color: #000;
+}
+
+.old_price{
+    text-decoration: line-through;
+    color: #666;
 }
 
 .size_block {
