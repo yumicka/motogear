@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './CartPage.module.less';
+import styles from './Cart.module.less';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceFrown } from '@fortawesome/free-solid-svg-icons';
 
-const CartPage = () => {
+const Cart = () => {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
@@ -21,4 +21,4 @@ const CartPage = () => {
 	);
 };
 
-export default CartPage;
+export default Cart;

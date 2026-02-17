@@ -1,11 +1,11 @@
 <?php
-namespace App\Logic\Main\Blog;
+namespace App\Logic\Main\Product;
 
 use DB;
 use App\Logic\Core\ContentTranslations;
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
-class BlogCategories
+class ProductCategories
 {
     
      /**

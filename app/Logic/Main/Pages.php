@@ -20,7 +20,14 @@ class Pages
     public static function getCommonState($lang) {
     //<editor-fold defaultstate="collapsed" desc="getCommonState">
         return [
-            'marketing_cookies' => session()->get('marketing_cookies','notVisted')
+            'marketing_cookies' => session()->get('marketing_cookies','notVisted'),
+            'cart' => Cart\Cart::getSummary(),
+//            'lease_cart' => LeaseCart::getSummary(),
+            'show_cart_popup' => false,
+//            'theme_categories' => ThemeCategories::getAll($lang),
+//            'main_categories' => Categories::getAllMainCategories($lang),
+//            'wishlist' => Wishlist::getSummary(),
+//            'country_codes' => CountryCodes::get($lang),
         ];
     //</editor-fold>  
     }
@@ -87,6 +94,7 @@ class Pages
         $state['Page'] = [];
      
         $state['Page']['current'] = 'home';
+        $state['categories'] = Product\ProductCategories::get($lang);
         
         $meta_data = MetaData::get($lang, 'home');
         
@@ -177,7 +185,7 @@ class Pages
         $state['Menu'] = ['current' => 'renovation'];
 
         $state['Page'] = [];
-        $state['projects'] = Blog\BlogEntries::getSpecified($lang, 1);
+        $state['projects'] = Product\ProductEntries::getSpecified($lang, 1);
         $state['Page']['current'] = 'renovation';
         
         $meta_data = MetaData::get($lang, 'renovation');
@@ -221,7 +229,7 @@ class Pages
         $state['Menu'] = ['current' => 'building'];
 
         $state['Page'] = [];
-        $state['projects'] = Blog\BlogEntries::getSpecified($lang, 2);
+        $state['projects'] = Product\ProductEntries::getSpecified($lang, 2);
         $state['Page']['current'] = 'building';
         
         $meta_data = MetaData::get($lang, 'building');
@@ -260,7 +268,7 @@ class Pages
         
         $state = array_merge($state, $data);
         
-        $state['categories'] = Blog\BlogCategories::get($lang);
+        $state['categories'] = Product\ProductCategories::get($lang);
           
         $state['Menu'] = ['current' => 'blog'];
        
@@ -346,8 +354,8 @@ class Pages
         $state['Page'] = [];
         $state['Page']['current'] = 'shop';
         
-        $state['categories'] = Blog\BlogCategories::get($lang);
-        $state['products'] = Blog\BlogEntries::get($lang);
+        $state['categories'] = Product\ProductCategories::get($lang);
+        $state['products'] = Product\ProductEntries::get($lang);
         
         $meta_data = MetaData::get($lang, 'shop');
         
@@ -372,13 +380,13 @@ class Pages
        //<editor-fold defaultstate="collapsed" desc="shopProduct"> 
         $id = intval(head(explode('-', $product_id)));
 
-        $product = Blog\BlogEntries::getQuery($lang)->where('b.id', $id)->first();
+        $product = Product\ProductEntries::getQuery($lang)->where('b.id', $id)->first();
 
         if (empty($product)) {
             return null;
         }
         
-        $product = Blog\BlogEntries::formatResponseData($product, $lang);
+        $product = Product\ProductEntries::formatResponseData($product, $lang);
 
         $state = self::getCommonState($lang);
 
@@ -389,10 +397,10 @@ class Pages
 
         $state = array_merge($state, $data);
 
-        $state['categories'] = Blog\BlogCategories::get($lang);
-        $state['products'] = Blog\BlogEntries::get($lang);
+        $state['categories'] = Product\ProductCategories::get($lang);
+        $state['products'] = Product\ProductEntries::get($lang);
         $state['product'] = $product;
-        $state['specifications'] = Blog\Specifications::getById($lang, $product_id);
+        $state['specifications'] = Product\Specifications::getById($lang, $product_id);
 
 
         $state['Menu'] = ['current' => 'shop'];
@@ -402,6 +410,49 @@ class Pages
         return Store::setState($lang, $state);
         //</editor-fold>
     }
+    
+    
+     /**
+     * Cart page
+     *
+     * @access public           
+     * @param  string $lang - current lang 
+     * @return array
+    */
+    public static function cart($lang){
+        //<editor-fold defaultstate="collapsed" desc="cart"> 
+        $content = array_merge(self::getCommonContent(), [
+           
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+        ]);
+      
+        $state = self::getCommonState($lang);
+        
+        $data = Data::get($lang, [
+            'content' => $content,
+            'collections' => $collections
+        ]);
+        
+        $state = array_merge($state, $data);
+          
+        $state['Menu'] = ['current' => 'cart'];
+
+        $state['Page'] = [];
+        $state['Page']['current'] = 'cart';
+        
+        $state['categories'] = Product\ProductCategories::get($lang);
+        
+        $meta_data = MetaData::get($lang, 'cart');
+        
+        MetaHelper::setTitle($meta_data['title']);
+        MetaHelper::setDescription($meta_data['description']);
+        
+        return Store::setState($lang, $state);
+        //</editor-fold>
+    }
+    
 
     
     /**
@@ -461,13 +512,13 @@ class Pages
         $id = head(explode('-', $blog_id));
         $id = intval($id);
         
-        $blog = Blog\BlogEntries::getQuery($lang)->where('b.id', $id)->first();
+        $blog = Product\ProductEntries::getQuery($lang)->where('b.id', $id)->first();
         
         if (empty($blog)) {
             return null;
         }
         
-        $blog = Blog\BlogEntries::formatResponseData($blog, $lang);
+        $blog = Product\ProductEntries::formatResponseData($blog, $lang);
         
         $content = array_merge(self::getCommonContent(), [
         ]);
@@ -485,7 +536,7 @@ class Pages
         $state = array_merge($state, $data);
         
         $state['blog'] = $blog;
-        $state['other_blog'] = Blog\BlogEntries::getOther($lang, $id);
+        $state['other_blog'] = Product\ProductEntries::getOther($lang, $id);
           
         $state['Menu'] = ['current' => 'blog_entry'];
        

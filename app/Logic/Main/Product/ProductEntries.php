@@ -1,8 +1,8 @@
 <?php
-namespace App\Logic\Main\Blog;
+namespace App\Logic\Main\Product;
 
 use App\Logic\Core\ContentTranslations;
-use App\Logic\Main\Blog\BlogCategories;
+use App\Logic\Main\Product\ProductCategories;
 use App\Logic\Media\Images;
 
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
@@ -10,7 +10,7 @@ use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 use DB;
 use Str;
 
-class BlogEntries
+class ProductEntries
 {
     
      /**
@@ -78,10 +78,10 @@ class BlogEntries
         $categoryIds = extractTags($item->categories);
         $categoryIds = array_map('intval', $categoryIds);
 
-        $allCategories = BlogCategories::get($lang);
+        $allCategories = ProductCategories::get($lang);
 
         $categories = [];
-        $category = null;
+        $category = null; 
         $subCategory = null;
 
         foreach ($allCategories as $cat) {

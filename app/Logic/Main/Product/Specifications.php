@@ -1,5 +1,5 @@
 <?php
-namespace App\Logic\Main\Blog;
+namespace App\Logic\Main\Product;
 
 use DB;
 use App\Logic\Core\ContentTranslations;

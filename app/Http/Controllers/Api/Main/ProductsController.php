@@ -9,7 +9,7 @@ use App\Logic\Core\Langs;
 
 use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
-use App\Logic\Main\Blog\BlogEntries;
+use App\Logic\Main\Product\ProductEntries;
 
 class ProductsController extends Controller
 {
@@ -46,10 +46,10 @@ class ProductsController extends Controller
     public function search(Request $request) {
     //<editor-fold defaultstate="collapsed" desc="search">        
         $lang = app()->getLocale();
-        $query = BlogEntries::getQuery($lang);
+        $query = ProductEntries::getQuery($lang);
 
         //columns
-        $columns = BlogEntries::getColumns($lang);
+        $columns = ProductEntries::getColumns($lang);
         
         foreach ($columns as $column => $alias) {
             $query->addSelect(DB::raw("{$column} as {$alias}"));
@@ -107,7 +107,7 @@ class ProductsController extends Controller
         $formattedRows = [];
 
         foreach($response['rows'] as $row) {
-           $formatted = BlogEntries::formatResponseData((object)$row, $lang);
+           $formatted = ProductEntries::formatResponseData((object)$row, $lang);
            $formattedRows[] = $formatted;
         }
 
@@ -145,7 +145,7 @@ class ProductsController extends Controller
         }
 
         
-        $query = BlogEntries::getQuery($lang);
+        $query = ProductEntries::getQuery($lang);
 
         $query->whereIn('b.id', $productIds);
 
@@ -157,7 +157,7 @@ class ProductsController extends Controller
         
         $formattedRows = [];
         foreach ($rows as $row) {
-            $formattedRows[] = BlogEntries::formatResponseData((object)$row, $lang);
+            $formattedRows[] = ProductEntries::formatResponseData((object)$row, $lang);
         }
 
         return Response::success(['rows' => $formattedRows]);

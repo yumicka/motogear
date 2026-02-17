@@ -9,7 +9,8 @@ import Cart from './components/cart/Cart';
 import Categories from './components/categories/Categories';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import Link from 'core/navigation/link';
+import getMainUrl from 'helpers/getMainUrl';
 
 const propTypes = { browserWidth: PropTypes.number };
 const defaultProps = {};
@@ -75,7 +76,7 @@ class Header extends Component {
 					id="header"
 					style={isAtTop ? { background: 'transparent' } : null}>
 					<div className={styles.container}>
-						<Link to="/" className={styles.logo_container}>
+						<Link to={getMainUrl(true) + 'home'} className={styles.logo_container}>
 							<Logo />
 						</Link>
 

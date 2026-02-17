@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Main\BlogCategory;
-use App\Models\Main\BlogEntry;
+use App\Models\Main\Product;
 
 use App\Logic\Core\ContentTranslations;
 use App\Logic\Core\Langs;
 use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
-use App\Logic\Main\Blog\BlogCategories; //
+use App\Logic\Main\Blog\BlogCategories;
 
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
@@ -209,7 +209,7 @@ class BlogCategoriesController extends Controller
                         return Response::error("Item with id {$request->id} doesn't exist!");
                     }
                     
-                    if (BlogEntry::where('id', $item->id)->exists()) {
+                    if (Product::where('id', $item->id)->exists()) {
                         return Response::error("Ieraksts tiek izmantots!");
                     }
 

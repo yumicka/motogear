@@ -4,7 +4,7 @@ namespace App\Models\Main;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BlogEntry extends Model
+class Product extends Model
 {
     /**
      * Database connection.

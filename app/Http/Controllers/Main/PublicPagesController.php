@@ -124,6 +124,17 @@ class PublicPagesController extends Controller
     }
     //</editor-fold>  
     
+    /**
+    * Cart
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function cart($lang) {
+    //<editor-fold defaultstate="collapsed" desc="shop">  
+        return view('public.main', ['state' => Pages::cart($lang)]);
+    //</editor-fold>    
+    }
     
     /**
     * Price calculator

@@ -1,11 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Cart_svg from './components/Cart_svg.jsx';
 import styles from './Cart.module.less';
+import Link from 'core/navigation/link/Link.jsx';
+import getMainUrl from 'helpers/getMainUrl.js';
 
 const Cart = () => {
 	return (
-		<Link to="/cart" className={styles.wrapper} aria-label="Open cart">
+		<Link
+			to={getMainUrl(true) + 'cart'}
+			className={styles.wrapper}
+			aria-label="Open cart">
 			<div className={styles.inner_wrapper}>
 				<div className={styles.icon}>
 					<Cart_svg />

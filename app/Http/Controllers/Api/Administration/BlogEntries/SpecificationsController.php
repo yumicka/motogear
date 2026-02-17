@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Main\Specification;
-use App\Models\Main\BlogEntry;
+use App\Models\Main\Product;
 
 use App\Logic\Core\ContentTranslations;
 use App\Logic\Core\Langs;

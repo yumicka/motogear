@@ -20,7 +20,7 @@ class Logo extends Component {
 
 	render() {
 		return (
-			<Link to={getMainUrl(true)}>
+			<Link to={getMainUrl(true) + 'home'}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="126"

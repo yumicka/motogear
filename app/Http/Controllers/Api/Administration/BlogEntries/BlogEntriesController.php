@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
 use DB;
-use App\Models\Main\BlogEntry;
+use App\Models\Main\Product;
 use App\Models\Main\BlogCategory;
 use App\Logic\Media\Images;
 use App\Logic\Core\ContentTranslations;
@@ -102,7 +102,7 @@ class BlogEntriesController extends Controller
                 ],
                 'action' => function($request) {
                 //<editor-fold defaultstate="collapsed" desc="get">
-                    $item = BlogEntry::find($request->id);
+                    $item = Product::find($request->id);
 
                     if (empty($item)) {
                         return Response::error("Product with id {$request->id} doesn't exist!");
@@ -128,9 +128,9 @@ class BlogEntriesController extends Controller
                 ],
                 'action' => function($request) {
                 //<editor-fold defaultstate="collapsed" desc="create"> 
-                    $item = new BlogEntry;
+                    $item = new Product;
                     
-                    $tmp = BlogEntry::orderBy('position', 'desc')->first();
+                    $tmp = Product::orderBy('position', 'desc')->first();
                     if (empty($tmp)) {
                         $position = 0;
                     }
@@ -190,10 +190,10 @@ class BlogEntriesController extends Controller
                 ],
                 'action' => function($request) {
                 //<editor-fold defaultstate="collapsed" desc="update">
-                    $item = BlogEntry::find($request->id);
+                    $item = Product::find($request->id);
 
                     if (empty($item)) {
-                        return Response::error("BlogEntry with id {$request->id} doesn't exist!");
+                        return Response::error("Product with id {$request->id} doesn't exist!");
                     }    
                     $categories_ids = explode(',', $request->categories);
                     $categories_ids = array_map('intval', $categories_ids);
@@ -241,10 +241,10 @@ class BlogEntriesController extends Controller
                 ],
                 'action' => function($request) {
                 //<editor-fold defaultstate="collapsed" desc="delete">
-                    $item = BlogEntry::find($request->id);
+                    $item = Product::find($request->id);
 
                     if (empty($item)) {
-                        return Response::error("BlogEntry with id {$request->id} doesn't exist!");
+                        return Response::error("Product with id {$request->id} doesn't exist!");
                     }
 
                     ContentTranslations::delete(ContentTranslationsTypes::blog_entry, $item->id);
@@ -252,7 +252,7 @@ class BlogEntriesController extends Controller
                     Images::deleteImageById($item->image_id);
                     Images::deleteImages(ImagesTypes::blog_entry_gallery_, $item->id);
                     
-                    BlogEntry::where('position', '>', $item->position)->decrement('position');
+                    Product::where('position', '>', $item->position)->decrement('position');
                     
                     $item->delete();
 
