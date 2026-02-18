@@ -6,7 +6,7 @@ use DB;
 use App\Models\Main\Product;
 
 use App\Logic\Core\ContentTranslations;
-use App\Logic\Main\Products\ProductEntries;
+use App\Logic\Main\Product\ProductEntries;
 
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
@@ -27,21 +27,24 @@ class Cart
     }
     
     private static function getTotals() {
-    //<editor-fold defaultstate="collapsed" desc="getTotals">
         $cart = session('cart', []);
-        
+
         $productTotal = 0;
         $priceWithoutVAT = 0;
-        $shippingPrice = 0; // Placeholder for now
-        
+        $shippingPrice = 0; // Placeholder
+
         foreach ($cart as $item) {
             $product = Product::find($item['id']);
-            
+
             if ($product) {
-                $lineTotal = $product->calculated_price * $item['quantity'];
+                $price = $product->product_price;
+                if ($product->product_discount > 0) {
+                    $price = $price * (1 - $product->product_discount / 100);
+                }
+
+                $lineTotal = $price * $item['quantity'];
                 $productTotal += $lineTotal;
 
-                // Assuming 21% VAT
                 $lineWithoutVAT = $lineTotal / 1.21;
                 $priceWithoutVAT += $lineWithoutVAT;
             }
@@ -55,19 +58,25 @@ class Cart
             'shipping_price' => round($shippingPrice, 2),
             'total_price' => round($totalPrice, 2),
         ];
-    //</editor-fold>
     }
+
+    
     private static function getProductSummary() {
     //<editor-fold defaultstate="collapsed" desc="getCartAmount">
         $cart = session('cart', []);
         $productSummary = [];
 
         foreach ($cart as $item) {
-            $product = Products::getById('lv', $item['id']); // Assuming 'lv' is the language
+            $product = ProductEntries::getById('lv', $item['id']); // Assuming 'lv' is the language
 
+            $productDiscount = $product['product_discount'] != 0;
+            $calculated_price = $product['product_price'];
+            if($productDiscount){
+                $calculated_price = $product['product_price'] * (1 - $productDiscount / 100);
+            }
             if ($product) {
                 $quantity = (int)$item['quantity'];
-                $price = round((float)$product['calculated_price'], 2);
+                $price = round((float)$calculated_price, 2);
                 
                 // Calculate and round total for this product
                 $productTotal = round($quantity * $price, 2);
@@ -75,7 +84,7 @@ class Cart
                 // Add quantity and total to product data
                 $product['quantity'] = $quantity;
                 $product['total'] = number_format($productTotal, 2, '.', '');
-                $product['selected_variant'] = \App\Logic\Main\Products\Variants::getOne('lv', $item['variant_id']);
+//                $product['selected_variant'] = \App\Logic\Main\Products\Variants::getOne('lv', $item['variant_id']);
                 
                 $productSummary[] = $product;
             }
@@ -96,5 +105,9 @@ class Cart
             'product_summary' => $productSummary,
         ];
     //</editor-fold>
+    }
+    
+    public static function amount() {
+        return self::getCartAmount();
     }
 }

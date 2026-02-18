@@ -12,7 +12,7 @@ use App\Logic\Core\ContentTranslations;
 use App\Logic\Core\Langs;
 use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
-use App\Logic\Main\Blog\BlogCategories;
+use App\Logic\Main\Product\ProductCategories;
 
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
@@ -220,7 +220,7 @@ class BlogCategoriesController extends Controller
 
                     return Response::success([
                         'msg' => 'Item is deleted!',
-                        'blogCategories' =>  BlogCategories::get('lv'),
+                        'blogCategories' =>  ProductCategories::get('lv'),
                     ]);
                 //</editor-fold>
                 },
@@ -247,7 +247,7 @@ class BlogCategoriesController extends Controller
                 'action' => function($request) {
                     //<editor-fold defaultstate="collapsed" desc="get_options">
                     return Response::success([
-                        'options' => BlogCategories::get('lv'),
+                        'options' => ProductCategories::get('lv'),
                     ]);
                 //</editor-fold>
                 },

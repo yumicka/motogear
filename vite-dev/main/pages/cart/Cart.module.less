@@ -42,3 +42,92 @@
   }
 
 }
+
+.box{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+.products{
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+}
+
+.product_item{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items:start;
+    width: 100%;
+    min-width: 0; 
+
+    img{
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .details{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .name{
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .price{
+            font-size: 16px;
+            // color: @accent;
+        }
+    }
+}
+
+.product_info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    flex: 1;             // Занимает всю оставшуюся ширину
+    min-width: 0; 
+
+    h3{
+        font-size: 15px;
+        font-weight: bold;
+    }
+    .total{
+        font-size: 24px;
+        font-weight: bold;
+    }  
+}
+
+.original_price {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 5px;
+}
+
+.discount_price {
+  color: red;
+  font-weight: bold;
+}
+
+.total_price{
+  color: #000;
+  font-weight: bold;
+}
+
+.edit_btn, .delete_btn{
+    padding: 0 5px;
+    cursor: pointer;
+    transition: .2s;
+
+    :hover{
+        color: #8f8f8f;
+        transition: .2s;
+    }
+}

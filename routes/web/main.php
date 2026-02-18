@@ -24,7 +24,6 @@ Route::group(['middleware' => 'check_lang'], function () {
     
     Route::get('{lang}/cart', 'PublicPagesController@cart');
     
-    
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     
     Route::get('{lang}/privatumu-politika', 'PublicPagesController@privacyPolicy');

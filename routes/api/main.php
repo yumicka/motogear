@@ -59,8 +59,19 @@ Route::group(['prefix' => 'expenses'], function () {
 # ========================================================================# 
 
 Route::group(['prefix' => 'products'], function () {
-
     Route::post('search', 'ProductsController@search');
     Route::post('searchByBrand', 'ProductsController@searchByBrand');
+
+});
+
+# ========================================================================#
+#
+#                           Cart
+#    
+# ========================================================================# 
+
+Route::group(['prefix' => 'cart'], function () {
+    Route::post('amount', 'CartController@amount');
+    Route::post('actions','CartController@actions');
 
 });

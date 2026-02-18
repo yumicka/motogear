@@ -202,5 +202,17 @@ class ProductEntries
         })->all();   
     //</editor-fold>
     }
+    
+    public static function getById($lang, $product_id) {
+    //<editor-fold defaultstate="collapsed" desc="getById">
+        $query = self::getQuery($lang);
+        $item = $query->where('b.id', $product_id)->first();
 
+        if (!$item) {
+            return null;
+        }
+
+        return self::formatResponseData($item, $lang);
+    //</editor-fold>
+    } 
 }

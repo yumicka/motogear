@@ -131,7 +131,7 @@ class PublicPagesController extends Controller
     * @return \Illuminate\Http\Response 
     */
     public function cart($lang) {
-    //<editor-fold defaultstate="collapsed" desc="shop">  
+    //<editor-fold defaultstate="collapsed" desc="cart">  
         return view('public.main', ['state' => Pages::cart($lang)]);
     //</editor-fold>    
     }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
-use App\Logic\Main\Blog\BlogEntries;
+use App\Logic\Main\Product\ProductEntries;
 
 class BlogEntriesController extends Controller
 {
@@ -32,13 +32,13 @@ class BlogEntriesController extends Controller
     //<editor-fold defaultstate="collapsed" desc="search">        
         $lang = app()->getLocale();
         
-        $query = BlogEntries::getQuery($lang);
+        $query = ProductEntries::getQuery($lang);
         
         if ($request->has('category_id')) {
             $query->where('categories', 'LIKE', '%' . $request->category_id . '%');
         }
         
-        $columns = BlogEntries::getColumns($lang);
+        $columns = ProductEntries::getColumns($lang);
 
         # ========================================================================#
         #
@@ -67,7 +67,7 @@ class BlogEntriesController extends Controller
         $response = DataSource::get($params, $query, $columns, $filters, $formatters, $options);
 
         foreach($response['rows'] as $index => $row) {
-            $response['rows'][$index] = BlogEntries::formatResponseData((object)$row, $lang);
+            $response['rows'][$index] = ProductEntries::formatResponseData((object)$row, $lang);
         }
         
         return Response::success($response);

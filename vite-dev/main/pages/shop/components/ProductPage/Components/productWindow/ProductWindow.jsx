@@ -19,8 +19,11 @@ const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
 
 const ProductWindow = ({ product }) => {
 	console.log(product);
+	const [size, setSize] = useState('');
+	const [quantity, setQuantity] = useState(1);
+	const [adding, setAdding] = useState(false);
 	// const { id } = useParams();
-	const productId = product.id;
+	const productId = product?.id;
 	// const product = items.find((item) => item.id === Number(id));
 
 	if (!productId) {
@@ -37,14 +40,43 @@ const ProductWindow = ({ product }) => {
 
 	let currentPrice = originalPrice;
 	let savings = 0;
-	if(hasDiscount){
+	if (hasDiscount) {
 		currentPrice = originalPrice * (1 - discount / 100);
 		savings = originalPrice - currentPrice;
 	}
-	
 
-	// eslint-disable-next-line react-hooks/rules-of-hooks
-	const [size, setSize] = useState('');
+	const addToCart = () => {
+		if (!productId) return;
+
+		// если размер обязателен
+		if (!size) {
+			alert('Please select size');
+			return;
+		}
+
+		setAdding(true);
+
+		remoteRequest({
+			url: 'cart/actions',
+			data: {
+				action: 'add',
+				product_id: productId,
+				quantity: quantity,
+				// variant_id: ??? (если у тебя размер = вариант)
+			},
+			onSuccess: (response) => {
+				setAdding(false);
+				uiStore.set('cart', response.cart);
+				console.log('Product added to cart:', response.cart);
+				// тут можно обновить UI (например, открыть popup корзины)
+			},
+			onError: (err) => {
+				setAdding(false);
+				console.log('Add to cart error:', err);
+			},
+		});
+	};
+
 	return (
 		<div className={styles.content}>
 			<div className={styles.discription}>
@@ -105,18 +137,24 @@ const ProductWindow = ({ product }) => {
 
 			<div className={styles.price}>
 				{hasDiscount && <p className={styles.discount}>-{discount}%</p>}
-				<h2 className={hasDiscount ? styles.discounted_price : styles.normal_price}>
+				<h2
+					className={
+						hasDiscount ? styles.discounted_price : styles.normal_price
+					}>
 					<FontAwesomeIcon icon={faEuroSign} /> {currentPrice.toFixed(2)}
 				</h2>
-				{hasDiscount && <div className={styles.price_box}>
-					<span className={styles.price_now}>
-						<FontAwesomeIcon icon={faEuroSign} />
-						{originalPrice.toFixed(2)}
-					</span>
-					<span className={styles.save}>
-						You save <FontAwesomeIcon icon={faEuroSign} />{savings.toFixed(2)}
-					</span>
-				</div>}
+				{hasDiscount && (
+					<div className={styles.price_box}>
+						<span className={styles.price_now}>
+							<FontAwesomeIcon icon={faEuroSign} />
+							{originalPrice.toFixed(2)}
+						</span>
+						<span className={styles.save}>
+							You save <FontAwesomeIcon icon={faEuroSign} />
+							{savings.toFixed(2)}
+						</span>
+					</div>
+				)}
 
 				<div className={styles.size_block}>
 					<select
@@ -135,7 +173,9 @@ const ProductWindow = ({ product }) => {
 					</select>
 				</div>
 
-				<button className={styles.btn}>Add to cart</button>
+				<button className={styles.btn} onClick={addToCart} disabled={adding}>
+					Add to cart
+				</button>
 
 				<div className={styles.shipment}>
 					<span className={styles.latvia_icon} />
