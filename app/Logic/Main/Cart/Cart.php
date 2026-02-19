@@ -42,7 +42,8 @@ class Cart
                     $price = $price * (1 - $product->product_discount / 100);
                 }
 
-                $lineTotal = $price * $item['quantity'];
+                $priceCents = (int) round($price * 100);
+                $lineTotal = $priceCents * (int)$item['quantity'];
                 $productTotal += $lineTotal;
 
                 $lineWithoutVAT = $lineTotal / 1.21;
@@ -50,12 +51,12 @@ class Cart
             }
         }
 
-        $totalPrice = $productTotal + $shippingPrice;
+        $totalPrice = $productTotal/100 + $shippingPrice;
 
         return [
-            'product_total' => round($productTotal, 2),
-            'price_without_vat' => round($priceWithoutVAT, 2),
-            'shipping_price' => round($shippingPrice, 2),
+            'product_total' => round($productTotal/100, 2),
+            'price_without_vat' => round($priceWithoutVAT/100, 2),
+            'shipping_price' => round($shippingPrice/100, 2),
             'total_price' => round($totalPrice, 2),
         ];
     }
@@ -69,12 +70,12 @@ class Cart
         foreach ($cart as $item) {
             $product = ProductEntries::getById('lv', $item['id']); // Assuming 'lv' is the language
 
-            $productDiscount = $product['product_discount'] != 0;
-            $calculated_price = $product['product_price'];
-            if($productDiscount){
-                $calculated_price = $product['product_price'] * (1 - $productDiscount / 100);
-            }
             if ($product) {
+                $productDiscount = $product['product_discount'] != 0;
+                $calculated_price = $product['product_price'];
+                if($productDiscount){
+                    $calculated_price = $product['product_price'] * (1 - $product['product_discount'] / 100);
+                }
                 $quantity = (int)$item['quantity'];
                 $price = round((float)$calculated_price, 2);
                 

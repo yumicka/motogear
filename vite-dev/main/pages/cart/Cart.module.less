@@ -1,3 +1,6 @@
+@btn: #2bbc68;
+@accent: #E30613;
+
 .wrapper {
     width: 100%;
     font-family: Lexend;
@@ -8,6 +11,10 @@
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
+    
+    @media (max-width: 1350px) {
+        padding: 16px 24px; 
+    }
 }
 
 
@@ -48,6 +55,10 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 30px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .products{
@@ -64,27 +75,22 @@
     width: 100%;
     min-width: 0; 
 
+    @media (max-width: 768px) {
+        gap: 15px;
+    }
+
     img{
         width: 150px;
         height: 150px;
         object-fit: cover;
-    }
-
-    .details{
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-
-        .name{
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .price{
-            font-size: 16px;
-            // color: @accent;
+        @media (max-width: 768px) {
+            width: 100px;
+            height: 100px;
         }
     }
+
+
+
 }
 
 .product_info{
@@ -95,30 +101,60 @@
     flex: 1;             // Занимает всю оставшуюся ширину
     min-width: 0; 
 
+    @media (max-width: 768px) {
+        gap: 10px;
+    }
+
     h3{
         font-size: 15px;
         font-weight: bold;
+        @media (max-width: 768px) {
+            font-size: 14px;
+        }
+
+        @media (max-width: 400px) {
+            font-size: 12px;
+        }
     }
-    .total{
-        font-size: 24px;
-        font-weight: bold;
-    }  
 }
 
 .original_price {
-  text-decoration: line-through;
-  color: #888;
-  margin-right: 5px;
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 5px;
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 12px;
+    }
 }
 
 .discount_price {
-  color: red;
-  font-weight: bold;
+    color: @accent;
+    font-weight: bold;
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 12px;
+    }
 }
 
-.total_price{
-  color: #000;
-  font-weight: bold;
+
+
+.total_cart_price{
+    color: #000;
+    font-weight: bold;
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+
+    @media (max-width: 400px) {
+        font-size: 12px;
+    }
 }
 
 .edit_btn, .delete_btn{
@@ -131,3 +167,91 @@
         transition: .2s;
     }
 }
+
+.total{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-direction: column;
+    padding: 20px 25px;
+    border: solid .1px #ebebeb;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.048);
+
+    .total_label{
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+     .total_price{
+        color: #000;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .total_info{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        
+        gap: 10px;
+        font-size: 14px;
+        color: #555;
+
+        h1{
+            font-size: 24px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        h3{
+            border-bottom: solid .1px #ebebeb;
+            padding-bottom: 10px;
+        }
+    }
+
+    .checkout_btn{
+        padding: 10px 20px;
+        width: 100%;
+        background: @btn;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: .2s;
+
+        &:hover{ 
+            background: #c9c9c9;
+            transition: .2s;
+        }
+    }
+
+}
+
+/* --------- Recomendations ------------- */
+
+.recomendationds_title {
+    width: 100%;
+    margin: 30px 0;
+
+    h2 {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+    }
+
+    h2::before,
+    h2::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #dcdcdc;
+    }
+}
+

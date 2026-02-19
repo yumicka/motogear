@@ -443,6 +443,7 @@ class Pages
         $state['Page']['current'] = 'cart';
         
         $state['categories'] = Product\ProductCategories::get($lang);
+        $state['products'] = Product\ProductEntries::get($lang);
         
         $meta_data = MetaData::get($lang, 'cart');
         

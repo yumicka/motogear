@@ -6,7 +6,7 @@ import WithUi from 'hoc/store/ui';
 const uiProps = (ownProps) => {
 	return {
 		categories: 'categories',
-	};
+	}; 
 };
 
 const Categories = ({ categories }) => {

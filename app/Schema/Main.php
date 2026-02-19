@@ -53,13 +53,14 @@ class Main
     $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
     $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
     
-    //Added
     $table->addColumn('product_price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull' => true, 'default' => 0, 'comment' => 'Original price']);
     $table->addColumn('product_discount', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Discount in percent']);
-    $table->addColumn('brand', 'string', ['length' => 255, 'notnull'=>false, 'default' => null, 'comment'=>'Product brand']); 
+
     
     $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
+    $table->addColumn('top_seller', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Top seller']);
+
     $table->addColumn('categories', 'text', ['notnull' => false, 'default' => null, 'comment' => '[category_id],[category_id]']);   
 
     $table->addColumn('pinned', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Pinned']);
@@ -109,7 +110,10 @@ class Main
     $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
     $table->addColumn('parent_id', 'integer', ['unsigned' => true, 'notnull'=> false, 'default' => null, 'comment'=>'Item\'s position']);
     $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
+    
+    $table->addColumn('category_image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Category image id']);
 
+    
     $table->setPrimaryKey(['id']);
     //</editor-fold>
     
