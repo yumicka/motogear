@@ -2,30 +2,29 @@ import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AdministrationPopup from 'popups/components/administration';
-
 import Tabs from 'ui/controls/tabs';
+
 import Edit from './components/edit';
-import Media from './components/media';
 import Delete from './components/delete';
 import { get, has } from 'lodash-es';
 
-const containerName = 'BlogEntryAdministration';
-const popupName = 'products_entry';
-const tableName = 'products';
-const url = 'administration/blog/actions';
+const containerName = 'ProductSizeAdministration';
+const popupName = 'product_size';
+const tableName = 'dt_product_size';
+const url = 'administration/blog/product_size/actions';
 const tabsUrlKey = 'tab';
 
-const doNotHideOnOverlayClickTabs = ['edit', 'media'];
+const doNotHideOnOverlayClickTabs = ['edit'];
 
 export const settings = {
 	name: popupName,
 	inUrl: true,
-	level: 0,
+	level: 2,
 	extraUrlKeys: [tabsUrlKey],
 	verticalAlign: 'top',
 	//hideOnOverlayClick: false,
 	contentWrapStyle: {
-		maxWidth: '1024px',
+		maxWidth: '800px',
 	},
 	showCloseControl: false,
 	onClose: onClose,
@@ -42,7 +41,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class BlogEntryPopup extends Component {
+class ProductSizePopup extends Component {
 	constructor(props) {
 		super(props);
 
@@ -66,15 +65,7 @@ class BlogEntryPopup extends Component {
 	getTitle = (data) => {
 		//<editor-fold defaultstate="collapsed" desc="getTitle">
 		const id = get(data, 'item.id', '');
-		return `Bloga ieraksts #${id}`;
-		//</editor-fold>
-	};
-
-	getImage = (data) => {
-		//<editor-fold defaultstate="collapsed" desc="getImage">
-		const thumbnail = get(data, 'image.thumbnail', '');
-		const image = get(data, 'image.image', '');
-		return { thumbnail, image };
+		return `Produkta izmers #${id}`;
 		//</editor-fold>
 	};
 
@@ -130,7 +121,6 @@ class BlogEntryPopup extends Component {
 					action: 'get',
 				}}
 				getTitle={this.getTitle}
-				getImage={this.getImage}
 				getRows={this.getRows}
 				level={settings.level}
 				verticalAlign={settings.verticalAlign}
@@ -164,16 +154,6 @@ class BlogEntryPopup extends Component {
 				name: 'pencil',
 			},
 			content: <Edit {...itemData} />,
-		});
-
-		items.push({
-			name: 'media',
-			title: 'Media',
-			icon: {
-				provider: 'icomoon',
-				name: 'image2',
-			},
-			content: <Media {...itemData} />,
 		});
 
 		items.push({
@@ -212,8 +192,8 @@ class BlogEntryPopup extends Component {
 	}
 }
 
-BlogEntryPopup.propTypes = propTypes;
+ProductSizePopup.propTypes = propTypes;
 
-BlogEntryPopup.defaultProps = defaultProps;
+ProductSizePopup.defaultProps = defaultProps;
 
-export default BlogEntryPopup;
+export default ProductSizePopup;

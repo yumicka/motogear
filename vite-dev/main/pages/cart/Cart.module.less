@@ -26,7 +26,7 @@
     gap: 20px;
     
     .icon{
-      font-size: 100px;
+        font-size: 100px;
     }
 
   .text{
@@ -38,13 +38,13 @@
     gap: 20px;
     
     h2{
-      font-size: 40px;
-      font-weight: bold;
-      text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
     }
 
     p{
-      font-size: 20px;
+        font-size: 20px;
     }
   }
 
@@ -56,7 +56,8 @@
     grid-template-columns: 2fr 1fr;
     gap: 30px;
 
-    @media (max-width: 768px) {
+
+    @media (max-width: 995px) {
         grid-template-columns: 1fr;
     }
 }
@@ -76,21 +77,25 @@
     min-width: 0; 
 
     @media (max-width: 768px) {
-        gap: 15px;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        grid-template-areas:
+        "image info"
+        "change change";
+        gap: 12px;
+        align-items: start;
     }
 
     img{
         width: 150px;
         height: 150px;
         object-fit: cover;
+
         @media (max-width: 768px) {
             width: 100px;
             height: 100px;
         }
     }
-
-
-
 }
 
 .product_info{
@@ -98,10 +103,13 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    flex: 1;             // Занимает всю оставшуюся ширину
+    flex: 1;
     min-width: 0; 
+    padding-bottom: 15px;
 
     @media (max-width: 768px) {
+        grid-area: info;
+        padding-bottom: 0;
         gap: 10px;
     }
 
@@ -115,6 +123,10 @@
         @media (max-width: 400px) {
             font-size: 12px;
         }
+    }
+
+    h4{
+        color: #666;
     }
 }
 
@@ -148,6 +160,7 @@
 .total_cart_price{
     color: #000;
     font-weight: bold;
+    font-size: 18px;
     @media (max-width: 768px) {
         font-size: 14px;
     }
@@ -157,26 +170,24 @@
     }
 }
 
-.edit_btn, .delete_btn{
-    padding: 0 5px;
-    cursor: pointer;
-    transition: .2s;
-
-    :hover{
-        color: #8f8f8f;
-        transition: .2s;
-    }
-}
-
 .total{
     display: flex;
     justify-content: flex-start;
+    align-self: start;  
     gap: 20px;
     flex-direction: column;
     padding: 20px 25px;
     border: solid .1px #ebebeb;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.048);
+
+    @media (max-width: 992px) {
+        order: -1;
+    }
+
+    @media (max-width: 768px) {
+        padding: 16px;
+    }
 
     .total_label{
         font-size: 20px;
@@ -230,6 +241,78 @@
 
 }
 
+/* --------- Change block ------------- */
+.change{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+
+    @media (max-width: 768px) {
+        grid-area: change;
+        width: 100%;
+        justify-content: space-between;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f2f2f2;
+        
+    }
+}
+
+.edit_block{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-radius: 20px;
+    padding: 5px 10px;
+    border: solid .1px #ebebeb;
+
+    @media (max-width: 768px) {
+        gap: 12px;
+    }
+   
+    :hover{
+        color: #8f8f8f;
+        transition: .2s;
+    }
+}
+
+
+
+.edit_btn, .delete_btn{
+    padding: 0 5px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+/* -------- Toast Notification -------- */
+
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2bbc68;
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  z-index: 1000;
+  animation: slideDown 0.3s ease, fadeOut 0.3s ease 1.7s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
+
+
 /* --------- Recomendations ------------- */
 
 .recomendationds_title {
@@ -254,4 +337,3 @@
         background: #dcdcdc;
     }
 }
-

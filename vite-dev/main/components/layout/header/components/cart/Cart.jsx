@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 // import uiStore from 'core/containers/ui/uiStore.js';
 import { useSelector } from 'react-redux';
 import Cart_svg from './components/Cart_svg.jsx';

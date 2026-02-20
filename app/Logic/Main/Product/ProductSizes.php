@@ -2,35 +2,29 @@
 namespace App\Logic\Main\Product;
 
 use DB;
-use App\Logic\Core\ContentTranslations;
-use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
-class Specifications
+class ProductSizes
 {
     
      /**
      * Get query
      *
      * @access public           
-     * @param  string $lang - language
      * @return object
      */
-    public static function getQuery($lang) {
+    public static function getQuery() {
     //<editor-fold defaultstate="collapsed" desc="getQuery"> 
-        $query = DB::connection('main')->table('specifications as s');
+        $query = DB::connection('main')->table('product_sizes as s');
         
         $columns = [
             's.id' => 'id',
-            "$lang.title" => 'title',
-            "$lang.content" => 'content',
+            's.product_id',
         ];
         
         foreach ($columns as $column => $alias) {
             $query->addSelect(DB::raw("{$column} as {$alias}"));
         }
-        
-        ContentTranslations::leftJoin($query, [$lang], 's.id', ContentTranslationsTypes::specifications->value);
-        
+
         return $query;
     //</editor-fold>
     }
@@ -46,8 +40,7 @@ class Specifications
     //<editor-fold defaultstate="collapsed" desc="formatResponseData">
         return [
             'id' => $item->id,
-            'title' => $item->title,
-            'content' => $item->content,
+            'product_size' => $item->product_size,
         ];
     //</editor-fold>
     }
@@ -57,12 +50,11 @@ class Specifications
      *
      * @access public           
      * @param  object $item - item
-     * @param  string $lang - lang
      * @return array
      */
-    public static function get($lang) {
+    public static function get() {
     //<editor-fold defaultstate="collapsed" desc="get">
-        $query = self::getQuery($lang);
+        $query = self::getQuery();
         
         $items = $query->get();
                 
@@ -77,12 +69,11 @@ class Specifications
      *
      * @access public           
      * @param  object $item - item
-     * @param  string $lang - lang
      * @return array
      */
-    public static function getById($lang, $product_id) {
+    public static function getById($product_id) {
     //<editor-fold defaultstate="collapsed" desc="get">
-        $query = self::getQuery($lang);
+        $query = self::getQuery();
         $query->where('s.product_id', $product_id);
         
         $items = $query->get();

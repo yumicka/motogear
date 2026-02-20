@@ -91,7 +91,28 @@ class Main
     $table->setPrimaryKey(['id']);
     //</editor-fold>
 
+    /*
+    |--------------------------------------------------------------------------
+    |                             product_sizes
+    |--------------------------------------------------------------------------|
+    */ 
+    //<editor-fold defaultstate="collapsed" desc="product_sizes"> 
+    $table = $schema->createTable('product_sizes');
+    $table->addOption('comment', 'Product sizes');
+    $table->addOption('collate', 'utf8mb4_unicode_ci');
+    $table->addOption('engine', 'InnoDB'); 
+    $table->addOption('row_format', 'DYNAMIC');
+    $table->addOption('charset', 'utf8mb4');
 
+    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
+    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
+    $table->addColumn('product_id', 'integer', ['unsigned' => true, 'notnull' => true, 'comment' => 'Product ID']);
+    $table->addColumn('product_size', 'integer', ['unsigned' => true, 'notnull' => true, 'comment' => 'Product size']);
+
+    $table->setPrimaryKey(['id']);
+    //</editor-fold>
+    
     /*
     |--------------------------------------------------------------------------
     |                             product_categories

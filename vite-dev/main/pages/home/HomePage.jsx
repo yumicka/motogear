@@ -14,6 +14,7 @@ import { productsNow } from './components/top_sellers/data/productsNow';
 import { productsGear } from './components/top_sellers/data/productsGear';
 
 import Brands from './components/brands/Brands';
+import CartRecomendations from '../cart/components/CartRecomendations';
 const propTypes = {};
 const defaultProps = {};
 
@@ -41,11 +42,7 @@ const HomePage = () => {
 							Top Sellers <span>right now</span>!
 						</h2>
 					}>
-					<ProductsCarousel
-						products={productsNow}
-						scrollStep={400}
-						variant="now"
-					/>
+					<CartRecomendations />
 				</TopSellers>
 			</section>
 

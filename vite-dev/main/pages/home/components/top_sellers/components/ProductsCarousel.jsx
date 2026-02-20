@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // @ts-nocheck
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Content.module.less';
@@ -8,6 +8,31 @@ import Image from 'ui/media/image';
 import Link from 'core/navigation/link';
 
 const ProductsCarousel = ({ products, scrollStep = 500, variant = 'now' }) => {
+	const [loading, setLoading] = useState(true);
+	const [recomendationds, setRecomendationds] = useState([]);
+
+	useEffect(() => {
+		setLoading(true);
+
+		remoteRequest({
+			url: 'products/search',
+			data: {
+				filters: {
+					top_seller: 1,
+				},
+				results_per_page: 10,
+			},
+			onSuccess: (response) => {
+				setLoading(false);
+				setRecomendationds(response.rows || []);
+			},
+			onError: () => {
+				setLoading(false);
+				setRecomendationds([]);
+			},
+		});
+	}, []);
+
 	const trackRef = useRef(null);
 
 	const scroll = (dir) => {
@@ -33,7 +58,6 @@ const ProductsCarousel = ({ products, scrollStep = 500, variant = 'now' }) => {
 	};
 
 	const ProductImage = ({ src, alt }) => {
-
 		if (variant === 'gear') return <Image src={src} alt={alt} />;
 		return <Image src={src} alt={alt} />;
 	};

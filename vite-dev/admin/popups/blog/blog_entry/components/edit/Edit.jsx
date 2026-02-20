@@ -16,6 +16,7 @@ import LangsTab from 'ui/common/langs_tab';
 import TextArea from 'ui/inputs/textarea';
 import { forEach, get, replace } from 'lodash-es';
 import SpecificationsAddForm from 'admin/pages/product/specifications/SpecificationsAddForm';
+import ProductSizePopup from 'admin/popups/product/product_size/ProductSizePopup';
 import Select from 'ui/inputs/select';
 
 const propTypes = {
@@ -48,6 +49,7 @@ const uiProps = (ownProps) => {
 class Edit extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			is_discounted: false,
 		};
@@ -107,8 +109,14 @@ class Edit extends Component {
 	renderFields = () => {
 		//<editor-fold defaultstate="collapsed" desc="renderFields">
 		const { item } = this.props;
-		const { categories, active, pinned, product_price, product_discount } =
-			item;
+		const {
+			categories,
+			active,
+			top_seller,
+			pinned,
+			product_price,
+			product_discount,
+		} = item;
 
 		return (
 			<Fragment>
@@ -138,6 +146,13 @@ class Edit extends Component {
 							component={Checkbox}
 							value={active}
 						/>
+
+						<Field
+							label="Populāra prece"
+							name="top_seller"
+							component={Checkbox}
+							value={top_seller}
+						/>
 						<Field
 							label="Pin"
 							name="pinned"
@@ -163,33 +178,20 @@ class Edit extends Component {
 							}}
 						/>
 
-						<div>
-							<Checkbox
-								value={this.state.is_discounted}
-								onChange={(val) => {
-									const checked = val?.target ? val.target.checked : val;
-									this.setState({ is_discounted: !!checked });
-								}}
-								helpText="Iespējot atlaidi šim produktam"
-							/>
-						</div>
-
-						{this.state.is_discounted && (
-							<Field
-								label="Atlaides % (1-100)"
-								name="product_discount"
-								component={Input}
-								value={product_discount}
-								componentProps={{
-									number: {
-										allowNegative: false,
-										allowDecimal: false,
-									},
-									max: 100,
-									helpText: 'Atlaides procents',
-								}}
-							/>
-						)}
+						<Field
+							label="Vai ir atlaide? Noradīt % (1-100)"
+							name="product_discount"
+							component={Input}
+							value={product_discount}
+							componentProps={{
+								number: {
+									allowNegative: false,
+									allowDecimal: false,
+								},
+								max: 100,
+								helpText: 'Atlaides procents',
+							}}
+						/>
 					</div>
 				</div>
 			</Fragment>
@@ -230,7 +232,9 @@ class Edit extends Component {
 
 				<div className={styles.section}>
 					<h3 className={styles.sectionTitle}>Produkta meta</h3>
-					<p className={styles.sectionDescription}>Meta title un meta apraksts</p>
+					<p className={styles.sectionDescription}>
+						Meta title un meta apraksts
+					</p>
 					<div className={styles.detailsRow}>
 						<Field
 							label={'Meta tituls'}
@@ -269,6 +273,7 @@ class Edit extends Component {
 				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
 				<SpecificationsAddForm p_id={id} />
+				<ProductSizePopup productId={id} />
 			</Form>
 		);
 	}

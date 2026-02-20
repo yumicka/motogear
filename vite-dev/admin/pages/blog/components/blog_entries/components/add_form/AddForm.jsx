@@ -14,6 +14,7 @@ import LangsTab from 'ui/common/langs_tab';
 import TextArea from 'ui/inputs/textarea';
 import { forEach, replace } from 'lodash-es';
 import Select from 'ui/inputs/select';
+import styles from './AddForm.module.less';
 
 const propTypes = {
 	popupName: PropTypes.string.isRequired,
@@ -69,44 +70,64 @@ class AddForm extends Component {
 
 		return (
 			<Fragment>
-				<Field
-					label={'Produkta kategorija'}
-					name={'categories'}
-					component={Select}
-					componentProps={{
-						multi: true,
-						optionsUrl: 'administration/blog/categories/actions',
-						valueKey: 'id',
-						searchable: true,
-						labelKey: 'title',
-						extraData: { action: 'get_options' },
-					}}
-				/>
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Pamata informācija</h3>
+					<p className={styles.sectionDescription}>
+						Produkta kategorijas un statuss
+					</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label={'Produkta kategorija'}
+							name={'categories'}
+							component={Select}
+							componentProps={{
+								multi: true,
+								optionsUrl: 'administration/blog/categories/actions',
+								valueKey: 'id',
+								searchable: true,
+								labelKey: 'title',
+								extraData: { action: 'get_options' },
+							}}
+						/>
 
-				<Field label="Aktīvs" name="active" component={Checkbox} value="1" />
-				<Field label="Pin" name="pinned" component={Checkbox} />
-				<Field
-					label="Produkta cena"
-					name="product_price"
-					component={Input}
-					componentProps={{
-						type: 'number',
-						min: 0,
-						step: '0.01',
-					}}
-				/>
+						<Field
+							label="Aktīvs"
+							name="active"
+							component={Checkbox}
+							value="1"
+						/>
+						<Field label="Pin" name="pinned" component={Checkbox} />
+					</div>
+				</div>
 
-				<Field
-					label="Produkta atlaide"
-					name="product_discount"
-					component={Input}
-					componentProps={{
-						type: 'number',
-						min: 0,
-						max: 100,
-						step: 1,
-					}}
-				/>
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Produkta cena</h3>
+					<p className={styles.sectionDescription}>Produkta cena un atlaide</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label="Produkta cena"
+							name="product_price"
+							component={Input}
+							componentProps={{
+								type: 'number',
+								min: 0,
+								step: '0.01',
+							}}
+						/>
+
+						<Field
+							label="Produkta atlaide"
+							name="product_discount"
+							component={Input}
+							componentProps={{
+								type: 'number',
+								min: 0,
+								max: 100,
+								step: 1,
+							}}
+						/>
+					</div>
+				</div>
 			</Fragment>
 		);
 		//</editor-fold>
@@ -116,28 +137,44 @@ class AddForm extends Component {
 		//<editor-fold defaultstate="collapsed" desc="renderLangTab">
 		return (
 			<Fragment>
-				<Field
-					label={'Produkta nosaukums'}
-					name={`${lang}_title`}
-					component={Input}
-				/>
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Produkta saturs</h3>
+					<p className={styles.sectionDescription}>
+						Produkta nosaukums un apraksts
+					</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label={'Produkta nosaukums'}
+							name={`${lang}_title`}
+							component={Input}
+						/>
 
-				<Field
-					label={'Apraksts'}
-					name={`${lang}_content`}
-					component={CKEditor}
-				/>
+						<Field
+							label={'Apraksts'}
+							name={`${lang}_content`}
+							component={CKEditor}
+						/>
+					</div>
+				</div>
 
-				<Field
-					label={'Meta tituls'}
-					name={`${lang}_meta_title`}
-					component={Input}
-				/>
-				<Field
-					label={'Meta apraksts'}
-					name={`${lang}_meta_description`}
-					component={TextArea}
-				/>
+				<div className={styles.section}>
+					<h3 className={styles.sectionTitle}>Produkta meta</h3>
+					<p className={styles.sectionDescription}>
+						Meta title un meta apraksts
+					</p>
+					<div className={styles.detailsRow}>
+						<Field
+							label={'Meta tituls'}
+							name={`${lang}_meta_title`}
+							component={Input}
+						/>
+						<Field
+							label={'Meta apraksts'}
+							name={`${lang}_meta_description`}
+							component={TextArea}
+						/>
+					</div>
+				</div>
 			</Fragment>
 		);
 		//</editor-fold>
@@ -151,7 +188,6 @@ class AddForm extends Component {
 				action={action}
 				extraData={{
 					action: 'create',
-					
 				}}
 				refresh={true}
 				onBeforeSubmit={this.onBeforeSubmit}
@@ -161,7 +197,6 @@ class AddForm extends Component {
 				}}>
 				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
-
 			</Form>
 		);
 	}

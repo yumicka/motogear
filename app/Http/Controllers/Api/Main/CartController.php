@@ -142,12 +142,4 @@ class CartController extends Controller
         return Response::parse($request, $actions);  
     //</editor-fold>             
     }
-    
-    public function amount() {
-        return Response::success([
-            'amount' => Cart::amount()
-        ]);
-    }
-
- 
 }

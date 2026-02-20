@@ -1,16 +1,41 @@
 /* eslint-disable react/prop-types */
 // @ts-nocheck
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ThreeDots } from 'react-loader-spinner';
 import styles from './CartRecomendations.module.less';
 import Link from 'core/navigation/link';
 import Image from 'ui/media/image';
 import getMainUrl from 'helpers/getMainUrl';
 
-const CartRecomendations = ({products, scrollStep = 500,variant = 'now',}) => {
+const CartRecomendations = ({ scrollStep = 500, variant = 'now' }) => {
+	const [loading, setLoading] = useState(true);
+	const [recomendationds, setRecomendationds] = useState([]);
+
+	useEffect(() => {
+		setLoading(true);
+
+		remoteRequest({
+			url: 'products/search',
+			data: {
+				filters: {
+					top_seller: 1,
+				},
+				results_per_page: 10,
+			},
+			onSuccess: (response) => {
+				setLoading(false);
+				setRecomendationds(response.rows || []);
+			},
+			onError: () => {
+				setLoading(false);
+				setRecomendationds([]);
+			},
+		});
+	}, []);
 	// eslint-disable-next-line no-console
-	console.log('CartRecomendations products:', products);
+	console.log('CartRecomendations products:', recomendationds);
 	const trackRef = useRef(null);
 
 	const scroll = (dir) => {
@@ -43,6 +68,13 @@ const CartRecomendations = ({products, scrollStep = 500,variant = 'now',}) => {
 		return p * (1 - d / 100);
 	};
 
+	if (loading)
+		return (
+			<div style={{ padding: 40, display: 'flex', justifyContent: 'center' }}>
+				<ThreeDots height="80" width="80" color="#adadad" />
+			</div>
+		);
+
 	return (
 		<div className={styles.carousel}>
 			<button
@@ -55,7 +87,7 @@ const CartRecomendations = ({products, scrollStep = 500,variant = 'now',}) => {
 
 			<div className={styles.viewport}>
 				<div className={styles.galleryGrid} ref={trackRef}>
-					{products.map((p) => {
+					{recomendationds.map((p) => {
 						const priceOld = Number(p.product_price || 0);
 						const discount = Number(p.product_discount || 0);
 						const priceNow = calcDiscountPrice(priceOld, discount);
@@ -72,7 +104,12 @@ const CartRecomendations = ({products, scrollStep = 500,variant = 'now',}) => {
 								</div>
 
 								<div className={styles.price}>
-									<div className={discount > 0 ? styles.discounted_price : styles.normal_price}>
+									<div
+										className={
+											discount > 0
+												? styles.discounted_price
+												: styles.normal_price
+										}>
 										<h3>
 											<FontAwesomeIcon icon={faEuroSign} />{' '}
 											{formatPrice(priceNow)}

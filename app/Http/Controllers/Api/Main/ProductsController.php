@@ -71,7 +71,13 @@ class ProductsController extends Controller
         #
         # ========================================================================#
 
-        $filters = [];
+        $filters = [
+            'top_seller' => function($query, $value) {
+                if ((int)$value === 1) {
+                    $query->where('b.top_seller', 1);
+                }
+            },
+        ];
       
         // Filter by category
         $query = $query->when($request->has('category_id') && 
@@ -189,23 +195,6 @@ class ProductsController extends Controller
 
         return $categoryIds;
     }
-    
-//    private function getAllProducts($categoryI, $lang)
-//    {
-//        $categoryIds = $categoryId;
-//        $filtredProducts = [];
-//
-//        // Get direct children only
-//        $products = BlogEntries::get($lang);
-//
-//        foreach ($products as $p) {
-//            if($p.category === $categoryIds){
-//                $filtredProducts = array_push($p, $filtredProducts);
-//            }
-//        }
-//
-//        return $filtredProducts;
-//    }
     
     /**
     * Actions

@@ -1,24 +1,51 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import styles from './Cart.module.less';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFaceFrown, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import {
+	faChevronDown,
+	faChevronUp,
+	faFaceFrown,
+	faPen,
+	faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import Image from 'ui/media/image';
 import CartRecomendations from './components/CartRecomendations';
 import WithUi from 'hoc/store/ui';
 
-const uiProps = (ownProps) => {
-	return {
-		products: 'products',
-	}; 
-};
-
-const Cart = ({ products }) => {
+const Cart = () => {
 	// const cartAmount = useSelector((state) => state.ui?.cart?.cart_amount ?? 0);
-	const cart = useSelector((state) => state.ui?.cart);
+	const [cart, setCart] = useState(uiStore.get('cart', {}));
+	const [toast, setToast] = useState(null);
 	console.log('Cart state from Redux:', cart);
-
 	const isEmpty = !cart || cart.cart_amount === 0;
+
+	async function updateCart(action, productId, quantityType = null) {
+		const data = { action, product_id: productId };
+		if (quantityType) data.quantity_type = quantityType;
+
+		remoteRequest({
+			url: 'cart/actions',
+			data,
+			onSuccess: (res) => {
+				if (res?.cart) {
+					uiStore.set('cart', res.cart);
+					setCart(res.cart);
+
+					setToast('Cart updated successfully');
+
+					setTimeout(() => {
+						setToast(null);
+					}, 2000);
+				}
+			},
+			onError: (err) => {
+				console.error('Cart action failed', err);
+			},
+		});
+	}
+
+	const handleRemove = (productId) => updateCart('remove', productId);
 
 	return (
 		<div className={styles.wrapper}>
@@ -40,9 +67,11 @@ const Cart = ({ products }) => {
 								<div key={item.id} className={styles.product_item}>
 									<Image src={item.image?.image} alt={item.title} />
 									<div className={styles.product_info}>
-										<h3>{item.title}</h3>
+										<div className={styles.title_size}>
+											<h3>{item.title}</h3>
+											<h4>Size: M</h4>
+										</div>
 										<p>
-											{item.quantity} X{' '}
 											{item.product_discount > 0 ? (
 												<>
 													<span className={styles.discount_price}>
@@ -67,14 +96,31 @@ const Cart = ({ products }) => {
 									</div>
 
 									<div className={styles.change}>
-										<button
-											className={styles.edit_btn}
-											aria-label={`Edit ${item.title}`}>
-											<FontAwesomeIcon icon={faPen} />
-										</button>
+										<div className={styles.edit_block}>
+											<button
+												className={styles.edit_btn}
+												name="increase"
+												aria-label={`Edit ${item.title}`}
+												onClick={() =>
+													updateCart('change_quantity', item.id, 'increase')
+												}>
+												<FontAwesomeIcon icon={faChevronUp} />
+											</button>
+											{item.quantity}
+											<button
+												className={styles.edit_btn}
+												name="decrease"
+												aria-label={`Edit ${item.title}`}
+												onClick={() =>
+													updateCart('change_quantity', item.id, 'decrease')
+												}>
+												<FontAwesomeIcon icon={faChevronDown} />
+											</button>
+										</div>
 										<button
 											className={styles.delete_btn}
-											aria-label={`Remove ${item.title} from cart`}>
+											aria-label={`Remove ${item.title} from cart`}
+											onClick={() => handleRemove(item.id)}>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
 									</div>
@@ -109,12 +155,14 @@ const Cart = ({ products }) => {
 						<h2>Looking for something more?</h2>
 					</div>
 					<div className={styles.recommended_products}>
-						<CartRecomendations products={products} />
+						<CartRecomendations />
 					</div>
 				</section>
+
+				{toast && <div className={styles.toast}>{toast}</div>}
 			</div>
 		</div>
 	);
 };
 
-export default WithUi(uiProps)(Cart);
+export default Cart;

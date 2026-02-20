@@ -29,7 +29,7 @@ Route::group(['prefix' => 'settings'], function () {
 
 # ========================================================================#
 #
-#                           Blogs
+#                           Products
 #    
 # ========================================================================#    
 
@@ -47,6 +47,11 @@ Route::group(['namespace' => 'BlogEntries', 'prefix' => 'blog'], function () {
     Route::group(['prefix' => 'specifications'], function () {
         Route::post('search', 'SpecificationsController@search');
         Route::post('actions', 'SpecificationsController@actions');
+    });
+    
+    Route::group(['prefix' => 'product_sizes'], function () {
+        Route::post('search', 'ProductSizeController@search');
+        Route::post('actions', 'ProductSizeController@actions');
     });
 
 

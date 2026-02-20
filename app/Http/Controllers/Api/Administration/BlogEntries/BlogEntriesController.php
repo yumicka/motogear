@@ -39,6 +39,7 @@ class BlogEntriesController extends Controller
     //<editor-fold defaultstate="collapsed" desc="search">
         $query = DB::connection('main')->table('products as p');
 
+        $query->where('p.active', 1);
         //columns
         $columns = [
             'p.id' => 'id',
@@ -48,6 +49,7 @@ class BlogEntriesController extends Controller
             'p.product_price' => 'product_price',
             'p.product_discount' => 'product_discount',
             'p.active' => 'active',
+            'p.top_seller' => 'top_seller',
             'p.pinned' => 'pinned',
             'p.image_id' => 'image',
             'p.categories' => 'categories',
@@ -69,7 +71,13 @@ class BlogEntriesController extends Controller
         #
         # ========================================================================#
 
-        $filters = [];
+        $filters = [
+            'top_seller' => function($query, $value) {
+                if ((int)$value === 1) {
+                    $query->where('p.top_seller', 1);
+                }
+            },
+        ];
         
         $options = [
             'results_per_page' => 10,
@@ -150,6 +158,7 @@ class BlogEntriesController extends Controller
                     $item->pinned = $request->pinned;
                     $item->product_price = $request->product_price;
                     $item->product_discount = $request->product_discount;
+                    $item->top_seller = $request->top_seller;
                     
                     $item->save();
 
@@ -207,6 +216,7 @@ class BlogEntriesController extends Controller
                     $item->product_discount = $request->product_discount;
                     
                     $item->active = $request->active;
+                    $item->top_seller = $request->top_seller;
                     $item->pinned = $request->pinned;
                     
                     $item->save();
