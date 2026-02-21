@@ -76,6 +76,17 @@ popups[SpecificationsPopupSettings.name] = {
 	settings: SpecificationsPopupSettings,
 };
 
+/*
+ * ProductSizePopup
+ */
+import ProductSizePopup, {
+	settings as ProductSizePopupSettings,
+} from 'admin/popups/product/product_size';
+popups[ProductSizePopupSettings.name] = {
+	popup: ProductSizePopup,
+	settings: ProductSizePopupSettings,
+};
+
 // /*
 //  * CMSPopup
 //  */

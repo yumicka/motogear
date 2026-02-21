@@ -32,10 +32,18 @@
 .categories{
     display: flex;
     flex-direction: row;
-
+    
+    @media (max-width: 768px) {
+       flex-wrap: wrap;
+        gap: 4px;
+        line-height: 1.4;
+    }
 }
 
 .section{
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
     p{
         padding: 0 2px;
     }
@@ -43,5 +51,15 @@
     &:hover{
         color: #444444;
         cursor: pointer;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories {
+        font-size: 14px;
+    }
+
+    .section p {
+        white-space: normal;
     }
 }

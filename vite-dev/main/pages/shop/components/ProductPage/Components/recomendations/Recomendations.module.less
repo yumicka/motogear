@@ -21,6 +21,10 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 20px;
+
+    @media (max-width: 995px) {
+        flex-direction: column;
+    }
 }
 
 .container_box{
@@ -31,12 +35,24 @@
     gap: 24px;
     height: 240px;
     width: 550px;
+
+    @media (max-width: 995px) {
+        flex-direction: column;
+        height: auto;
+        width: auto;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #f2f2f2;
+    }
 }
 
 .images{
     width: 240px;
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
+
+    @media (max-width: 995px) {
+        width: 100%;
+    }
 }
 
 .images img{
@@ -72,6 +88,12 @@
         font-weight: bold;
 
     }
+}
+
+.price{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;  // расстояние между ценой и размером
 }
 
 .discounted_price{

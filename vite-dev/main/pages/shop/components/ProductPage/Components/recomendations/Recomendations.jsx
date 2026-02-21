@@ -8,7 +8,10 @@ import Link from 'core/navigation/link';
 
 const formatPrice = (n) => Number(n).toFixed(2);
 
-const Recomendations = ({ product }) => {
+const Recomendations = ({ product, product_sizes }) => {
+	console.log('Recomendations product_sizes', product_sizes);
+	// product_sizes.map((s) => s.product_size);
+	const [size, setSize] = useState('');
 	const [items, setItems] = useState([]);
 
 	const helmetsCategoryId = useMemo(() => {
@@ -16,6 +19,8 @@ const Recomendations = ({ product }) => {
 			(c) => c.title?.trim().toLowerCase() === 'helmets',
 		)?.id;
 	}, [product]);
+
+	const SIZES = product_sizes;
 
 	useEffect(() => {
 		if (!helmetsCategoryId) {
@@ -45,6 +50,34 @@ const Recomendations = ({ product }) => {
 
 	if (!items.length) return null;
 
+	const addToCart = () => {
+		if (!product.id) return;
+
+		// если размер обязателен
+		if (!size) {
+			alert('Please select size');
+			return;
+		}
+
+		remoteRequest({
+			url: 'cart/actions',
+			data: {
+				action: 'add',
+				product_id: product.id,
+				quantity: 1,
+				// variant_id: ??? (если у тебя размер = вариант)
+			},
+			onSuccess: (response) => {
+				uiStore.set('cart', response.cart);
+				console.log('Product added to cart:', response.cart);
+				// тут можно обновить UI (например, открыть popup корзины)
+			},
+			onError: (err) => {
+				console.log('Add to cart error:', err);
+			},
+		});
+	};
+
 	return (
 		<div className={styles.content}>
 			<div className={styles.title}>
@@ -63,18 +96,23 @@ const Recomendations = ({ product }) => {
 						: price;
 
 					return (
-						<Link to={item.url} key={item.id} className={styles.container_box}>
-							<div className={styles.images}>
+						<div key={item.id} className={styles.container_box}>
+							<Link to={item.url} className={styles.images}>
 								<Image src={imgSrc} alt={item.title} />
-							</div>
+							</Link>
 
 							<div className={styles.discription}>
-								<div className={styles.name}>
+								<Link to={item.url} className={styles.name}>
 									<h3>{item.title}</h3>
-								</div>
+								</Link>
 
 								<div className={styles.price}>
-									<h4 className={hasDiscount ? styles.discounted_price : styles.normal_price}>
+									<h4
+										className={
+											hasDiscount
+												? styles.discounted_price
+												: styles.normal_price
+										}>
 										<FontAwesomeIcon icon={faEuroSign} />
 										{formatPrice(discountedPrice)}
 									</h4>
@@ -84,11 +122,30 @@ const Recomendations = ({ product }) => {
 											<FontAwesomeIcon icon={faEuroSign} /> {formatPrice(price)}
 										</p>
 									)}
+
+									<div className={styles.size_block}>
+										<select
+											className={styles.size_select}
+											value={size}
+											onChange={(e) => setSize(e.target.value)}>
+											<option value="" disabled>
+												Select size
+											</option>
+
+											{SIZES.map((s) => (
+												<option key={s} value={s}>
+													{s}
+												</option>
+											))}
+										</select>
+									</div>
 								</div>
 
-								<button className={styles.btn}>Add to cart</button>
+								<button className={styles.btn} onClick={addToCart}>
+									Add to cart
+								</button>
 							</div>
-						</Link>
+						</div>
 					);
 				})}
 			</div>

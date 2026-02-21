@@ -10,8 +10,8 @@ import { get, has } from 'lodash-es';
 
 const containerName = 'ProductSizeAdministration';
 const popupName = 'product_size';
-const tableName = 'dt_product_size';
-const url = 'administration/blog/product_size/actions';
+const tableName = 'dt_product_sizes';
+const url = 'administration/blog/product_sizes/actions';
 const tabsUrlKey = 'tab';
 
 const doNotHideOnOverlayClickTabs = ['edit'];

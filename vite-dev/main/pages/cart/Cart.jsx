@@ -6,12 +6,10 @@ import {
 	faChevronDown,
 	faChevronUp,
 	faFaceFrown,
-	faPen,
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import Image from 'ui/media/image';
 import CartRecomendations from './components/CartRecomendations';
-import WithUi from 'hoc/store/ui';
 
 const Cart = () => {
 	// const cartAmount = useSelector((state) => state.ui?.cart?.cart_amount ?? 0);
@@ -20,8 +18,8 @@ const Cart = () => {
 	console.log('Cart state from Redux:', cart);
 	const isEmpty = !cart || cart.cart_amount === 0;
 
-	async function updateCart(action, productId, quantityType = null) {
-		const data = { action, product_id: productId };
+	async function updateCart(action, productId, variantId, quantityType = null) {
+		const data = { action, product_id: productId, variant_id: variantId };
 		if (quantityType) data.quantity_type = quantityType;
 
 		remoteRequest({
@@ -31,21 +29,16 @@ const Cart = () => {
 				if (res?.cart) {
 					uiStore.set('cart', res.cart);
 					setCart(res.cart);
-
 					setToast('Cart updated successfully');
-
-					setTimeout(() => {
-						setToast(null);
-					}, 2000);
+					setTimeout(() => setToast(null), 2000);
 				}
 			},
-			onError: (err) => {
-				console.error('Cart action failed', err);
-			},
+			onError: (err) => console.error('Cart action failed', err),
 		});
 	}
 
-	const handleRemove = (productId) => updateCart('remove', productId);
+	const handleRemove = (productId, variantId) =>
+		updateCart('remove', productId, variantId);
 
 	return (
 		<div className={styles.wrapper}>
@@ -69,7 +62,11 @@ const Cart = () => {
 									<div className={styles.product_info}>
 										<div className={styles.title_size}>
 											<h3>{item.title}</h3>
-											<h4>Size: M</h4>
+											{item.selected_variant?.product_size && (
+												<h4>
+													Size: {item.selected_variant?.product_size || 'N/A'}
+												</h4>
+											)}
 										</div>
 										<p>
 											{item.product_discount > 0 ? (
@@ -98,21 +95,25 @@ const Cart = () => {
 									<div className={styles.change}>
 										<div className={styles.edit_block}>
 											<button
-												className={styles.edit_btn}
-												name="increase"
-												aria-label={`Edit ${item.title}`}
 												onClick={() =>
-													updateCart('change_quantity', item.id, 'increase')
+													updateCart(
+														'change_quantity',
+														item.id,
+														item.selected_variant?.id,
+														'increase',
+													)
 												}>
 												<FontAwesomeIcon icon={faChevronUp} />
 											</button>
 											{item.quantity}
 											<button
-												className={styles.edit_btn}
-												name="decrease"
-												aria-label={`Edit ${item.title}`}
 												onClick={() =>
-													updateCart('change_quantity', item.id, 'decrease')
+													updateCart(
+														'change_quantity',
+														item.id,
+														item.selected_variant?.id,
+														'decrease',
+													)
 												}>
 												<FontAwesomeIcon icon={faChevronDown} />
 											</button>
@@ -120,7 +121,7 @@ const Cart = () => {
 										<button
 											className={styles.delete_btn}
 											aria-label={`Remove ${item.title} from cart`}
-											onClick={() => handleRemove(item.id)}>
+											onClick={() => handleRemove(item.id, item.selected_variant?.id)}>
 											<FontAwesomeIcon icon={faTrash} />
 										</button>
 									</div>

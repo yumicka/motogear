@@ -108,7 +108,7 @@ class Main
     $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
     $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
     $table->addColumn('product_id', 'integer', ['unsigned' => true, 'notnull' => true, 'comment' => 'Product ID']);
-    $table->addColumn('product_size', 'integer', ['unsigned' => true, 'notnull' => true, 'comment' => 'Product size']);
+    $table->addColumn('product_size', 'string', ['unsigned' => true, 'notnull' => true, 'comment' => 'Product size']);
 
     $table->setPrimaryKey(['id']);
     //</editor-fold>

@@ -34,7 +34,7 @@ class Cart
         $shippingPrice = 0; // Placeholder
 
         foreach ($cart as $item) {
-            $product = Product::find($item['id']);
+            $product = Product::find($item['product_id']);
 
             if ($product) {
                 $price = $product->product_price;
@@ -68,7 +68,7 @@ class Cart
         $productSummary = [];
 
         foreach ($cart as $item) {
-            $product = ProductEntries::getById('lv', $item['id']); // Assuming 'lv' is the language
+            $product = ProductEntries::getById('lv', $item['product_id']); // Assuming 'lv' is the language
 
             if ($product) {
                 $productDiscount = $product['product_discount'] != 0;
@@ -85,7 +85,7 @@ class Cart
                 // Add quantity and total to product data
                 $product['quantity'] = $quantity;
                 $product['total'] = number_format($productTotal, 2, '.', '');
-//                $product['selected_variant'] = \App\Logic\Main\Products\Variants::getOne('lv', $item['variant_id']);
+                $product['selected_variant'] = \App\Logic\Main\Product\ProductSizes::getBySizeId($item['variant_id']);
                 
                 $productSummary[] = $product;
             }
@@ -106,9 +106,5 @@ class Cart
             'product_summary' => $productSummary,
         ];
     //</editor-fold>
-    }
-    
-    public static function amount() {
-        return self::getCartAmount();
     }
 }

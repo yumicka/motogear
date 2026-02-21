@@ -4,7 +4,7 @@ namespace App\Models\Main;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductSizes extends Model
+class ProductSize extends Model
 {
     /**
      * Database connection.

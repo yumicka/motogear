@@ -401,7 +401,7 @@ class Pages
         $state['products'] = Product\ProductEntries::get($lang);
         $state['product'] = $product;
         $state['specifications'] = Product\Specifications::getById($lang, $product_id);
-
+        $state['product_sizes'] = Product\ProductSizes::getById($product_id);
 
         $state['Menu'] = ['current' => 'shop'];
         $state['Page'] = [];

@@ -15,11 +15,12 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import Image from 'ui/media/image';
 import { useState } from 'react';
 
-const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
+const ProductWindow = ({ product, product_sizes }) => {
+	// const SIZES = product_sizes.map((s) => s.product_size);
+	const SIZES = product_sizes;
 
-const ProductWindow = ({ product }) => {
-	console.log(product);
 	const [size, setSize] = useState('');
+	const [sizeError, setSizeError] = useState(false);
 	const [quantity, setQuantity] = useState(1);
 	const [adding, setAdding] = useState(false);
 	// const { id } = useParams();
@@ -49,12 +50,13 @@ const ProductWindow = ({ product }) => {
 		if (!productId) return;
 
 		// если размер обязателен
-		if (!size) {
-			alert('Please select size');
+		if (SIZES.length > 0 && !size) {
+			setSizeError(true);
 			return;
 		}
 
 		setAdding(true);
+		setSizeError(false);
 
 		remoteRequest({
 			url: 'cart/actions',
@@ -62,7 +64,7 @@ const ProductWindow = ({ product }) => {
 				action: 'add',
 				product_id: productId,
 				quantity: quantity,
-				// variant_id: ??? (если у тебя размер = вариант)
+				variant_id: size,
 			},
 			onSuccess: (response) => {
 				setAdding(false);
@@ -156,22 +158,29 @@ const ProductWindow = ({ product }) => {
 					</div>
 				)}
 
-				<div className={styles.size_block}>
-					<select
-						className={styles.size_select}
-						value={size}
-						onChange={(e) => setSize(e.target.value)}>
-						<option value="" disabled>
-							Select size
-						</option>
-
-						{SIZES.map((s) => (
-							<option key={s} value={s}>
-								{s}
+				{SIZES.length > 0 && (
+					<div className={styles.size_block}>
+						<select
+							className={`${styles.size_select} ${sizeError ? styles.error : ''}`}
+							value={size}
+							onChange={(e) => {
+								setSize(e.target.value);
+								setSizeError(false); // убираем красную рамку при выборе
+							}}
+							onFocus={() => setSizeError(false)} // убираем красную рамку при фокусе
+						>
+							<option value="" disabled>
+								Select size
 							</option>
-						))}
-					</select>
-				</div>
+
+							{SIZES.map((s) => (
+								<option key={s.id} value={s.id}>
+									{s.product_size}
+								</option>
+							))}
+						</select>
+					</div>
+				)}
 
 				<button className={styles.btn} onClick={addToCart} disabled={adding}>
 					Add to cart

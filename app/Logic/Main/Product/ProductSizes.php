@@ -18,7 +18,8 @@ class ProductSizes
         
         $columns = [
             's.id' => 'id',
-            's.product_id',
+            's.product_id' => 'product_id',
+            's.product_size' => 'product_size',
         ];
         
         foreach ($columns as $column => $alias) {
@@ -74,7 +75,7 @@ class ProductSizes
     public static function getById($product_id) {
     //<editor-fold defaultstate="collapsed" desc="get">
         $query = self::getQuery();
-        $query->where('s.product_id', $product_id);
+        $query->where('product_id', $product_id);
         
         $items = $query->get();
                 
@@ -82,5 +83,14 @@ class ProductSizes
             return self::formatResponseData($item);
         })->all();   
     //</editor-fold>
+    }
+    
+    public static function getBySizeId($size_id) {
+        $query = self::getQuery();
+        $query->where('s.id', $size_id);
+
+        $item = $query->first();
+
+        return $item ? self::formatResponseData($item) : null;
     }
 }

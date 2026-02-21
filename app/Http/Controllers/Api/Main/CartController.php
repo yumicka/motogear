@@ -35,74 +35,62 @@ class CartController extends Controller
         $actions = [
 
             //add
-            'add' => [        
+            'add' => [
                 'rules' => [
-                   'product_id' => 'required|integer',
-                   'quantity' => 'required|integer',
+                    'product_id' => 'required|integer',
+                    'variant_id' => 'required|integer',
+                    'quantity' => 'required|integer',
                 ],
-                'action' => function($request)  {
-                //<editor-fold defaultstate="collapsed" desc="add"> 
+                'action' => function($request) {
                     $product = Product::where('id', $request->product_id)->firstOrFail();
-                    
-                    $cart = session('cart',[]);            
-                    $quantity = (int)$request->quantity; // Ensure it's an integer
-                    
-                    if (isset($cart[$request->product_id])) {
-                        $newQuantity = $cart[$request->product_id]['quantity'] + $quantity;
-                        $cart[$request->product_id]['quantity'] = $newQuantity;
-                        $cart[$request->product_id]['variant_id'] = $request->variant_id;
+                    $cart = session('cart', []);
+                    $quantity = (int)$request->quantity;
+                    // создаём уникальный ключ: product_id + variant_id
+                    $cartKey = $request->product_id . '_' . $request->variant_id;
+
+                    if (isset($cart[$cartKey])) {
+                        // увеличиваем количество, если такой вариант уже есть
+                        $cart[$cartKey]['quantity'] += $quantity;
                     } else {
-                        $cart[$request->product_id] = [
-                            'id' => $request->product_id,
-                            'quantity' => $quantity,
+                        // новый товар в корзине
+                        $cart[$cartKey] = [
+                            'product_id' => $request->product_id,
                             'variant_id' => $request->variant_id,
+                            'quantity' => $quantity,
                         ];
                     }
-                    
+
                     session(['cart' => $cart]);
-                    
+
                     return Response::success([
                         'cart' => Cart::getSummary()
-                    ]);                 
-                //</editor-fold>     
+                    ]);
                 },
             ], 
                         
             'change_quantity' => [        
                 'rules' => [
                     'product_id' => 'required|integer',
-                    'quantity_type' => 'required|string|in:increase,decrease', // Must be "increase" or "decrease"
+                    'variant_id' => 'required|integer',
+                    'quantity_type' => 'required|string|in:increase,decrease',
                 ],
                 'action' => function($request)  {
-                    //<editor-fold defaultstate="collapsed" desc="Change Quantity"> 
-                    $product = Product::where('id', $request->product_id)->firstOrFail();
+                    $cart = session('cart', []);
+                    $cartKey = $request->product_id . '_' . $request->variant_id;
 
-                    $cart = session('cart', []);            
-
-                    // Get current quantity in cart
-                    $currentQuantity = isset($cart[$request->product_id]) ? (int)$cart[$request->product_id]['quantity'] : 0;
+                    $currentQuantity = isset($cart[$cartKey]) ? (int)$cart[$cartKey]['quantity'] : 0;
 
                     if ($request->quantity_type === 'increase') {
-                        $newQuantity = $currentQuantity + 1;
-
-                        if ($newQuantity > 50) {
-                            $newQuantity = 50; // Limit max to 50
-                        }
-                    } elseif ($request->quantity_type === 'decrease') {
-                        $newQuantity = $currentQuantity - 1;
-
-                        if ($newQuantity < 1) {
-                            $newQuantity = 1; // Prevent going below 1
-                        }
+                        $newQuantity = min($currentQuantity + 1, 50);
                     } else {
-                        return Response::error('Invalid type provided');
+                        $newQuantity = max($currentQuantity - 1, 1);
                     }
 
-                    // Preserve all existing cart item data including variants
-                    $cart[$request->product_id] = array_merge(
-                        $cart[$request->product_id] ?? [], // Keep existing data
+                    $cart[$cartKey] = array_merge(
+                        $cart[$cartKey] ?? [],
                         [
-                            'id' => $request->product_id,
+                            'product_id' => $request->product_id,
+                            'variant_id' => $request->variant_id,
                             'quantity' => $newQuantity
                         ]
                     );
@@ -112,7 +100,6 @@ class CartController extends Controller
                     return Response::success([
                         'cart' => Cart::getSummary()
                     ]);
-                    //</editor-fold>     
                 },
             ],
                                              
@@ -120,24 +107,26 @@ class CartController extends Controller
             'remove' => [        
                 'rules' => [
                     'product_id' => 'required|integer',
+                    'variant_id' => 'required|integer',
                 ],
                 'action' => function($request) {
-                //<editor-fold defaultstate="collapsed" desc="remove"> 
-                    $cart = session('cart',[]);
+                    //<editor-fold defaultstate="collapsed" desc="remove"> 
+                    $cart = session('cart', []);
+                    $cartKey = $request->product_id . '_' . $request->variant_id;
 
-                    if(array_key_exists($request->product_id, $cart)){
-                        unset($cart[$request->product_id]);
+                    if (array_key_exists($cartKey, $cart)) {
+                        unset($cart[$cartKey]);
                     }
 
                     session(['cart' => $cart]);
-                    
+
                     return Response::success([
                          'cart' => Cart::getSummary()
-                     ]);
-                //</editor-fold>     
+                    ]);
+                    //</editor-fold>     
                 },
-            ], 
-        ];
+            ],
+        ];        
 
         return Response::parse($request, $actions);  
     //</editor-fold>             

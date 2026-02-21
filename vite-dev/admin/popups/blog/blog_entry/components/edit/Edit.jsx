@@ -16,7 +16,7 @@ import LangsTab from 'ui/common/langs_tab';
 import TextArea from 'ui/inputs/textarea';
 import { forEach, get, replace } from 'lodash-es';
 import SpecificationsAddForm from 'admin/pages/product/specifications/SpecificationsAddForm';
-import ProductSizePopup from 'admin/popups/product/product_size/ProductSizePopup';
+import ProductSizeAddForm from 'admin/pages/product/product_size/ProductSizeAddForm';
 import Select from 'ui/inputs/select';
 
 const propTypes = {
@@ -273,7 +273,7 @@ class Edit extends Component {
 				{this.renderFields()}
 				<LangsTab langs={langs} renderItem={this.renderLangTab} />
 				<SpecificationsAddForm p_id={id} />
-				<ProductSizePopup productId={id} />
+				<ProductSizeAddForm p_id={id} />
 			</Form>
 		);
 	}

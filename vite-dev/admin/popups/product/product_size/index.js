@@ -1,5 +1,5 @@
-import SpecificationsPopup from './SpecificationsPopup';
+import ProductSizePopup from './ProductSizePopup';
 
-export { settings } from './SpecificationsPopup';
+export { settings } from './ProductSizePopup';
 
-export default SpecificationsPopup;
+export default ProductSizePopup;

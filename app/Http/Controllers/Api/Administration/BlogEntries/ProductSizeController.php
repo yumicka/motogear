@@ -15,7 +15,7 @@ use App\Logic\Main\Product\ProductSizes;
 
 use DB;
 
-class SpecificationsController extends Controller
+class ProductSizeController extends Controller
 {
     /**
     * Constructor
