@@ -137,6 +137,18 @@ class PublicPagesController extends Controller
     }
     
     /**
+    * Checkout
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function checkout($lang) {
+    //<editor-fold defaultstate="collapsed" desc="checkout">  
+        return view('public.main', ['state' => Pages::checkout($lang)]);
+    //</editor-fold>    
+    }
+    
+    /**
     * Price calculator
     *
     * @access public       

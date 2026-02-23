@@ -5,6 +5,7 @@ import HomePage from 'main/pages/home/HomePage';
 import ProductPage from 'main/pages/shop/components/ProductPage/ProductPage';
 import Shop from 'main/pages/shop/Shop';
 import Cart from 'main/pages/cart/Cart';
+import Checkout from 'main/pages/checkOut/CheckOut';
 import PropTypes from 'prop-types';
 
 const uiProps = (ownProps) => {
@@ -23,6 +24,7 @@ function Content(props) {
 		shop: <Shop />,
 		shop_product: <ProductPage />,
 		cart: <Cart />,
+		checkout: <Checkout />,
 		//privacy pages
 		privacy_policy: <PrivacyPolicy />,
 	};

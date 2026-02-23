@@ -10,7 +10,6 @@ const formatPrice = (n) => Number(n).toFixed(2);
 
 const Recomendations = ({ product, product_sizes }) => {
 	console.log('Recomendations product_sizes', product_sizes);
-	// product_sizes.map((s) => s.product_size);
 	const [size, setSize] = useState('');
 	const [items, setItems] = useState([]);
 
@@ -123,22 +122,23 @@ const Recomendations = ({ product, product_sizes }) => {
 										</p>
 									)}
 
-									<div className={styles.size_block}>
-										<select
-											className={styles.size_select}
-											value={size}
-											onChange={(e) => setSize(e.target.value)}>
-											<option value="" disabled>
-												Select size
-											</option>
-
-											{SIZES.map((s) => (
-												<option key={s} value={s}>
-													{s}
+									{SIZES.length > 0 && (
+										<div className={styles.size_block}>
+											<select
+												className={styles.size_select}
+												value={size}
+												onChange={(e) => setSize(e.target.value)}>
+												<option value="" disabled>
+													Select size
 												</option>
-											))}
-										</select>
-									</div>
+												{SIZES.map((s) => (
+													<option key={s.id} value={s.id}>
+														{s.product_size}
+													</option>
+												))}
+											</select>
+										</div>
+									)}
 								</div>
 
 								<button className={styles.btn} onClick={addToCart}>

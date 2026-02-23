@@ -15,6 +15,15 @@ import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
 import Image from 'ui/media/image';
 import { useState } from 'react';
 
+const uiProps = (ownProps) => {
+	return {
+		product: 'product',
+		categories: 'categories',
+		specifications: 'specifications',
+		product_sizes: 'product_sizes',
+	};
+};
+
 const ProductWindow = ({ product, product_sizes }) => {
 	// const SIZES = product_sizes.map((s) => s.product_size);
 	const SIZES = product_sizes;

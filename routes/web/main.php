@@ -23,6 +23,7 @@ Route::group(['middleware' => 'check_lang'], function () {
     Route::get('products/searchByBrand', 'ProductsController@searchByBrand');
     
     Route::get('{lang}/cart', 'PublicPagesController@cart');
+    Route::get('{lang}/checkout', 'PublicPagesController@checkout');
     
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     

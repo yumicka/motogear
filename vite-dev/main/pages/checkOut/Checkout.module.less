@@ -1,0 +1,142 @@
+@accent: #E30613;
+
+.checkoutInnerWrapper {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 30px 64px;
+    
+    @media (max-width: 1350px) {
+        padding: 16px 24px; 
+    }
+}
+
+.divider {
+    width: 100%;
+    border-top: 1px dashed #ccc;
+    margin: 24px 0;
+}
+
+.checkoutInformation{
+    display: flex;
+    flex-direction: column;
+}
+
+.checkoutInformationBox{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  
+}
+.checkout-content{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+
+    @media (max-width: 995px) {
+        grid-template-columns: 1fr;
+    }
+
+    h2{
+        font-size: 18px;
+        font-weight: bold;
+        padding-bottom: 20px;
+    }
+}
+
+.checkoutInformationPersonType{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    
+}
+
+.InputField{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    @media (max-width: 995px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.labelContainer label {
+  margin: 0;
+  line-height: 1;
+}
+
+.radioGroupRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.radioOptionRow {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.radioLabel {
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+
+
+.labelContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkoutInformationInputFields{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.deliveryBox, .deliveryInfo, .policyAgreement{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.deliveryPrice{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    p{
+        background: #e6e6e6;
+        padding: 3px 12px;
+        border-radius: 5px;
+    }
+}
+
+.deliveryTime{
+    p{
+       background: #e6e6e6;  
+       padding: 15px 20px;
+    }
+}
+
+.btn{
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: @accent;
+    color: #fff;
+    max-width: 250px;
+    width: 100%;
+    border-radius: 5px;
+}

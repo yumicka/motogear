@@ -10,11 +10,10 @@ import Garantees from './components/garantees/Garantees';
 import TopSellers from './components/top_sellers/Top_sellers';
 import ProductsCarousel from './components/top_sellers/components/ProductsCarousel';
 import WelcomeBanner from './components/welcome_banner/WelcomeBanner';
-import { productsNow } from './components/top_sellers/data/productsNow';
 import { productsGear } from './components/top_sellers/data/productsGear';
 
 import Brands from './components/brands/Brands';
-import CartRecomendations from '../cart/components/CartRecomendations';
+import CartRecomendations from '../cart/components/cartRecomendations/CartRecomendations';
 const propTypes = {};
 const defaultProps = {};
 

@@ -454,7 +454,40 @@ class Pages
         //</editor-fold>
     }
     
+    
+    public static function checkout($lang){
+        //<editor-fold defaultstate="collapsed" desc="cart"> 
+        $content = array_merge(self::getCommonContent(), [
+           
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+        ]);
+      
+        $state = self::getCommonState($lang);
+        
+        $data = Data::get($lang, [
+            'content' => $content,
+            'collections' => $collections
+        ]);
+        
+        $state = array_merge($state, $data);
+          
+        $state['Menu'] = ['current' => 'checkout'];
 
+        $state['Page'] = [];
+        $state['Page']['current'] = 'checkout';
+        
+        $state['categories'] = Product\ProductCategories::get($lang);
+        
+        $meta_data = MetaData::get($lang, 'checkout');
+        
+        MetaHelper::setTitle($meta_data['title']);
+        MetaHelper::setDescription($meta_data['description']);
+        
+        return Store::setState($lang, $state);
+        //</editor-fold>
+    }
     
     /**
      * privacy_policy
