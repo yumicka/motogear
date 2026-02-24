@@ -75,3 +75,13 @@ Route::group(['prefix' => 'cart'], function () {
     Route::post('actions','CartController@actions');
 
 });
+
+# ========================================================================#
+#
+#                           Omniva
+#    
+# ========================================================================# 
+
+Route::group(['prefix' => 'omniva'], function () {
+    Route::post('packages','OmnivaPackagesController@list');
+});

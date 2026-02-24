@@ -138,6 +138,29 @@ class Main
     $table->setPrimaryKey(['id']);
     //</editor-fold>
     
+    /*
+    |--------------------------------------------------------------------------
+    |                             omniva_packages
+    |--------------------------------------------------------------------------|
+    */ 
+    //<editor-fold defaultstate="collapsed" desc="omniva_packages"> 
+    $table = $schema->createTable('omniva_packages');
+    $table->addOption('comment', 'Omniva packages');
+    $table->addOption('collate', 'utf8mb4_unicode_ci');//utf8_unicode_ci
+    $table->addOption('engine', 'InnoDB'); 
+    $table->addOption('row_format', 'DYNAMIC');
+    $table->addOption('charset', 'utf8mb4');//utf8
+
+    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
+    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
+    
+    $table->addColumn('ZIP', 'integer', ['unsigned' => true, 'notnull'=> false, 'default' => null, 'comment'=>'Omniva ZIP']);
+    $table->addColumn('NAME', 'string', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Omnivas name']);
+    $table->addColumn('A0_NAME', 'string', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Omnivas country name']);
+    
+    $table->setPrimaryKey(['id']);
+    //</editor-fold>
 
     return $schema;
     }

@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         //$schedule->command(\App\Console\Commands\ClearOldLogs::class)->monthly();
+        $schedule->command(\App\Console\Commands\OmnivaPackages::class)->everyMinute();
     }
 
     /**

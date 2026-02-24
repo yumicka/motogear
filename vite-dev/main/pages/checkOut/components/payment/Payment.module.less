@@ -1,0 +1,90 @@
+@accent: #E30613;
+
+.paymentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bankSelection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr; // на мобилке ставим по одному
+    }
+}
+
+.bankBox {
+    border: 1px solid #f1f1f1;
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+    }
+}
+
+.overlay {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonsBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    @media (max-width: 500px) {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+.btn {
+    padding: 12px 20px;
+    background-color: @accent;
+    color: #fff;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background-color: darken(@accent, 10%);
+    }
+
+    button {
+        all: unset;
+        cursor: pointer;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+}
+
+.btnBack{
+    background-color: #fff;
+    border: @accent 1px solid;
+    color: @accent;
+
+    &:hover {
+        background-color: #f1f1f1;
+    }
+}
