@@ -1,174 +1,222 @@
 /* eslint-disable react/prop-types */
 import styles from './InfoForm.module.less';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+import Form from 'ui/form';
+import Field from 'ui/form/field';
+
 import Input from 'ui/inputs/input';
 import Checkbox from 'ui/inputs/checkbox';
 import RadioGroup from 'ui/inputs/radio_group';
 import Select from 'ui/inputs/select';
 import TextArea from 'ui/inputs/textarea';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 const InfoForm = ({ setStep, cart, setOrderId }) => {
 	const [locations, setLocations] = useState([]);
 	const [selectedCountry, setSelectedCountry] = useState('');
 	const [omnivaPackage, setOmnivaPackage] = useState(null);
 	const [deliveryType, setDeliveryType] = useState('parcelMachine');
-	const [paymentType, setPaymentType] = useState('card');
-	const [privacyPolicy, setPrivacyPolicy] = useState('0');
 
 	useEffect(() => {
 		remoteRequest({
 			url: 'omniva/packages',
 			data: {},
 			method: 'POST',
-			onSuccess: (response) => {
-				setLocations(response.rows || []);
-			},
-			onError: () => {
-				setLocations([]);
-			},
+			onSuccess: (response) => setLocations(response.rows || []),
+			onError: () => setLocations([]),
 		});
 	}, []);
+
 	const filteredLocations = locations.filter(
 		(loc) => loc.A0_NAME === selectedCountry,
 	);
+
+	const onBeforeSubmit = ({ data /*, Form*/ }) => {
+		// ВАЖНО: тут мы добавляем то, что не лежит в Field-ах, и валидируем
+
+		if (!selectedCountry) {
+			alert('Select country');
+			// “жёстко” отменить submit штатно тут нельзя (в вашем Form нет return false),
+			// поэтому самый надёжный способ — держать selectedCountry как Field (см. ниже),
+			// или пробросить ошибку в поле.
+			throw new Error('COUNTRY_REQUIRED');
+		}
+
+		if (!omnivaPackage?.value) {
+			alert('Select parcel machine');
+			throw new Error('OMNIVA_REQUIRED');
+		}
+
+		if (data?.privacyPolicy !== '1' && data?.privacyPolicy !== true) {
+			alert('Accept privacy policy');
+			throw new Error('PRIVACY_REQUIRED');
+		}
+
+		data.action = 'create';
+
+		// товары
+		data.items = cart?.product_summary || [];
+
+		// доставка
+		data.deliveryType = deliveryType;
+		data.omnivaPackage = omnivaPackage; // если бэк ждёт объект
+		data.delivery_address = omnivaPackage.label || '';
+		data.delivery_postal_code = omnivaPackage.value || '';
+		data.delivery_country = selectedCountry || '';
+
+		// страна (если хочешь, можно брать из Field `country`, но у тебя она “двойная”)
+		data.country = selectedCountry;
+	};
+
+	const onSuccess = ({ response }) => {
+		const id = response?.order?.id ?? response?.data?.order?.id;
+		if (id) {
+			setOrderId(id);
+			setStep(2);
+			return;
+		}
+		alert('Order was not created');
+	};
+
+	const onError = ({ response }) => {
+		// тут можно показать response.msg если есть
+		alert('Order create failed');
+		console.error(response);
+	};
+
 	return (
-		<>
-			<div className={styles.checkoutInformationBox}>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-
-						if (!selectedCountry) {
-							alert('Select country');
-							return;
-						}
-
-						if (!omnivaPackage) {
-							alert('Select parcel machine');
-							return;
-						}
-
-						if (privacyPolicy !== '1') {
-							alert('Accept privacy policy');
-							return;
-						}
-
-						const fd = new FormData(e.currentTarget);
-						const data = Object.fromEntries(fd.entries());
-						data.country = selectedCountry;
-						data.deliveryType = deliveryType || data.deliveryType;
-						data.omnivaPackage = omnivaPackage;
-						data.items = cart?.product_summary || [];
-						data.delivery_address = omnivaPackage.label || [];
-						data.delivery_postal_code = omnivaPackage.value || [];
-						data.delivery_country = selectedCountry || [];
-
-						console.log(data);
-
-						remoteRequest({
-							url: 'order/actions',
-							method: 'POST',
-							data: {
-								action: 'create',
-								...data,
-							},
-							onSuccess: (response) => {
-								const id = response?.order?.id;
-
-								if (id) {
-									setOrderId(id);
-									setStep(2);
-									return;
-								}
-								alert('Order was not created');
-							},
-							onError: () => {
-								alert('Order create failed');
-							},
-						});
-					}}>
-					
-					<div className={styles.checkoutInformationPersonType}>
-						<RadioGroup
-							classNames={{
+		<div className={styles.checkoutInformationBox}>
+			<Form
+				action="order/actions"
+				showSuccess={false}
+				showError={true}
+				onBeforeSubmit={onBeforeSubmit}
+				onSuccess={onSuccess}
+				onError={onError}
+				submit={{ title: 'Continue' }}>
+				{/* Person type */}
+				<div className={styles.checkoutInformationPersonType}>
+					<Field
+						name="person_type"
+						component={RadioGroup}
+						componentProps={{
+							classNames: {
 								inner: styles.radioGroupRow,
 								'option-wrapper': styles.radioOptionRow,
 								label: styles.radioLabel,
-							}}
-							options={[
+							},
+							options: [
 								{ value: 'private', label: 'Private individual' },
 								{ value: 'company', label: 'Company' },
-							]}
-							name="person_type"
+							],
+						}}
+					/>
+				</div>
+
+				{/* Contact fields */}
+				<div className={styles.checkoutInformationInputFields}>
+					<div className={styles.InputField}>
+						<Field
+							name="name"
+							component={Input}
+							componentProps={{ placeholder: 'Name', required: true }}
+						/>
+						<Field
+							name="surname"
+							component={Input}
+							componentProps={{ placeholder: 'Surname', required: true }}
 						/>
 					</div>
-					<div className={styles.checkoutInformationInputFields}>
-						<div className={styles.InputField}>
-							<Input name="name" placeholder="Name" required />
-							<Input name="surname" placeholder="Surname" required />
-						</div>
-						<div className={styles.InputField}>
-							<Input name="phoneNumber" placeholder="Phone Number" required />
-							<Input name="emain" placeholder="E-mail" required />
-						</div>
-						<Input required name="adress" placeholder="Adress" />
-						<Input
-							name="adress_sec_field"
-							placeholder="Apartment number ect."
+
+					<div className={styles.InputField}>
+						<Field
+							name="phoneNumber"
+							component={Input}
+							componentProps={{ placeholder: 'Phone Number', required: true }}
 						/>
-						<div className={styles.labelContainer}>
-							<Checkbox
-								component={Checkbox}
-								className={styles.InputField}
-								name="isEqual"
-							/>
-							<label>This address matches the delivery address</label>
-						</div>
-						<Select
-							name="country"
-							required
-							options={[
-								{ value: 'LV', label: 'Latvia' },
-								{ value: 'LT', label: 'Lithuania' },
-								{ value: 'EE', label: 'Estonia' },
-							]}
-							placeholder="Select country"
-							onChange={(option) => setSelectedCountry(option?.value)}
-						/>
-						<div className={styles.InputField}>
-							<Input name="city" required placeholder="City" />
-							<Input name="postcode" required placeholder="Postal code" />
-						</div>
-					</div>
-					<div className={styles.divider} />
-					<div className={styles.checkoutInformationInputFields}>
-						<TextArea
-							name="comments"
-							placeholder="Add a comment to your order"
+						<Field
+							name="emain"
+							component={Input}
+							componentProps={{ placeholder: 'E-mail', required: true }}
 						/>
 					</div>
-					<div className={styles.divider} />
-					<h2>Delivery</h2>
-					<div className={styles.deliveryBox}>
-						<div className={styles.deliveryType}>
-							<RadioGroup
-								required
-								classNames={{
+
+					<Field
+						name="adress"
+						component={Input}
+						componentProps={{ placeholder: 'Adress', required: true }}
+					/>
+					<Field
+						name="adress_sec_field"
+						component={Input}
+						componentProps={{ placeholder: 'Apartment number ect.' }}
+					/>
+
+					<div className={styles.labelContainer}>
+						<Field name="isEqual" component={Checkbox} />
+						<label>This address matches the delivery address</label>
+					</div>
+
+					{/* Country: лучше сделать именно Field и параллельно сетать selectedCountry */}
+					<Select
+						name="country"
+						required
+						options={[
+							{ value: 'LV', label: 'Latvia' },
+							{ value: 'LT', label: 'Lithuania' },
+							{ value: 'EE', label: 'Estonia' },
+						]}
+						placeholder="Select country"
+						onChange={(option) => setSelectedCountry(option?.value)}
+					/>
+
+					<div className={styles.InputField}>
+						<Field
+							name="city"
+							component={Input}
+							componentProps={{ required: true, placeholder: 'City' }}
+						/>
+						<Field
+							name="postcode"
+							component={Input}
+							componentProps={{ required: true, placeholder: 'Postal code' }}
+						/>
+					</div>
+				</div>
+
+				<div className={styles.divider} />
+
+				<div className={styles.checkoutInformationInputFields}>
+					<Field
+						name="comments"
+						component={TextArea}
+						componentProps={{ placeholder: 'Add a comment to your order' }}
+					/>
+				</div>
+
+				<div className={styles.divider} />
+
+				<h2>Delivery</h2>
+
+				<div className={styles.deliveryBox}>
+					<div className={styles.deliveryType}>
+						<Field
+							name="deliveryTypeField"
+							component={RadioGroup}
+							componentProps={{
+								required: true,
+								classNames: {
 									inner: styles.radioGroupRow,
 									'option-wrapper': styles.radioOptionRow,
 									label: styles.radioLabel,
-								}}
-								options={[
-									// { value: 'сourier', label: 'Courier' },
-									{ value: 'parcelMachine', label: 'Parcel machine' },
-								]}
-								onChange={({ value }) => setDeliveryType(value)}
-								name="deliveryType"
-							/>
-						</div>
+								},
+								options: [{ value: 'parcelMachine', label: 'Parcel machine' }],
+								onChange: ({ value }) => setDeliveryType(value),
+							}}
+						/>
+					</div>
 
+					<div className={styles.deliveryType}>
 						<div className={styles.deliveryType}>
 							<Select
 								name="omnivaPackage"
@@ -192,42 +240,47 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 								placeholder="Select package"
 							/>
 						</div>
-						<div className={styles.deliveryInfo}>
-							<div className={styles.deliveryPrice}>
-								<h3>Delivery fee:</h3>
-								<p>6.24</p>
-							</div>
-							<div className={styles.deliveryTime}>
-								<p>Estimated delivery time: 5-6 work days</p>
-							</div>
+					</div>
+
+					<div className={styles.deliveryInfo}>
+						<div className={styles.deliveryPrice}>
+							<h3>Delivery fee:</h3>
+							<p>6.24</p>
+						</div>
+						<div className={styles.deliveryTime}>
+							<p>Estimated delivery time: 5-6 work days</p>
 						</div>
 					</div>
-					<div className={styles.divider} />
-					<div className={styles.policyAgreement}>
-						<div className={styles.labelContainer}>
-							<Checkbox
-								required
-								component={Checkbox}
-								name="privacyPolicy"
-								onChange={({ value }) => setPrivacyPolicy(value)}
-							/>
-							<label>I accept the terms of the Privacy Policy.</label>
-						</div>
-						<div className={styles.labelContainer}>
-							<Checkbox required component={Checkbox} name="distanceContract" />
-							<label>
-								I agree to the distance contract at the time of purchase
-							</label>
-						</div>
+				</div>
+
+				<div className={styles.divider} />
+
+				<div className={styles.policyAgreement}>
+					<div className={styles.labelContainer}>
+						<Field
+							name="privacyPolicy"
+							component={Checkbox}
+							componentProps={{
+								required: true,
+								onChange: () => {}, // если нужно
+							}}
+						/>
+						<label>I accept the terms of the Privacy Policy.</label>
 					</div>
-					<div className={styles.btn}>
-						<button type="submit">
-							Continue <FontAwesomeIcon icon={faArrowRight} />
-						</button>
+
+					<div className={styles.labelContainer}>
+						<Field
+							name="distanceContract"
+							component={Checkbox}
+							componentProps={{ required: true }}
+						/>
+						<label>
+							I agree to the distance contract at the time of purchase
+						</label>
 					</div>
-				</form>
-			</div>
-		</>
+				</div>
+			</Form>
+		</div>
 	);
 };
 
