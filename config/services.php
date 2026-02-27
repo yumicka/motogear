@@ -50,6 +50,11 @@ return [
         'secret' => '6LcpSmYUAAAAAHS5AdERC-a7Fw26GrsA6heFwGnG',
     ],
     
+    'klix' => [
+        'brand_id' => env('KLIX_BAND_ID'),
+        'secret_key' => env('KLIX_API_KEY'),
+        'endpoint' => 'https://portal.klix.app/api/v1',
+    ],
 //    'facebook' => [
 //        'client_id' => "697960637070470",
 //        'client_secret' => "b54dbd73d74d85be479d65f21ca4decc",

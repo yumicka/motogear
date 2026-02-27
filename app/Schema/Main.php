@@ -133,7 +133,6 @@ class Main
     $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
     
     $table->addColumn('category_image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Category image id']);
-
     
     $table->setPrimaryKey(['id']);
     //</editor-fold>
@@ -162,8 +161,65 @@ class Main
     $table->setPrimaryKey(['id']);
     //</editor-fold>
 
+    
+    
+    /*
+    |--------------------------------------------------------------------------
+    |                             orders
+    |--------------------------------------------------------------------------
+    */
+    //<editor-fold defaultstate="collapsed" desc="orders">
+    $table = $schema->createTable('orders');
+    $table->addOption('comment', 'Order');
+    $table->addOption('collate', 'utf8mb4_unicode_ci');
+    $table->addOption('engine', 'InnoDB');
+    $table->addOption('row_format', 'DYNAMIC');
+    $table->addOption('charset', 'utf8mb4');
+
+    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
+    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
+
+    $table->addColumn('user_id', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'User ID']);
+    $table->addColumn('numeration', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order numeration']);
+    $table->addColumn('order_status', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order status']);
+    $table->addColumn('payment_type', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order payment type']);
+    $table->addColumn('shipping_type', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order shipping type']);
+    $table->addColumn('payment_reference_number', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Payment reference number']);
+
+    $table->addColumn('total', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull'=> true, 'default' => '0.00', 'comment'=>'Product active price with vat']);
+    $table->addColumn('shipping_price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull'=> true, 'default' => '0.00', 'comment'=>'Shipping price']);
+
+    $table->addColumn('first_name', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'First name']);
+    $table->addColumn('surname', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Surname']);
+    $table->addColumn('email', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Email']);
+    $table->addColumn('phone', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Phone number']);
+    $table->addColumn('company_name', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Company name']);
+    $table->addColumn('reg_nr', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Registration number']);
+    $table->addColumn('vat_nr', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'VAT number']);
+    $table->addColumn('country', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Country']);
+    $table->addColumn('postal_code', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Postal code']);
+    $table->addColumn('address', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Address']);
+    $table->addColumn('other_address', 'boolean', ['notnull'=> false, 'default' => null, 'comment'=>'Has different delivery address']);
+    $table->addColumn('delivery_country', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Delivery country']);
+    $table->addColumn('delivery_address', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Delivery address']);
+    $table->addColumn('delivery_postal_code', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Delivery postal code']);
+
+    $table->addColumn('order_data', 'text', ['notnull'=> false, 'default' => null, 'comment'=>'Product data in JSON']);
+
+    $table->addColumn('sent_sms_status', 'boolean', ['notnull'=> true, 'default' => false, 'comment'=>'SMS Status']);
+    $table->addColumn('sent_email_status', 'boolean', ['notnull'=> true, 'default' => false, 'comment'=>'Email Status']);
+    $table->addColumn('recived_email_status', 'boolean', ['notnull'=> true, 'default' => false, 'comment'=>'Email Status']);
+    $table->addColumn('recived_sms_status', 'boolean', ['notnull'=> true, 'default' => false, 'comment'=>'SMS Status']);
+
+    $table->addColumn('courier_company', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Courier company']);
+    $table->addColumn('tracking_number', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Tracking number']);
+
+    $table->setPrimaryKey(['id']);
+    //</editor-fold> 
+    
     return $schema;
-    }
+    } 
 }
 
     

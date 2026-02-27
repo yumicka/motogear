@@ -9,8 +9,13 @@ import TextArea from 'ui/inputs/textarea';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-const InfoForm = ({ setStep }) => {
+const InfoForm = ({ setStep, cart, setOrderId }) => {
 	const [locations, setLocations] = useState([]);
+	const [selectedCountry, setSelectedCountry] = useState('');
+	const [omnivaPackage, setOmnivaPackage] = useState(null);
+	const [deliveryType, setDeliveryType] = useState('parcelMachine');
+	const [paymentType, setPaymentType] = useState('card');
+	const [privacyPolicy, setPrivacyPolicy] = useState('0');
 
 	useEffect(() => {
 		remoteRequest({
@@ -25,15 +30,66 @@ const InfoForm = ({ setStep }) => {
 			},
 		});
 	}, []);
-
+	const filteredLocations = locations.filter(
+		(loc) => loc.A0_NAME === selectedCountry,
+	);
 	return (
 		<>
 			<div className={styles.checkoutInformationBox}>
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
-						setStep(2);
+
+						if (!selectedCountry) {
+							alert('Select country');
+							return;
+						}
+
+						if (!omnivaPackage) {
+							alert('Select parcel machine');
+							return;
+						}
+
+						if (privacyPolicy !== '1') {
+							alert('Accept privacy policy');
+							return;
+						}
+
+						const fd = new FormData(e.currentTarget);
+						const data = Object.fromEntries(fd.entries());
+						data.country = selectedCountry;
+						data.deliveryType = deliveryType || data.deliveryType;
+						data.omnivaPackage = omnivaPackage;
+						data.items = cart?.product_summary || [];
+						data.delivery_address = omnivaPackage.label || [];
+						data.delivery_postal_code = omnivaPackage.value || [];
+						data.delivery_country = selectedCountry || [];
+
+						console.log(data);
+
+						remoteRequest({
+							url: 'order/actions',
+							method: 'POST',
+							data: {
+								action: 'create',
+								...data,
+							},
+							onSuccess: (response) => {
+								const id = response?.order?.id;
+
+								if (id) {
+									setOrderId(id);
+									setStep(2);
+									return;
+								}
+								alert('Order was not created');
+							},
+							onError: () => {
+								alert('Order create failed');
+							},
+						});
 					}}>
+					
 					<div className={styles.checkoutInformationPersonType}>
 						<RadioGroup
 							classNames={{
@@ -48,7 +104,6 @@ const InfoForm = ({ setStep }) => {
 							name="person_type"
 						/>
 					</div>
-
 					<div className={styles.checkoutInformationInputFields}>
 						<div className={styles.InputField}>
 							<Input name="name" placeholder="Name" required />
@@ -75,18 +130,18 @@ const InfoForm = ({ setStep }) => {
 							name="country"
 							required
 							options={[
-								{ value: 'lv', label: 'Latvia' },
-								{ value: 'lt', label: 'Lithuania' },
-								{ value: 'ee', label: 'Estonia' },
+								{ value: 'LV', label: 'Latvia' },
+								{ value: 'LT', label: 'Lithuania' },
+								{ value: 'EE', label: 'Estonia' },
 							]}
 							placeholder="Select country"
+							onChange={(option) => setSelectedCountry(option?.value)}
 						/>
 						<div className={styles.InputField}>
 							<Input name="city" required placeholder="City" />
 							<Input name="postcode" required placeholder="Postal code" />
 						</div>
 					</div>
-
 					<div className={styles.divider} />
 					<div className={styles.checkoutInformationInputFields}>
 						<TextArea
@@ -94,9 +149,7 @@ const InfoForm = ({ setStep }) => {
 							placeholder="Add a comment to your order"
 						/>
 					</div>
-
 					<div className={styles.divider} />
-
 					<h2>Delivery</h2>
 					<div className={styles.deliveryBox}>
 						<div className={styles.deliveryType}>
@@ -111,6 +164,7 @@ const InfoForm = ({ setStep }) => {
 									// { value: 'сourier', label: 'Courier' },
 									{ value: 'parcelMachine', label: 'Parcel machine' },
 								]}
+								onChange={({ value }) => setDeliveryType(value)}
 								name="deliveryType"
 							/>
 						</div>
@@ -119,7 +173,19 @@ const InfoForm = ({ setStep }) => {
 							<Select
 								name="omnivaPackage"
 								required
-								options={locations.map((loc) => ({
+								searchable
+								disabled={!selectedCountry}
+								onChange={({ value, Select }) => {
+									const selectedOption = Select.getSelectedOptions()[0];
+
+									setOmnivaPackage({
+										value,
+										label: selectedOption?.label,
+									});
+
+									console.log(omnivaPackage);
+								}}
+								options={filteredLocations.map((loc) => ({
 									value: loc.ZIP,
 									label: `${loc.NAME} (${loc.A0_NAME})`,
 								}))}
@@ -136,12 +202,15 @@ const InfoForm = ({ setStep }) => {
 							</div>
 						</div>
 					</div>
-
 					<div className={styles.divider} />
-
 					<div className={styles.policyAgreement}>
 						<div className={styles.labelContainer}>
-							<Checkbox required component={Checkbox} name="privacyPolicy" />
+							<Checkbox
+								required
+								component={Checkbox}
+								name="privacyPolicy"
+								onChange={({ value }) => setPrivacyPolicy(value)}
+							/>
 							<label>I accept the terms of the Privacy Policy.</label>
 						</div>
 						<div className={styles.labelContainer}>
@@ -151,7 +220,6 @@ const InfoForm = ({ setStep }) => {
 							</label>
 						</div>
 					</div>
-
 					<div className={styles.btn}>
 						<button type="submit">
 							Continue <FontAwesomeIcon icon={faArrowRight} />

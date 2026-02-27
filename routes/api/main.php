@@ -85,3 +85,14 @@ Route::group(['prefix' => 'cart'], function () {
 Route::group(['prefix' => 'omniva'], function () {
     Route::post('packages','OmnivaPackagesController@list');
 });
+
+# ========================================================================#
+#
+#                           Order
+#    
+# ========================================================================# 
+
+Route::group(['prefix' => 'order'], function () {
+    Route::post('actions', 'OrderController@actions');
+    Route::post('pay/{order}', 'OrderController@pay');
+});

@@ -30,12 +30,12 @@ menu.push({
 	icon: _g.getMainUrl() + 'assets/icons/translations.svg',
 });
 
-menu.push({
-	name: 'metadata',
-	title: 'Lapas meta dati',
-	url: baseName + '/metadata',
-	icon: _g.getMainUrl() + 'assets/icons/book.svg',
-});
+// menu.push({
+// 	name: 'metadata',
+// 	title: 'Lapas meta dati',
+// 	url: baseName + '/metadata',
+// 	icon: _g.getMainUrl() + 'assets/icons/book.svg',
+// });
 
 menu.push({
 	name: 'settings',

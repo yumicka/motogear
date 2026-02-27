@@ -8,6 +8,7 @@ import Payment from './components/payment/Payment';
 const Checkout = () => {
 	const [cart, setCart] = useState(uiStore.get('cart', {}));
 	const [step, setStep] = useState(1);
+	const [orderId, setOrderId] = useState(uiStore.get('checkout.orderId', null));
 	console.log(step);
 
 	useEffect(() => {
@@ -15,6 +16,11 @@ const Checkout = () => {
 			uiStore.set('Page.current', 'cart');
 		}
 	}, [cart]);
+
+	const handleSetOrderId = (id) => {
+		setOrderId(id);
+		uiStore.set('checkout.orderId', id); // чтобы не потерять при переходах
+	};
 
 	return (
 		<div className={styles.checkoutWrapper}>
@@ -31,14 +37,14 @@ const Checkout = () => {
 					{step === 1 && (
 						<section className={styles.checkoutInformation}>
 							<h2>Contact Information</h2>
-							<InfoForm setStep={setStep} />
+							<InfoForm setStep={setStep} cart={cart} setOrderId={handleSetOrderId}/>
 						</section>
 					)}
 
 					{step === 2 && (
 						<section className={styles.checkoutInformation}>
 							<h2>Payment</h2>
-							<Payment setStep={setStep} />
+							<Payment setStep={setStep} orderId={orderId}/>
 						</section>
 					)}
 				</div>

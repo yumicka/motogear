@@ -2,17 +2,17 @@
 import React, { useState } from 'react';
 import styles from './Cart.module.less';
 
-import ProductCart from './components/productCart/productCart';
+import ProductCart from './components/productCart/ProductCart';
 import Total from './components/total/Total';
 import CartRecomendations from './components/cartRecomendations/CartRecomendations';
 
 const Cart = () => {
 	const [cart, setCart] = useState(uiStore.get('cart', {}));
-
+	const isEmpty = !cart || cart.cart_amount === 0;
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
-				<section  className={styles.box}>
+				<section className={`${styles.box} ${isEmpty ? styles.empty : ''}`}>
 					<div>
 						<ProductCart cart={cart} setCart={setCart} />
 					</div>

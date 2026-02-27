@@ -456,7 +456,7 @@ class Pages
     
     
     public static function checkout($lang){
-        //<editor-fold defaultstate="collapsed" desc="cart"> 
+        //<editor-fold defaultstate="collapsed" desc="checkout"> 
         $content = array_merge(self::getCommonContent(), [
            
         ]);
@@ -479,6 +479,7 @@ class Pages
         $state['Page']['current'] = 'checkout';
         
         $state['categories'] = Product\ProductCategories::get($lang);
+        $state['payments'] = KlixPayments::getPaymentMethods();
         
         $meta_data = MetaData::get($lang, 'checkout');
         
