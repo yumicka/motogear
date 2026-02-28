@@ -3,9 +3,12 @@ namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\File;
 use App\Logic\Core\Langs;
 use App\Logic\Main\Pages;
+use App\Logic\Main\KlixPayments;
+use App\Types\Main\OrderStatuses;
+use App\Models\Main\Order;
 
 class PublicPagesController extends Controller
 {
@@ -146,6 +149,54 @@ class PublicPagesController extends Controller
     //<editor-fold defaultstate="collapsed" desc="checkout">  
         return view('public.main', ['state' => Pages::checkout($lang)]);
     //</editor-fold>    
+    }
+    
+    /**
+    * Klix Payment Success
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function klixPaymentSuccess($lang, $order_id)
+    {
+        //<editor-fold defaultstate="collapsed" desc="klixPaymentSuccess"> 
+        $order = Order::findOrFail($order_id);
+        KlixPayments::checkOrderPayment($order);
+        $order->refresh();
+
+        if ($order->order_status === OrderStatuses::paid) {
+            return view('public.main', ['state' => Pages::klixPaymentSuccess($lang, $order)]);
+        }
+        return view('public.main', ['state' => Pages::klixPaymentFailed($lang, $order)]);
+        //</editor-fold> 
+    }
+    
+     /**
+    * Klix Payment Failed
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function klixPaymentFailed($lang, $order_id) {
+    //<editor-fold defaultstate="collapsed" desc="klixPaymentFailed"> 
+        $order = Order::findOrFail($order_id);
+        KlixPayments::checkOrderPayment($order);
+        return view('public.main', [
+            'state' => Pages::klixPaymentFailed($lang, $order),
+        ]);
+    //</editor-fold>    
+    }
+    
+    public function downloadInvoiceByNumber($lang, $numeration)
+    {
+        $order = Order::where('numeration', $numeration)->firstOrFail();
+
+        $path = storage_path('invoices/invoice_' . $order->numeration . '.pdf');
+        abort_unless(\File::exists($path), 404);
+
+        return response()->download($path, 'invoice_' . $order->numeration . '.pdf', [
+            'Content-Type' => 'application/pdf'
+        ]);
     }
     
     /**

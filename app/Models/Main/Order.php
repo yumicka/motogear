@@ -3,6 +3,7 @@
 namespace App\Models\Main;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Types\Main\OrderStatuses;
 
 class Order extends Model
 {
@@ -53,5 +54,6 @@ class Order extends Model
      */
     protected $casts = [
         'order_data' => 'array',
+        'order_status' => OrderStatuses::class,
     ];    
 } 

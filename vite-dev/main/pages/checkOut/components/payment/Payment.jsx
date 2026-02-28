@@ -14,6 +14,8 @@ const uiProps = () => {
 const Payment = ({ setStep, payments, orderId }) => {
 	const [selectedMethod, setSelectedMethod] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [toast, setToast] = useState(null);
+	const [toastType, setToastType] = useState('success');
 
 	const handleContinue = () => {
 		if (!selectedMethod || loading) return;
@@ -26,19 +28,39 @@ const Payment = ({ setStep, payments, orderId }) => {
 			data: {
 				payment_type: selectedMethod,
 			},
-			onSuccess: (response) => {
-				if (response.redirect_url) {
-					window.location.href = response.redirect_url;
+			onSuccess: (res) => {
+				const redirectUrl = res?.redirect_url ?? res?.response?.redirect_url;
+
+				if (redirectUrl) {
+					window.location.href = redirectUrl;
+				} else {
+					setToastType('error');
+					setToast('Payment initialization failed. Please try again.');
+					setLoading(false);
+					setTimeout(() => setToast(null), 5000);
 				}
 			},
 			onError: () => {
+				setToastType('error');
+				setToast('Server error. Please try again.');
 				setLoading(false);
+
+				setTimeout(() => setToast(null), 5000);
 			},
 		});
 	};
 
 	return (
 		<div className={styles.paymentContainer}>
+			{toast && (
+				<div
+					className={styles.toast}
+					style={{
+						background: toastType === 'error' ? '#e74c3c' : '#2bbc68',
+					}}>
+					{toast}
+				</div>
+			)}
 			<div className={styles.bankSelection}>
 				{payments?.available_payment_methods?.map((methodId) => (
 					<div

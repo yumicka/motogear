@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import styles from './InfoForm.module.less';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Form from 'ui/form';
 import Field from 'ui/form/field';
@@ -230,8 +230,6 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 										value,
 										label: selectedOption?.label,
 									});
-
-									console.log(omnivaPackage);
 								}}
 								options={filteredLocations.map((loc) => ({
 									value: loc.ZIP,

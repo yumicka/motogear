@@ -5,8 +5,10 @@ import HomePage from 'main/pages/home/HomePage';
 import ProductPage from 'main/pages/shop/components/ProductPage/ProductPage';
 import Shop from 'main/pages/shop/Shop';
 import Cart from 'main/pages/cart/Cart';
-import Checkout from 'main/pages/checkOut/CheckOut';
+import Checkout from 'main/pages/checkOut/Checkout';
 import PropTypes from 'prop-types';
+import PaymentSuccess from 'main/pages/checkOut/components/success/PaymentSuccess';
+import PaymentFailure from 'main/pages/checkOut/components/failed/PaymentFailure';
 
 const uiProps = (ownProps) => {
 	return {
@@ -25,6 +27,8 @@ function Content(props) {
 		shop_product: <ProductPage />,
 		cart: <Cart />,
 		checkout: <Checkout />,
+		klixPaymentSuccess: <PaymentSuccess />,
+		klixPaymentFailed: <PaymentFailure />,
 		//privacy pages
 		privacy_policy: <PrivacyPolicy />,
 	};

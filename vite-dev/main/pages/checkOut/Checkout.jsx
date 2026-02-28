@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import ProductCart from '../cart/components/productCart/productCart';
+// import ProductCart from '../cart/components/productCart/productCart';
+import ProductCart from '../cart/components/productCart/ProductCart';
 import styles from './checkOut.module.less';
 import InfoForm from './components/info_form/InfoForm';
 import CheckoutSteps from './components/breadcrumbs/CheckoutSteps';
@@ -9,7 +10,6 @@ const Checkout = () => {
 	const [cart, setCart] = useState(uiStore.get('cart', {}));
 	const [step, setStep] = useState(1);
 	const [orderId, setOrderId] = useState(uiStore.get('checkout.orderId', null));
-	console.log(step);
 
 	useEffect(() => {
 		if (!cart?.product_summary?.length) {

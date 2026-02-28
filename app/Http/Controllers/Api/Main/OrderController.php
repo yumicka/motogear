@@ -7,6 +7,7 @@ use App\Logic\Main\KlixPayments;
 use App\Logic\Main\Cart\Cart;
 use App\Logic\Core\Response;
 use App\Models\Main\Order;
+use App\Types\Main\OrderStatuses;
 use Illuminate\Support\Str;
 
 class OrderController extends Controller
@@ -45,7 +46,7 @@ class OrderController extends Controller
 
                     $order->numeration = (string) Str::uuid();
 
-                    $order->order_status = 'pending';
+                    $order->order_status = OrderStatuses::pending;
 
                     $order->payment_type = '';
 
@@ -113,6 +114,7 @@ class OrderController extends Controller
     {
         try {
             $order->payment_type = $request->payment_type;
+            $order->order_status = OrderStatuses::payment_pending;
             $order->save();
 
             $purchase = KlixPayments::createOrderPurchase($order);

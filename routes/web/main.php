@@ -25,11 +25,11 @@ Route::group(['middleware' => 'check_lang'], function () {
     Route::get('{lang}/cart', 'PublicPagesController@cart');
     Route::get('{lang}/checkout', 'PublicPagesController@checkout');
     
+    Route::get('{lang}/klix-payment-success/{order_id}', 'PublicPagesController@klixPaymentSuccess');
+    Route::get('{lang}/klix-payment-failed/{order_id}', 'PublicPagesController@klixPaymentFailed');
+    Route::get('{lang}/invoice/{numeration}', 'PublicPagesController@downloadInvoiceByNumber');
+    
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     
     Route::get('{lang}/privatumu-politika', 'PublicPagesController@privacyPolicy');
 }); 
- 
-//Route::group(['middleware' => ['check_lang', 'auth']],function () {
-//    Route::get('{lang}/profile', 'InternalPagesController@profile');
-//});
