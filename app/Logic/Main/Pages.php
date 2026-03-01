@@ -489,9 +489,16 @@ class Pages
         //</editor-fold>
     }
     
-    public static function klixPaymentSuccess($lang, ?Order $order = null)
+    public static function klixPaymentSuccess($lang, $order)
     {
-        //<editor-fold defaultstate="collapsed" desc="klixPaymentSuccess"> 
+        $content = array_merge(self::getCommonContent(), [
+           
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+        ]);
+        
+
         $state = self::getCommonState($lang);
 
         $data = Data::get($lang, [
@@ -500,25 +507,29 @@ class Pages
         ]);
 
         $state = array_merge($state, $data);
-
+        
         $state['Menu'] = ['current' => 'klixPaymentSuccess'];
+        $state['Page'] = [];
+        
         $state['Page'] = ['current' => 'klixPaymentSuccess'];
+        
         $state['categories'] = Product\ProductCategories::get($lang);
         $state['order_number'] = $order->numeration;
         $state['invoice_url'] = "/{$lang}/invoice/{$order->numeration}";
         $state['status'] = $order->order_status?->value;
 
         $meta_data = MetaData::get($lang, 'klixPaymentSuccess');
+        
         MetaHelper::setTitle($meta_data['title']);
         MetaHelper::setDescription($meta_data['description']);
 
-        return Store::setState($lang, $state);
-        //</editor-fold>
+        $result = Store::setState($lang, $state);
+
+        return $result;
     }
 
     public static function klixPaymentFailed($lang, ?Order $order = null)
     {
-        //<editor-fold defaultstate="collapsed" desc="klixPaymentFailed"> 
         $state = self::getCommonState($lang);
 
         $data = Data::get($lang, [
@@ -532,19 +543,18 @@ class Pages
         $state['Page'] = ['current' => 'klixPaymentFailed'];
         $state['categories'] = Product\ProductCategories::get($lang);
 
-        $state['payment'] = $order ? [
-            'order_number' => $order->numeration,
-            'invoice_url'  => "/{$lang}/invoice/{$order->numeration}",
-            'status'       => $order->order_status?->value,
-        ] : null;
+
+        $state['order_number'] = $order?->numeration;
+        $state['invoice_url'] = $order ? "/{$lang}/invoice/{$order->numeration}" : null;
+        $state['status'] = $order?->order_status?->value;
 
         $meta_data = MetaData::get($lang, 'klixPaymentFailed');
         MetaHelper::setTitle($meta_data['title']);
         MetaHelper::setDescription($meta_data['description']);
 
         return Store::setState($lang, $state);
-        //</editor-fold>
     }
+
     /**
      * privacy_policy
      *

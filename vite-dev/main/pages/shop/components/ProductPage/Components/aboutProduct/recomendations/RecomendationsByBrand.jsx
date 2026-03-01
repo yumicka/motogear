@@ -8,19 +8,14 @@ import Link from 'core/navigation/link';
 
 const formatPrice = (n) => Number(n).toFixed(2);
 
-const RecomendationsByBrand = ({ product, specifications }) => {
+const RecomendationsByBrand = ({ product }) => {
 	const [items, setItems] = useState([]);
 
-	const selectedBrand =
-		specifications
-			.find((spec) => {
-				const title = (spec.title || '').trim().toLowerCase();
-				return title === 'brand' || title === 'brends' || title === 'бренд';
-			})
-			?.content?.trim() || '';
+	const brandId = Number(product?.brand_id) || 0;
+	const productId = Number(product?.id) || 0;
 
 	useEffect(() => {
-		if (!selectedBrand) {
+		if (!brandId) {
 			setItems([]);
 			return;
 		}
@@ -28,19 +23,20 @@ const RecomendationsByBrand = ({ product, specifications }) => {
 		remoteRequest({
 			url: 'products/searchByBrand',
 			data: {
-				brand: selectedBrand,
-				results_per_page: 5,
+				brand_id: brandId,   // ✅ фильтрация по ID
+				exclude_id: productId,
+				results_per_page: 6,
 				page: 1,
 			},
 			onSuccess: (response) => {
-				const rows = response.rows || [];
+				const rows = response?.rows || [];
 
-				const filtered = rows.filter((p) => p.id !== product?.id);
-				setItems(filtered.slice(0, 3));
+				// 🔢 максимум 3 товара
+				setItems(rows.slice(0, 3));
 			},
 			onError: () => setItems([]),
 		});
-	}, [selectedBrand, product?.id]);
+	}, [brandId, productId]);
 
 	if (!items.length) return null;
 
@@ -48,9 +44,9 @@ const RecomendationsByBrand = ({ product, specifications }) => {
 		<div className={styles.content}>
 			<div className={styles.container}>
 				{items.map((item) => {
-					const imgSrc = item.image?.image;
-					const originalPrice = Number(item.product_price) || 0;
-					const discount = Number(item.product_discount) || 0;
+					const imgSrc = item?.image?.image;
+					const originalPrice = Number(item?.product_price) || 0;
+					const discount = Number(item?.product_discount) || 0;
 
 					const hasDiscount = discount > 0;
 					const currentPrice = hasDiscount

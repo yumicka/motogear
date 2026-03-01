@@ -125,42 +125,30 @@ class ProductsController extends Controller
     }
     
     public function searchByBrand(Request $request)
-    { 
+    {
         $lang = app()->getLocale();
-        $brand = trim($request->get('brand', ''));
 
-        if ($brand === '') {
+        $brandId = (int)$request->get('brand_id', 0);
+        $excludeId = (int)$request->get('exclude_id', 0);
+
+        if ($brandId <= 0) {
             return Response::success(['rows' => []]);
         }
 
-        // 1) найти product_id по спецификациям
-        $productIds = DB::connection('main')
-            ->table('specifications as s')
-            ->join('content_translations as t', function($join) {
-                $join->on('t.container_id', '=', 's.id')
-                     ->where('t.container_name', '=', 'specifications');
-            })
-            ->whereRaw('LOWER(t.title) IN ("brand", "brends", "бренд")')
-            ->whereRaw('LOWER(t.content) = ?', [mb_strtolower($brand)])
-            ->pluck('s.product_id')
-            ->unique()
-            ->toArray();
-
-        if (empty($productIds)) {
-            return Response::success(['rows' => []]);
-        }
-
-        
         $query = ProductEntries::getQuery($lang);
 
-        $query->whereIn('b.id', $productIds);
+        // ✅ Фильтр по brand_id
+        $query->where('b.brand_id', $brandId);
 
-        
+        // ✅ Исключаем текущий продукт
+        if ($excludeId > 0) {
+            $query->where('b.id', '!=', $excludeId);
+        }
+
         $query->orderBy('b.id', 'desc');
 
         $rows = $query->limit(4)->get();
 
-        
         $formattedRows = [];
         foreach ($rows as $row) {
             $formattedRows[] = ProductEntries::formatResponseData((object)$row, $lang);

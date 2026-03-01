@@ -45,11 +45,9 @@ class CartController extends Controller
                     $product = Product::where('id', $request->product_id)->firstOrFail();
                     $cart = session('cart', []);
                     $quantity = (int)$request->quantity;
-                    // создаём уникальный ключ: product_id + variant_id
                     $cartKey = $request->product_id . '_' . $request->variant_id;
 
                     if (isset($cart[$cartKey])) {
-                        // увеличиваем количество, если такой вариант уже есть
                         $cart[$cartKey]['quantity'] += $quantity;
                     } else {
                         // новый товар в корзине

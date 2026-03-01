@@ -1,25 +1,26 @@
 /* eslint-disable react/prop-types */
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './PaymentSuccess.module.less';
 import WithUi from 'hoc/store/ui';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import Link from 'core/navigation/link';
+import getMainUrl from 'helpers/getMainUrl';
 
-const uiProps = () => {
+const uiProps = (ownProps) => {
 	return {
-		invoiceUrl: 'invoice_url',
-		orderNumber: 'order_number',
+		invoice_url: 'invoiceUrl',
+		order_number: 'orderNumber',
 		status: 'status',
 	};
 };
 
-const PaymentSuccess = (props) => {
-	const { invoiceUrl, orderNumber } = props;
-	console.log('props', props);
-
-	console.log('invoiceUrl', invoiceUrl);
+const PaymentSuccess = ({ invoiceUrl, orderNumber, status }) => {
+	console.log('Props:', { status });
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.card}>
-				<div className={styles.icon}>✅</div>
+				<div className={styles.icon}><FontAwesomeIcon icon={faCircleCheck} /></div>
 
 				<h1 className={styles.title}>Maksājums veiksmīgs</h1>
 				<p className={styles.subtitle}>
@@ -37,9 +38,14 @@ const PaymentSuccess = (props) => {
 
 				<div className={styles.actions}>
 					{invoiceUrl ? (
-						<a className={styles.primaryBtn} href={invoiceUrl}>
+						<Link
+							className={styles.primaryBtn}
+							to={invoiceUrl}
+							download={orderNumber ? `invoice_${orderNumber}.pdf` : undefined}
+							target="_blank"
+							rel="noopener noreferrer">
 							Lejupielādēt rēķinu (PDF)
-						</a>
+						</Link>
 					) : (
 						<div className={styles.info}>
 							Rēķins tiek sagatavots… Pamēģini atjaunot lapu pēc brīža.
@@ -47,12 +53,12 @@ const PaymentSuccess = (props) => {
 					)}
 
 					<div className={styles.secondaryActions}>
-						<a className={styles.secondaryBtn} href="/lv">
+						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'home'}>
 							Uz sākumu
-						</a>
-						<a className={styles.secondaryBtn} href="/lv/veikals">
+						</Link>
+						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'shop'}>
 							Uz veikalu
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>

@@ -140,6 +140,22 @@ class Edit extends Component {
 								extraData: { action: 'get_options' },
 							}}
 						/>
+
+						<Field
+							label={'Brand'}
+							name={'brand_id'}
+							component={Select}
+							value={item.brand_id}
+							componentProps={{
+								optionsUrl: 'administration/blog/brands/actions',
+								valueKey: 'id',
+								labelKey: 'brand_name',
+								searchable: true,
+								clearable: true,
+								extraData: { action: 'get_options' },
+							}}
+						/>
+						
 						<Field
 							label="Aktīvs"
 							name="active"

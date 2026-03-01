@@ -9,6 +9,7 @@ use App\Logic\Main\Pages;
 use App\Logic\Main\KlixPayments;
 use App\Types\Main\OrderStatuses;
 use App\Models\Main\Order;
+use App\Logic\Main\Orders;
 
 class PublicPagesController extends Controller
 {
@@ -165,6 +166,7 @@ class PublicPagesController extends Controller
         $order->refresh();
 
         if ($order->order_status === OrderStatuses::paid) {
+            session()->forget('cart');
             return view('public.main', ['state' => Pages::klixPaymentSuccess($lang, $order)]);
         }
         return view('public.main', ['state' => Pages::klixPaymentFailed($lang, $order)]);
@@ -191,12 +193,25 @@ class PublicPagesController extends Controller
     {
         $order = Order::where('numeration', $numeration)->firstOrFail();
 
-        $path = storage_path('invoices/invoice_' . $order->numeration . '.pdf');
-        abort_unless(\File::exists($path), 404);
+        $path = storage_path("invoices/invoice_{$numeration}.pdf");
 
-        return response()->download($path, 'invoice_' . $order->numeration . '.pdf', [
-            'Content-Type' => 'application/pdf'
-        ]);
+        // если pdf ещё не создан — создаём на лету
+        if (!File::exists($path)) {
+            Orders::createInvoicePDF($order);
+        }
+
+        abort_unless(File::exists($path), 404);
+
+        return response()->download(
+            $path,
+            "invoice_{$numeration}.pdf",
+            [
+                'Content-Type' => 'application/pdf',
+                // чтобы браузер не пытался открыть и не кешировал криво
+                'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
+                'Pragma' => 'no-cache',
+            ]
+        );
     }
     
     /**

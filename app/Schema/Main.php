@@ -56,8 +56,8 @@ class Main
     $table->addColumn('product_price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull' => true, 'default' => 0, 'comment' => 'Original price']);
     $table->addColumn('product_discount', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Discount in percent']);
 
-    
     $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
+    $table->addColumn('brand_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Brand id']);
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
     $table->addColumn('top_seller', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Top seller']);
 

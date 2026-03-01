@@ -45,20 +45,11 @@ const DropdownItem = ({ title, children }) => {
 
 const AboutProduct = ({ product, specifications }) => {
 	const productId = product.id;
+	const brandId = Number(product?.brand_id) || 0;
 
 	if (!productId) {
 		return <div>Product not found</div>;
 	}
-
-	const isHelmet = product?.categories?.some(
-		(cat) => cat.id === 1 || cat.title?.toLowerCase() === 'helmets',
-	);
-
-	const productBrand =
-		specifications.find((spec) => {
-			const title = spec.title.toLowerCase();
-			return title === 'brand' || title === 'brends' || title === 'бренд';
-		})?.content || '';
 
 	return (
 		<div className={styles.content}>
@@ -74,9 +65,9 @@ const AboutProduct = ({ product, specifications }) => {
 						</DropdownItem>
 					)}
 
-					{isHelmet && productBrand && (
+					{brandId != 0 && (
 						<DropdownItem title="Size guide">
-							<SizeGuide specifications={specifications} />
+							<SizeGuide brandId={brandId} />
 						</DropdownItem>
 					)}
 
@@ -88,21 +79,21 @@ const AboutProduct = ({ product, specifications }) => {
 						<AskQuestion />
 					</DropdownItem>
 
-					{productBrand ? (
+					{brandId > 0 && (
 						<DropdownItem title="About the brand">
-							<AboutBrand specifications={specifications} />
+							<AboutBrand brandId={brandId} />
 						</DropdownItem>
-					) : null}
+					)}
 				</div>
 
-				<div className={styles.popular}>
-					<div className={styles.title}>
-						<span>Popular by {productBrand}</span>
+				{brandId > 0 && (
+					<div className={styles.popular}>
+						<div className={styles.title}>
+							<span>Popular by this brand</span>
+						</div>
+						<RecomendationsByBrand product={product} />
 					</div>
-					<div className={styles.brandRecomentations}>
-						<RecomendationsByBrand specifications={specifications} product={product} />
-					</div>
-				</div>
+				)}
 			</div>
 		</div>
 	);

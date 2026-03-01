@@ -96,3 +96,15 @@ Route::group(['prefix' => 'order'], function () {
     Route::post('actions', 'OrderController@actions');
     Route::post('pay/{order}', 'OrderController@pay');
 });
+
+# ========================================================================#
+#
+#                           Brands
+#    
+# ========================================================================# 
+
+Route::group(['prefix' => 'brands'], function () {
+    Route::post('get-by-name', 'BrandsController@getByName');
+    Route::post('get-by-id', 'BrandsController@getById');
+});
+

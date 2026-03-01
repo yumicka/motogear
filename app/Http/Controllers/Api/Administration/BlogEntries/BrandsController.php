@@ -31,15 +31,15 @@ class BrandsController extends Controller
             'b.id' => 'id',
             'b.created_at' => 'created_at',
             'b.updated_at' => 'updated_at',
-//            'b.product_id' => 'product_id',
             'b.brand_name' => 'brand_name',
             'b.image_id' => 'image_id',
             'b.size_guide_image_id' => 'size_guide_image_id',
         ];
+        
+        ContentTranslations::leftJoin($query, ['lv'], 'b.id', ContentTranslationsTypes::brand->value, 'brand_');
 
         $filters = [
             'id' => fn($q, $v) => $q->where('b.id', (int)$v),
-//            'product_id' => fn($q, $v) => $q->where('b.product_id', (int)$v),
             'brand_name' => fn($q, $v) => $q->where('b.brand_name', 'LIKE', "%{$v}%"),
         ];
 
@@ -93,6 +93,22 @@ class BrandsController extends Controller
                     ]);
                 },
             ],
+                        
+            'get_options' => [
+                'rules' => [],
+                'action' => function ($request) {
+
+                    $items = DB::connection('main')
+                        ->table('brands')
+                        ->select(['id', 'brand_name'])
+                        ->orderBy('brand_name', 'asc')
+                        ->get();
+
+                    return Response::success([
+                        'options' => $items
+                    ]);
+                },
+            ],
 
             /*
             |--------------------------------------------------------------------------
@@ -102,13 +118,11 @@ class BrandsController extends Controller
             'create' => [
                 'rules' => [
                     'brand_name' => 'required|string|max:255',
-//                    'product_id' => 'required|integer',
                 ],
                 'action' => function ($request) {
 
                     $item = new Brand();
                     $item->brand_name = $request->brand_name;
-//                    $item->product_id = (int)$request->product_id;
                     $item->image_id = 0;
                     $item->size_guide_image_id = 0;
                     $item->save();
@@ -130,9 +144,6 @@ class BrandsController extends Controller
                     $item->size_guide_image_id = $sizeGuide->id;
                     $item->save();
 
-                    /**
-                     * Translations (description)
-                     */
                     $langs = Langs::getAll();
 
                     foreach ($langs as $lang) {
@@ -172,7 +183,6 @@ class BrandsController extends Controller
                 'rules' => [
                     'id' => 'required|integer',
                     'brand_name' => 'sometimes|string|max:255',
-//                    'product_id' => 'sometimes|integer',
                     'image_id' => 'sometimes|integer',
                     'size_guide_image_id' => 'sometimes|integer',
                 ],
@@ -187,10 +197,6 @@ class BrandsController extends Controller
                     if ($request->has('brand_name')) {
                         $item->brand_name = $request->brand_name;
                     }
-
-//                    if ($request->has('product_id')) {
-//                        $item->product_id = (int)$request->product_id;
-//                    }
 
                     if ($request->has('image_id')) {
                         $item->image_id = (int)$request->image_id;

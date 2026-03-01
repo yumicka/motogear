@@ -23,6 +23,17 @@ popups[BlogEntryPopupSettings.name] = {
 };
 
 /*
+ * BrandsPopup
+ */
+import BrandsPopup, {
+	settings as BrandsPopupSettings,
+} from 'admin/popups/blog/brands';
+popups[BrandsPopupSettings.name] = {
+	popup: BrandsPopup,
+	settings: BrandsPopupSettings,
+};
+
+/*
  * OrderPopup
  */
 import OrderPopup, {

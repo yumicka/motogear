@@ -159,6 +159,7 @@ class BlogEntriesController extends Controller
                     $item->product_price = $request->product_price;
                     $item->product_discount = $request->product_discount;
                     $item->top_seller = $request->top_seller;
+                    $item->brand_id = (int)($request->brand_id ?? 0);
                     
                     $item->save();
 
@@ -218,6 +219,7 @@ class BlogEntriesController extends Controller
                     $item->active = $request->active;
                     $item->top_seller = $request->top_seller;
                     $item->pinned = $request->pinned;
+                    $item->brand_id = (int)($request->brand_id ?? 0);
                     
                     $item->save();
 

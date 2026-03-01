@@ -23,11 +23,10 @@ class Table extends Component {
 
 		columns.push({ name: 'brand_name', title: 'Brand name' });
 
-		columns.push({ name: 'product_id', title: 'Product ID' });
-
-		columns.push({ name: 'image_id', title: 'Image ID' });
-
-		columns.push({ name: 'size_guide_image_id', title: 'Size guide image ID' });
+		columns.push({
+			name: 'brand_description',
+			title: 'Apraksts',
+		});
 
 		columns.push({ name: 'created_at', title: 'Created' });
 
@@ -57,13 +56,6 @@ class Table extends Component {
 			name: 'brand_name',
 			component: Input,
 			componentProps: { placeholder: 'Brand name', clearable: true },
-		});
-
-		filters.push({
-			label: 'Product ID',
-			name: 'product_id',
-			component: Input,
-			componentProps: { placeholder: 'Product ID', clearable: true },
 		});
 
 		return filters;
