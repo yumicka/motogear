@@ -4,7 +4,7 @@ const baseName = '/administration';
 
 menu.push({
 	name: 'blog',
-	title: 'Projektu ieraksti',
+	title: 'Produktu ieraksti',
 	url: baseName + '/blog/blog_entries',
 	icon: _g.getMainUrl() + 'assets/icons/users.svg',
 });
@@ -13,6 +13,20 @@ menu.push({
 	name: 'categories',
 	title: 'Produktu kategorijas',
 	url: baseName + '/blog/blog_categories',
+	icon: _g.getMainUrl() + 'assets/icons/users.svg',
+});
+
+menu.push({
+	name: 'brands',
+	title: 'Brands',
+	url: baseName + '/blog/brands',
+	icon: _g.getMainUrl() + 'assets/icons/users.svg',
+});
+
+menu.push({
+	name: 'orders',
+	title: 'Pasutījumi',
+	url: baseName + '/blog/orders',
 	icon: _g.getMainUrl() + 'assets/icons/users.svg',
 });
 

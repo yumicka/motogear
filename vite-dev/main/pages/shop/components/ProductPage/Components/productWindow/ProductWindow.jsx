@@ -25,16 +25,17 @@ const uiProps = (ownProps) => {
 };
 
 const ProductWindow = ({ product, product_sizes }) => {
-	// const SIZES = product_sizes.map((s) => s.product_size);
 	const SIZES = product_sizes;
 
 	const [size, setSize] = useState('');
 	const [sizeError, setSizeError] = useState(false);
 	const [quantity, setQuantity] = useState(1);
 	const [adding, setAdding] = useState(false);
-	// const { id } = useParams();
+	const [toast, setToast] = useState(null);
+	const [toastType, setToastType] = useState('success');
+
 	const productId = product?.id;
-	// const product = items.find((item) => item.id === Number(id));
+	const hasSizes = Array.isArray(SIZES) && SIZES.length > 0;
 
 	if (!productId) {
 		return <div>Product not found</div>;
@@ -58,8 +59,7 @@ const ProductWindow = ({ product, product_sizes }) => {
 	const addToCart = () => {
 		if (!productId) return;
 
-		// если размер обязателен
-		if (SIZES.length > 0 && !size) {
+		if (hasSizes && !size) {
 			setSizeError(true);
 			return;
 		}
@@ -73,23 +73,35 @@ const ProductWindow = ({ product, product_sizes }) => {
 				action: 'add',
 				product_id: productId,
 				quantity: quantity,
-				variant_id: size,
+				variant_id: hasSizes ? Number(size) : 0,
 			},
 			onSuccess: (response) => {
 				setAdding(false);
 				uiStore.set('cart', response.cart);
-				console.log('Product added to cart:', response.cart);
-				// тут можно обновить UI (например, открыть popup корзины)
+				setToastType('success');
+				setToast('Product has been added to cart!');
+				setTimeout(() => setToast(null), 5000);
 			},
 			onError: (err) => {
 				setAdding(false);
-				console.log('Add to cart error:', err);
+				setToastType('error');
+				setToast('Product has not been added to cart!');
+				setTimeout(() => setToast(null), 5000);
 			},
 		});
 	};
 
 	return (
 		<div className={styles.content}>
+			{toast && (
+				<div
+					className={styles.toast}
+					style={{
+						background: toastType === 'error' ? '#e74c3c' : '#2bbc68',
+					}}>
+					{toast}
+				</div>
+			)}
 			<div className={styles.discription}>
 				<h1 className={styles.title}>{title}</h1>
 
@@ -167,17 +179,16 @@ const ProductWindow = ({ product, product_sizes }) => {
 					</div>
 				)}
 
-				{SIZES.length > 0 && (
+				{hasSizes && (
 					<div className={styles.size_block}>
 						<select
 							className={`${styles.size_select} ${sizeError ? styles.error : ''}`}
 							value={size}
 							onChange={(e) => {
 								setSize(e.target.value);
-								setSizeError(false); // убираем красную рамку при выборе
+								setSizeError(false);
 							}}
-							onFocus={() => setSizeError(false)} // убираем красную рамку при фокусе
-						>
+							onFocus={() => setSizeError(false)}>
 							<option value="" disabled>
 								Select size
 							</option>

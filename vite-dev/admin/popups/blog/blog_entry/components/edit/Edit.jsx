@@ -15,8 +15,8 @@ import CKEditor from 'ui/editors/ckeditor';
 import LangsTab from 'ui/common/langs_tab';
 import TextArea from 'ui/inputs/textarea';
 import { forEach, get, replace } from 'lodash-es';
-import SpecificationsAddForm from 'admin/pages/product/specifications/SpecificationsAddForm';
 import ProductSizeAddForm from 'admin/pages/product/product_size/ProductSizeAddForm';
+import SpecificationsAddForm from 'admin/pages/product/specifications/SpecificationsAddForm';
 import Select from 'ui/inputs/select';
 
 const propTypes = {

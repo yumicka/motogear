@@ -4,7 +4,7 @@ namespace App\Models\Main;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductSizes extends Model
+class Specification extends Model
 {
     /**
      * Database connection.
@@ -19,7 +19,7 @@ class ProductSizes extends Model
      * 
      * @var string
      */
-    protected $table = 'product_sizes';
+    protected $table = 'specifications';
 
 
     /**

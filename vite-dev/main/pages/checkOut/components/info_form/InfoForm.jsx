@@ -32,13 +32,9 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 	);
 
 	const onBeforeSubmit = ({ data /*, Form*/ }) => {
-		// ВАЖНО: тут мы добавляем то, что не лежит в Field-ах, и валидируем
 
 		if (!selectedCountry) {
 			alert('Select country');
-			// “жёстко” отменить submit штатно тут нельзя (в вашем Form нет return false),
-			// поэтому самый надёжный способ — держать selectedCountry как Field (см. ниже),
-			// или пробросить ошибку в поле.
 			throw new Error('COUNTRY_REQUIRED');
 		}
 
@@ -56,7 +52,6 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 
 		// товары
 		data.items = cart?.product_summary || [];
-
 		// доставка
 		data.deliveryType = deliveryType;
 		data.omnivaPackage = omnivaPackage; // если бэк ждёт объект

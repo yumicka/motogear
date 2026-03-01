@@ -42,6 +42,7 @@ class ProductSizes
         return [
             'id' => $item->id,
             'product_size' => $item->product_size,
+            'is_required' => true,
         ];
     //</editor-fold>
     }
@@ -86,11 +87,27 @@ class ProductSizes
     }
     
     public static function getBySizeId($size_id) {
+        $size_id = (int)$size_id;
+
+        if ($size_id === 0) {
+            return [
+                'id' => 0,
+                'is_required' => false,
+            ];
+        }
+
         $query = self::getQuery();
         $query->where('s.id', $size_id);
 
         $item = $query->first();
 
-        return $item ? self::formatResponseData($item) : null;
+        if (!$item) {
+            return null;
+        }
+
+        $data = self::formatResponseData($item);
+        $data['is_required'] = true;
+
+        return $data;
     }
 }

@@ -8,6 +8,8 @@ import Route from 'core/navigation/Route';
 import Switch from 'core/navigation/Switch';
 import BlogEntries from 'admin/pages/blog/components/blog_entries';
 import BlogCategories from 'admin/pages/blog/components/blog_categories';
+import Orders from 'admin/pages/blog/components/orders';
+import Brands from 'admin/pages/blog/components/brands';
 
 const propTypes = {};
 
@@ -29,6 +31,17 @@ class Content extends Component {
 					path="/administration/blog/blog_categories"
 					component={BlogCategories}
 				/>
+
+				<Route
+					path="/administration/blog/brands"
+					component={Brands}
+				/>
+
+				<Route
+					path="/administration/blog/orders"
+					component={Orders}
+				/>
+
 				<Route
 					path="/administration/translations"
 					component={TranslationsPage}

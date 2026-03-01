@@ -38,7 +38,7 @@ class CartController extends Controller
             'add' => [
                 'rules' => [
                     'product_id' => 'required|integer',
-                    'variant_id' => 'required|integer',
+                    'variant_id' => 'required|integer|min:0',
                     'quantity' => 'required|integer',
                 ],
                 'action' => function($request) {
@@ -71,7 +71,7 @@ class CartController extends Controller
             'change_quantity' => [        
                 'rules' => [
                     'product_id' => 'required|integer',
-                    'variant_id' => 'required|integer',
+                    'variant_id' => 'required|integer|min:0',
                     'quantity_type' => 'required|string|in:increase,decrease',
                 ],
                 'action' => function($request)  {
@@ -107,7 +107,7 @@ class CartController extends Controller
             'remove' => [        
                 'rules' => [
                     'product_id' => 'required|integer',
-                    'variant_id' => 'required|integer',
+                    'variant_id' => 'required|integer|min:0',
                 ],
                 'action' => function($request) {
                     //<editor-fold defaultstate="collapsed" desc="remove"> 

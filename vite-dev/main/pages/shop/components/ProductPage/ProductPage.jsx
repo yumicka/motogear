@@ -20,9 +20,8 @@ const uiProps = (ownProps) => {
 
 const ProductPage = ({ product, categories, specifications, product_sizes }) => {
 	if (!product) return null;
-	
 
-	console.log('product_sizes', product_sizes);
+	// console.log('product_sizes', product_sizes);
 
 	const categoryId = product.category;
 	const categoryName =
@@ -56,7 +55,7 @@ const ProductPage = ({ product, categories, specifications, product_sizes }) => 
 				</section>
 
 				<section className={styles.recomendations}>
-					<Recomendations product={product} product_sizes={product_sizes} />
+					<Recomendations product={product} />
 				</section>
 
 				<section className={styles.aboutProduct}>

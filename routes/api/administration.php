@@ -44,6 +44,16 @@ Route::group(['namespace' => 'BlogEntries', 'prefix' => 'blog'], function () {
      
     });
     
+    Route::group(['prefix' => 'orders'], function () {
+        Route::post('search', 'OrderAdmController@search');
+        Route::post('actions', 'OrderAdmController@actions');
+    });
+    
+    Route::group(['prefix' => 'brands'], function () {
+        Route::post('search', 'BrandsController@search');
+        Route::post('actions', 'BrandsController@actions');
+    });
+    
     Route::group(['prefix' => 'specifications'], function () {
         Route::post('search', 'SpecificationsController@search');
         Route::post('actions', 'SpecificationsController@actions');
@@ -59,7 +69,7 @@ Route::group(['namespace' => 'BlogEntries', 'prefix' => 'blog'], function () {
 
 # ========================================================================#
 #
-#                           Blogs
+#                           Expenses
 #    
 # ========================================================================#    
 

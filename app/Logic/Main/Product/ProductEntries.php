@@ -99,6 +99,8 @@ class ProductEntries
             }
         }
 
+        
+        
         $url = url($lang . '/veikals/' . Str::slug($item->id . '-' . $item->title));
 
         $lang_data = [];
@@ -107,6 +109,11 @@ class ProductEntries
         }
 
         $image = Images::getImageById($item->image_id);
+        
+        $sizes = DB::connection('main')
+            ->table('product_sizes')
+            ->where('product_id', $item->id)
+            ->get(['id', 'product_size']);
 
         return [
             'id' => $item->id,
@@ -122,6 +129,7 @@ class ProductEntries
             'title' => $item->title,
             'lang_data' => $lang_data,
             'image' => $image,
+            'sizes' => $sizes,
         ];
     }
 

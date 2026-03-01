@@ -8,18 +8,17 @@ import Link from 'core/navigation/link';
 
 const formatPrice = (n) => Number(n).toFixed(2);
 
-const Recomendations = ({ product, product_sizes }) => {
-	console.log('Recomendations product_sizes', product_sizes);
-	const [size, setSize] = useState('');
+const Recomendations = ({ product }) => {
+	const [sizesMap, setSizesMap] = useState({});
 	const [items, setItems] = useState([]);
+	const [toast, setToast] = useState(null);
+	const [toastType, setToastType] = useState('success');
 
 	const helmetsCategoryId = useMemo(() => {
 		return product?.categories?.find(
 			(c) => c.title?.trim().toLowerCase() === 'helmets',
 		)?.id;
 	}, [product]);
-
-	const SIZES = product_sizes;
 
 	useEffect(() => {
 		if (!helmetsCategoryId) {
@@ -49,12 +48,13 @@ const Recomendations = ({ product, product_sizes }) => {
 
 	if (!items.length) return null;
 
-	const addToCart = () => {
-		if (!product.id) return;
+	const addToCart = (item) => {
+		const selectedSize = sizesMap[item.id];
 
-		// если размер обязателен
-		if (!size) {
-			alert('Please select size');
+		if (item.sizes?.length && !selectedSize) {
+			setToastType('error');
+			setToast('Please select size for the product!');
+			setTimeout(() => setToast(null), 5000);
 			return;
 		}
 
@@ -62,29 +62,42 @@ const Recomendations = ({ product, product_sizes }) => {
 			url: 'cart/actions',
 			data: {
 				action: 'add',
-				product_id: product.id,
+				product_id: item.id,
 				quantity: 1,
-				// variant_id: ??? (если у тебя размер = вариант)
+				variant_id: selectedSize ? Number(selectedSize) : 0,
 			},
 			onSuccess: (response) => {
 				uiStore.set('cart', response.cart);
-				console.log('Product added to cart:', response.cart);
-				// тут можно обновить UI (например, открыть popup корзины)
+				setToastType('success');
+				setToast('Product has been added to cart!');
+				setTimeout(() => setToast(null), 5000);
 			},
 			onError: (err) => {
-				console.log('Add to cart error:', err);
+				setToastType('error');
+				setToast('Product has not been added to cart!');
+				setTimeout(() => setToast(null), 5000);
 			},
 		});
 	};
 
 	return (
 		<div className={styles.content}>
+			{toast && (
+				<div
+					className={styles.toast}
+					style={{
+						background: toastType === 'error' ? '#e74c3c' : '#2bbc68',
+					}}>
+					{toast}
+				</div>
+			)}
 			<div className={styles.title}>
 				<p>You may also like...</p>
 			</div>
 
 			<div className={styles.container}>
 				{items.map((item) => {
+					const SIZES = item.sizes || [];
 					const imgSrc = item.image?.image;
 					const price = Number(item.product_price) || 0;
 					const discount = Number(item.product_discount) || 0;
@@ -126,8 +139,13 @@ const Recomendations = ({ product, product_sizes }) => {
 										<div className={styles.size_block}>
 											<select
 												className={styles.size_select}
-												value={size}
-												onChange={(e) => setSize(e.target.value)}>
+												value={sizesMap[item.id] || ''}
+												onChange={(e) =>
+													setSizesMap((prev) => ({
+														...prev,
+														[item.id]: e.target.value,
+													}))
+												}>
 												<option value="" disabled>
 													Select size
 												</option>
@@ -141,7 +159,7 @@ const Recomendations = ({ product, product_sizes }) => {
 									)}
 								</div>
 
-								<button className={styles.btn} onClick={addToCart}>
+								<button className={styles.btn} onClick={() => addToCart(item)}>
 									Add to cart
 								</button>
 							</div>

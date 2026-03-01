@@ -77,9 +77,9 @@ const Footer = () => {
 						<div className={styles.contactBox}>
 							<div className={styles.contactRow}>
 								<span className={styles.muted}>Email</span>
-								<a className={styles.link} href="mailto:info@24mx.eu">
-									info@24mx.eu
-								</a>
+								<Link className={styles.link} href="mailto:info@skujins.lv">
+									info@skujins.lv
+								</Link>
 							</div>
 
 							<div className={styles.contactRow}>
@@ -117,7 +117,7 @@ const Footer = () => {
 
 				<div className={styles.bottom}>
 					<div className={styles.legalLeft}>
-						<span>© {year} 24MX</span>
+						<span>© {year} Skujins.lv</span>
 					</div>
 				</div>
 			</div>

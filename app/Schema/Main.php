@@ -115,6 +115,28 @@ class Main
     
     /*
     |--------------------------------------------------------------------------
+    |                             brands
+    |--------------------------------------------------------------------------|
+    */ 
+    //<editor-fold defaultstate="collapsed" desc="brands"> 
+    $table = $schema->createTable('brands');
+    $table->addOption('comment', 'Product brands');
+    $table->addOption('collate', 'utf8mb4_unicode_ci');
+    $table->addOption('engine', 'InnoDB'); 
+    $table->addOption('row_format', 'DYNAMIC');
+    $table->addOption('charset', 'utf8mb4');
+
+    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
+    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
+    $table->addColumn('brand_name', 'string', ['unsigned' => true, 'notnull' => true, 'comment' => 'Brand name']);
+    $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
+    $table->addColumn('size_guide_image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Size Guide Image ID']);
+    $table->setPrimaryKey(['id']);
+    //</editor-fold>
+    
+    /*
+    |--------------------------------------------------------------------------
     |                             product_categories
     |--------------------------------------------------------------------------|
     */ 

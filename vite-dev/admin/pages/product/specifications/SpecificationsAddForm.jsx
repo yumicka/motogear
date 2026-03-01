@@ -26,7 +26,6 @@ class SpecificationsAddForm extends Component {
 		super(props);
 	}
 
-
 	render() {
 		const { p_id } = this.props;
 		return (

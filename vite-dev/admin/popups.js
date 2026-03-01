@@ -23,6 +23,17 @@ popups[BlogEntryPopupSettings.name] = {
 };
 
 /*
+ * OrderPopup
+ */
+import OrderPopup, {
+	settings as OrderPopupSettings,
+} from 'admin/popups/blog/order';
+popups[OrderPopupSettings.name] = {
+	popup: OrderPopup,
+	settings: OrderPopupSettings,
+};
+
+/*
  * UserPopup
  */
 import UserPopup, { settings as UserPopupSettings } from 'admin/popups/user';

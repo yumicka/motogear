@@ -12,18 +12,36 @@ const defaultProps = {
 	isTrue: false,
 };
 
+const STATUS_CLASSES = {
+	pending: styles.pending,
+
+	payment_pending: styles.payment_pending,
+	paid: styles.paid,
+	failed: styles.failed,
+	cancelled: styles.cancelled,
+
+	declined: styles.declined,
+	processing: styles.processing,
+	confirmed: styles.confirmed,
+
+	shipped: styles.shipped,
+	delivered: styles.delivered,
+
+	completed: styles.completed,
+	refunded: styles.refunded,
+};
+
 class BooleanStatus extends Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
-		const { title, isTrue } = this.props;
+		const { title, status } = this.props;
 
 		const className = _g.classNames(
-			styles['wrapper'],
-			{ [styles['wrapper_true']]: isTrue },
-			{ [styles['wrapper_false']]: !isTrue },
+			styles.wrapper,
+			STATUS_CLASSES[status]
 		);
 
 		return <div className={className}>{title}</div>;

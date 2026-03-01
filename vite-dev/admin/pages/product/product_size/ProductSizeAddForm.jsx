@@ -21,11 +21,10 @@ const config = {
 	search: 'administration/blog/product_sizes/search',
 };
 
-class SpecificationsAddForm extends Component {
+class ProductSizeAddForm extends Component {
 	constructor(props) {
 		super(props);
 	}
-
 
 	render() {
 		const { p_id } = this.props;
@@ -43,8 +42,8 @@ class SpecificationsAddForm extends Component {
 	}
 }
 
-SpecificationsAddForm.propTypes = propTypes;
+ProductSizeAddForm.propTypes = propTypes;
 
-SpecificationsAddForm.defaultProps = defaultProps;
+ProductSizeAddForm.defaultProps = defaultProps;
 
-export default SpecificationsAddForm;
+export default ProductSizeAddForm;
