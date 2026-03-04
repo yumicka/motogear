@@ -31,35 +31,17 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 		(loc) => loc.A0_NAME === selectedCountry,
 	);
 
-	const onBeforeSubmit = ({ data /*, Form*/ }) => {
-
-		if (!selectedCountry) {
-			alert('Select country');
-			throw new Error('COUNTRY_REQUIRED');
-		}
-
-		if (!omnivaPackage?.value) {
-			alert('Select parcel machine');
-			throw new Error('OMNIVA_REQUIRED');
-		}
-
-		if (data?.privacyPolicy !== '1' && data?.privacyPolicy !== true) {
-			alert('Accept privacy policy');
-			throw new Error('PRIVACY_REQUIRED');
-		}
-
+	const onBeforeSubmit = ({ data }) => {
 		data.action = 'create';
 
-		// товары
 		data.items = cart?.product_summary || [];
-		// доставка
+
 		data.deliveryType = deliveryType;
-		data.omnivaPackage = omnivaPackage; // если бэк ждёт объект
+		data.omnivaPackage = omnivaPackage;
 		data.delivery_address = omnivaPackage.label || '';
 		data.delivery_postal_code = omnivaPackage.value || '';
 		data.delivery_country = selectedCountry || '';
 
-		// страна (если хочешь, можно брать из Field `country`, но у тебя она “двойная”)
 		data.country = selectedCountry;
 	};
 
@@ -70,14 +52,48 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 			setStep(2);
 			return;
 		}
-		alert('Order was not created');
 	};
 
-	const onError = ({ response }) => {
-		// тут можно показать response.msg если есть
-		alert('Order create failed');
-		console.error(response);
+	const onError = () => {
+		setTimeout(() => {
+			const firstError = document.querySelector('.field_error, .form-error');
+
+			if (firstError) {
+				firstError.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center',
+				});
+			}
+		}, 50);
 	};
+
+	const validatePersonName =
+		(label) =>
+			({ value, msg }) => {
+				const v = String(value ?? '').trim();
+				const re = /^[A-Za-zÀ-žĀ-ſ\u0400-\u04FF' -]{2,}$/;
+				if (!v) return { passed: false, msg: msg || `${label} ir obligāts!` };
+				if (!re.test(v))
+					return {
+						passed: false,
+						msg: msg || 'Ir atļauti tikai burti!.',
+					};
+				return { passed: true };
+			};
+
+	const validateTextReasonable =
+		( minLen = 3) =>
+			({ value, msg }) => {
+				const v = String(value ?? '').trim();
+				const hasLetter = /[A-Za-zÀ-žĀ-ſ\u0400-\u04FF]/.test(v);
+				if (v.length < minLen || !hasLetter) {
+					return {
+						passed: false,
+						msg: msg || 'Lūdzu, ievadiet pareizu informāciju',
+					};
+				}
+				return { passed: true };
+			};
 
 	return (
 		<div className={styles.checkoutInformationBox}>
@@ -114,12 +130,16 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						<Field
 							name="name"
 							component={Input}
-							componentProps={{ placeholder: 'Name', required: true }}
+							isRequired={true}
+							componentProps={{ placeholder: 'Name *' }}
+							customValidation={validatePersonName('Name')}
 						/>
 						<Field
 							name="surname"
 							component={Input}
-							componentProps={{ placeholder: 'Surname', required: true }}
+							isRequired={true}
+							componentProps={{ placeholder: 'Surname *' }}
+							customValidation={validatePersonName('Surname')}
 						/>
 					</div>
 
@@ -127,19 +147,48 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						<Field
 							name="phoneNumber"
 							component={Input}
-							componentProps={{ placeholder: 'Phone Number', required: true }}
+							isRequired={true}
+							componentProps={{ placeholder: 'Phone Number *' }}
+							customValidation={({ value, msg }) => {
+								const raw = String(value ?? '');
+								const digits = raw.replace(/[^\d+]/g, '');
+								const normalized = digits.startsWith('+')
+									? digits
+									: digits.replace(/^00/, '+');
+
+								const onlyDigits = normalized.replace(/\D/g, '');
+
+								
+								const ok =
+									onlyDigits.length === 8 ||
+									(onlyDigits.length === 11 &&
+										onlyDigits.startsWith('371') &&
+										onlyDigits.startsWith('370') &&
+										onlyDigits.startsWith('372'));
+
+								return ok
+									? { passed: true }
+									: {
+										passed: false,
+										msg: msg || 'Ievadiet derīgu tālruņa numuru (8 cipari).',
+									};
+							}}
 						/>
+
 						<Field
 							name="emain"
 							component={Input}
-							componentProps={{ placeholder: 'E-mail', required: true }}
+							isRequired={true}
+							componentProps={{ placeholder: 'E-mail *' }}
 						/>
 					</div>
 
 					<Field
 						name="adress"
 						component={Input}
-						componentProps={{ placeholder: 'Adress', required: true }}
+						isRequired={true}
+						componentProps={{ placeholder: 'Adress *' }}
+						customValidation={validateTextReasonable(5)}
 					/>
 					<Field
 						name="adress_sec_field"
@@ -152,29 +201,57 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						<label>This address matches the delivery address</label>
 					</div>
 
-					{/* Country: лучше сделать именно Field и параллельно сетать selectedCountry */}
-					<Select
+					<Field
 						name="country"
-						required
-						options={[
-							{ value: 'LV', label: 'Latvia' },
-							{ value: 'LT', label: 'Lithuania' },
-							{ value: 'EE', label: 'Estonia' },
-						]}
-						placeholder="Select country"
-						onChange={(option) => setSelectedCountry(option?.value)}
+						component={Select}
+						isRequired={true}
+						onChange={({ value }) => {
+							setSelectedCountry(value);
+							setOmnivaPackage(null);
+						}}
+						componentProps={{
+							options: [
+								{ value: 'LV', label: 'Latvia' },
+								{ value: 'LT', label: 'Lithuania' },
+								{ value: 'EE', label: 'Estonia' },
+							],
+							placeholder: 'Select country *',
+						}}
 					/>
 
 					<div className={styles.InputField}>
 						<Field
 							name="city"
+							isRequired={true}
 							component={Input}
-							componentProps={{ required: true, placeholder: 'City' }}
+							componentProps={{ placeholder: 'City *' }}
+							customValidation={validateTextReasonable(2)}
 						/>
 						<Field
 							name="postcode"
 							component={Input}
-							componentProps={{ required: true, placeholder: 'Postal code' }}
+							isRequired={true}
+							componentProps={{ placeholder: 'Postal code *' }}
+							customValidation={({ value, msg }) => {
+								const v = String(value ?? '').trim().toUpperCase();
+
+								const digits = v.replace(/\D/g, '');
+
+								let ok = false;
+								if (selectedCountry === 'LV') {
+									ok = digits.length === 4;
+								} else if (selectedCountry === 'LT') {
+									ok = digits.length === 5;
+								} else if (selectedCountry === 'EE') {
+									ok = digits.length === 5;
+								} else {
+									ok = digits.length >= 4; 
+								}
+
+								return ok
+									? { passed: true }
+									: { passed: false, msg: msg || 'Ievadiet derīgu pasta indeksu izvēlētajai valstij.' };
+							}}
 						/>
 					</div>
 				</div>
@@ -198,8 +275,8 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						<Field
 							name="deliveryTypeField"
 							component={RadioGroup}
+							isRequired={true}
 							componentProps={{
-								required: true,
 								classNames: {
 									inner: styles.radioGroupRow,
 									'option-wrapper': styles.radioOptionRow,
@@ -213,24 +290,28 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 
 					<div className={styles.deliveryType}>
 						<div className={styles.deliveryType}>
-							<Select
+							<Field
 								name="omnivaPackage"
-								required
-								searchable
+								component={Select}
+								isRequired={true}
 								disabled={!selectedCountry}
 								onChange={({ value, Select }) => {
 									const selectedOption = Select.getSelectedOptions()[0];
-
 									setOmnivaPackage({
 										value,
 										label: selectedOption?.label,
 									});
 								}}
-								options={filteredLocations.map((loc) => ({
-									value: loc.ZIP,
-									label: `${loc.NAME} (${loc.A0_NAME})`,
-								}))}
-								placeholder="Select package"
+								componentProps={{
+									searchable: true,
+									placeholder: selectedCountry
+										? 'Select parcel machine *'
+										: 'Select country first',
+									options: filteredLocations.map((loc) => ({
+										value: loc.ZIP,
+										label: `${loc.NAME} (${loc.A0_NAME})`,
+									})),
+								}}
 							/>
 						</div>
 					</div>
@@ -238,7 +319,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 					<div className={styles.deliveryInfo}>
 						<div className={styles.deliveryPrice}>
 							<h3>Delivery fee:</h3>
-							<p>6.24</p>
+							<p>0.00 €</p>
 						</div>
 						<div className={styles.deliveryTime}>
 							<p>Estimated delivery time: 5-6 work days</p>
@@ -253,22 +334,19 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						<Field
 							name="privacyPolicy"
 							component={Checkbox}
-							componentProps={{
-								required: true,
-								onChange: () => {}, // если нужно
-							}}
+							mustAccept={true}
 						/>
-						<label>I accept the terms of the Privacy Policy.</label>
+						<label>I accept the terms of the Privacy Policy. *</label>
 					</div>
 
 					<div className={styles.labelContainer}>
 						<Field
 							name="distanceContract"
 							component={Checkbox}
-							componentProps={{ required: true }}
+							mustAccept={true}
 						/>
 						<label>
-							I agree to the distance contract at the time of purchase
+							I agree to the distance contract at the time of purchase *
 						</label>
 					</div>
 				</div>

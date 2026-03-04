@@ -18,26 +18,29 @@ const PaymentFailure = () => {
 
 				<h1 className={styles.title}>Maksājums neizdevās</h1>
 				<p className={styles.subtitle}>
-					Diemžēl maksājums netika pabeigts. Lūdzu, mēģini vēlreiz vai izvēlies citu
-					apmaksas veidu.
+					Diemžēl maksājums netika pabeigts. Lūdzu, mēģini vēlreiz vai izvēlies
+					citu apmaksas veidu.
 				</p>
 
 				<div className={styles.hr} />
 
 				<div className={styles.actions}>
-					<Link className={styles.primaryBtn} to={getMainUrl(true) + 'checkout'}>
+					<Link
+						className={styles.primaryBtn}
+						to={getMainUrl(true) + 'checkout'}>
 						Mēģināt vēlreiz
 					</Link>
 
 					<div className={styles.secondaryActions}>
-						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'cart'}>
+						<Link
+							className={styles.secondaryBtn}
+							to={getMainUrl(true) + 'cart'}>
 							Uz grozu
 						</Link>
-						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'home'}>
+						<Link
+							className={styles.secondaryBtn}
+							to={getMainUrl(true) + 'home'}>
 							Uz sākumu
-						</Link>
-						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'shop'}>
-							Uz veikalu
 						</Link>
 					</div>
 				</div>

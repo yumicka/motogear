@@ -56,9 +56,6 @@ const PaymentSuccess = ({ invoiceUrl, orderNumber, status }) => {
 						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'home'}>
 							Uz sākumu
 						</Link>
-						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'shop'}>
-							Uz veikalu
-						</Link>
 					</div>
 				</div>
 			</div>

@@ -16,7 +16,7 @@ $type = $order->type;
     body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
     table { width: 100%; border-collapse: collapse; }
     .container { width: 600px; margin: 5px auto 40px auto; position: relative; }
-    .header { padding: 20px 0; background:#000000; text-align: center; }
+    .header { padding: 20px 0; background:#fff; text-align: center; }
     .top-line { color: #767586; margin-bottom: 20px; }
     .bill-number { font-weight: bold; margin-bottom: 40px; }
     .top-table-divider { width: 60px; }
@@ -37,7 +37,7 @@ $type = $order->type;
 
 <body>
   <div class="header">
-    <img class="logo" src="<?= asset('img/logo/logo.png') ?>"/>
+    <img class="logo" src="<?= asset('img/logo/skujins_logo.png') ?>"/>
   </div>
 
   <div class="container">
@@ -103,21 +103,31 @@ $type = $order->type;
     <div style="height:30px"></div>
 
     <table>
-      <tr class="products-header">
-        <td>Nosaukums</td>
-        <td>Daudzums</td>
-        <td>Kopā</td>
-      </tr>
-
-      <!-- FIX: short tags -> нормальный php -->
-      <?php foreach ($rows as $row): ?>
-        <tr>
-          <td class="products-td-1"><?= $row['title'] ?></td>
-          <td class="products-td-2 text-align-center"><?= $row['quantity'] ?> gab</td>
-          <td class="products-td-3 text-align-center"><?= FormatHelper::money($row['calculated_price']) ?></td>
+        <tr class="products-header">
+          <td>Nosaukums</td>
+          <td class="text-align-center">Cena</td>
+          <td class="text-align-center">Daudzums</td>
+          <td class="text-align-center">Kopā</td>
         </tr>
-      <?php endforeach; ?>
-    </table>
+
+        <?php foreach ($rows as $row): ?>
+          <tr>
+            <td class="products-td-1"><?= $row['title'] ?></td>
+
+            <td class="products-td-2 text-align-center">
+              <?= FormatHelper::money($row['price']) ?>
+            </td>
+
+            <td class="products-td-2 text-align-center">
+              <?= $row['quantity'] ?> gab
+            </td>
+
+            <td class="products-td-3 text-align-center">
+              <?= FormatHelper::money($row['calculated_price']) ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </table>
 
     <div style="height:30px"></div>
 
