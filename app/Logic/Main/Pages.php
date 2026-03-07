@@ -73,7 +73,7 @@ class Pages
     //<editor-fold defaultstate="collapsed" desc="home"> 
 
         $content = array_merge(self::getCommonContent(), [
-           
+           'homepage_firstBox',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [

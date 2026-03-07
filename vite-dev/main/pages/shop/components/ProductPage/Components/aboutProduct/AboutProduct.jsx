@@ -55,32 +55,32 @@ const AboutProduct = ({ product, specifications }) => {
 		<div className={styles.content}>
 			<div className={styles.inner_content}>
 				<div className={styles.dropdowns}>
-					<DropdownItem title="Description">
+					<DropdownItem title={_g.lang('description')}>
 						<Description product={product} />
 					</DropdownItem>
 
 					{specifications.length > 0 && (
-						<DropdownItem title="Product specifications">
+						<DropdownItem title={_g.lang('specifications')}>
 							<Specification specifications={specifications} />
 						</DropdownItem>
 					)}
 
 					{brandId != 0 && (
-						<DropdownItem title="Size guide">
+						<DropdownItem title={_g.lang('size_guide')}>
 							<SizeGuide brandId={brandId} />
 						</DropdownItem>
 					)}
 
-					<DropdownItem title="Shipping & returns">
+					<DropdownItem title={_g.lang('returns')}>
 						<ShippingAndReturns />
-					</DropdownItem>
+					</DropdownItem> 
 
-					<DropdownItem title="Questions about the product">
+					<DropdownItem title={_g.lang('questions')}>
 						<AskQuestion />
 					</DropdownItem>
 
 					{brandId > 0 && (
-						<DropdownItem title="About the brand">
+						<DropdownItem title={_g.lang('about_brand')}>
 							<AboutBrand brandId={brandId} />
 						</DropdownItem>
 					)}
@@ -89,7 +89,7 @@ const AboutProduct = ({ product, specifications }) => {
 				{brandId > 0 && (
 					<div className={styles.popular}>
 						<div className={styles.title}>
-							<span>Popular by this brand</span>
+							<span>{_g.lang('popular')}</span>
 						</div>
 						<RecomendationsByBrand product={product} />
 					</div>

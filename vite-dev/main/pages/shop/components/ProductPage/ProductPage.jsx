@@ -62,9 +62,9 @@ const ProductPage = ({ product, categories, specifications, product_sizes }) => 
 					<AboutProduct product={product} specifications={specifications} />
 				</section>
 
-				<section className={styles.helmetFitting}>
+				{/* <section className={styles.helmetFitting}>
 					<Fitting product={product}/>
-				</section>
+				</section> */}
 			</div>
 		</div>
 	);

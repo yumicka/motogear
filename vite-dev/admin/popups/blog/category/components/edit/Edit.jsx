@@ -82,6 +82,7 @@ class Edit extends Component {
 						optionsUrl: 'administration/blog/categories/actions',
 						valueKey: 'id',
 						searchable: true,
+						clearable: true,
 						labelKey: 'title',
 						extraData: { action: 'get_options' },
 					}}

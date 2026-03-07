@@ -21,7 +21,7 @@ const Cart = () => {
 				</div>
 
 				<div className={styles.text}>
-					<div className={styles.label}>Cart</div>
+					<div className={styles.label}>{_g.lang('cart')}</div>
 					<div className={styles.total}>€{productTotal}</div>
 				</div>
 			</div>

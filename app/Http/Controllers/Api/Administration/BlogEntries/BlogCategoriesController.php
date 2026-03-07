@@ -175,7 +175,12 @@ class BlogCategoriesController extends Controller
                         return Response::error("Item with id {$request->id} doesn't exist!");
                     }
 
-                    $item->parent_id = $request->parent_id !== null ? (int)$request->parent_id : null;
+                    if($request->parent_id == ''){ 
+                        $item->parent_id = null;
+                    } else {
+                        $item->parent_id = $request->parent_id;
+                    }
+                    
                     $item->save();
                     
                     $langs = Langs::getAll();

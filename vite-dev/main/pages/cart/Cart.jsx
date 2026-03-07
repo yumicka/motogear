@@ -24,7 +24,7 @@ const Cart = () => {
 
 				<section className={styles.recomendationds}>
 					<div className={styles.recomendationds_title}>
-						<h2>Looking for something more?</h2>
+						<h2>{_g.lang('cart_looking')}</h2>
 					</div>
 					<div className={styles.recommended_products}>
 						<CartRecomendations />

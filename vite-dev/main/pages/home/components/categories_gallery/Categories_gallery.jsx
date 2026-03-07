@@ -26,12 +26,32 @@ const uiProps = (ownProps) => {
 
 const categoryImages = {
 	'Helmets': helmet,
+	'Ķiveres': helmet,
+	'Шлема' : helmet,
+
 	'Motocross Gear': clothes,
+	'Motokrosa piederumi': clothes,
+	'Экипировка для мотокросса': clothes,
+	
 	'Plastic & Decals': tools,
+	'Plastmasa un uzlīmes': tools,
+	'Детали из пластика и наклейки': tools,
+
 	'Tyres & Wheels': boots,
+	'Riepas un riteņi': boots,
+	'Шины и колеса': boots,
+
 	'Oils & Lubricants': oils,
+	'Eļļas un smērvielas': oils,
+	'Масла и смазочные материалы': oils,
+
 	'Accessories': pants,
+	'Aksesuāri': pants,
+	'Аксессуары': pants,
+
 	'Motocross Parts': protection,
+	'Motokrosa detaļas': protection,
+	'Запчасти для мотокросса': protection,
 };
 
 const CategoriesGallery = ({ categories }) => {

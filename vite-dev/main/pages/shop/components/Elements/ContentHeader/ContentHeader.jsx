@@ -13,7 +13,7 @@ const ContentHeader = ({ categoryId, activeId, categories }) => {
 	// console.log(activeId);
 	const title = mainCategory.title;
 	
-	const subTitle = activeCategory?.title || 'All '+title;
+	const subTitle = activeCategory?.title || `${_g.lang('all')} ${title}`;
 
 	return (
 		<div className={styles.wrapper}>

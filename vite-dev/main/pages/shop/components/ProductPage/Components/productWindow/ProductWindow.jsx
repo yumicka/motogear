@@ -105,7 +105,7 @@ const ProductWindow = ({ product, product_sizes }) => {
 			<div className={styles.discription}>
 				<h1 className={styles.title}>{title}</h1>
 
-				<div className={styles.reviews}>
+				{/* <div className={styles.reviews}>
 					{[...Array(5)].map((_, i) => (
 						<FontAwesomeIcon
 							key={i}
@@ -114,42 +114,42 @@ const ProductWindow = ({ product, product_sizes }) => {
 						/>
 					))}
 					<span className={styles.text}>{reviews} Reviews</span>
-				</div>
+				</div> */}
 
 				<div className={styles.qualities}>
 					<div className={styles.item}>
 						<div className={styles.icon}>
 							<FontAwesomeIcon icon={faBoltLightning} />
 						</div>
-						<div className={styles.text}>Fast deliveries to Latvia</div>
+						<div className={styles.text}>{_g.lang('fast_deliveries')}</div>
 					</div>
 
 					<div className={styles.item}>
 						<div className={styles.icon}>
 							<FontAwesomeIcon icon={faCircleCheck} />
 						</div>
-						<div className={styles.text}>Lowest Price Guarantee</div>
+						<div className={styles.text}>{_g.lang('lowest_price')}</div>
 					</div>
 
 					<div className={styles.item}>
 						<div className={styles.icon}>
 							<FontAwesomeIcon icon={faDollarSign} />
 						</div>
-						<div className={styles.text}>Free shipping over €150*</div>
+						<div className={styles.text}>{_g.lang('free_shipping')}</div>
 					</div>
 
 					<div className={styles.item}>
 						<div className={styles.icon}>
 							<FontAwesomeIcon icon={faRepeat} />
 						</div>
-						<div className={styles.text}>60-day return policy*</div>
+						<div className={styles.text}>{_g.lang('return_policy')}</div>
 					</div>
 
 					<div className={styles.item}>
 						<div className={styles.icon}>
 							<FontAwesomeIcon icon={faBagShopping} />
 						</div>
-						<div className={styles.text}>Huge Assortment</div>
+						<div className={styles.text}>{_g.lang('assortment')}</div>
 					</div>
 				</div>
 			</div>
@@ -173,7 +173,7 @@ const ProductWindow = ({ product, product_sizes }) => {
 							{originalPrice.toFixed(2)}
 						</span>
 						<span className={styles.save}>
-							You save <FontAwesomeIcon icon={faEuroSign} />
+							{_g.lang('save')} <FontAwesomeIcon icon={faEuroSign} />
 							{savings.toFixed(2)}
 						</span>
 					</div>
@@ -190,7 +190,7 @@ const ProductWindow = ({ product, product_sizes }) => {
 							}}
 							onFocus={() => setSizeError(false)}>
 							<option value="" disabled>
-								Select size
+								{_g.lang('select_size')}
 							</option>
 
 							{SIZES.map((s) => (
@@ -203,13 +203,13 @@ const ProductWindow = ({ product, product_sizes }) => {
 				)}
 
 				<button className={styles.btn} onClick={addToCart} disabled={adding}>
-					Add to cart
+					{_g.lang('add_to_cart')}
 				</button>
 
 				<div className={styles.shipment}>
 					<span className={styles.latvia_icon} />
 
-					<span className={styles.latvia_text}>Yes, we ship to Latvia</span>
+					<span className={styles.latvia_text}>{_g.lang('delivery')}</span>
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,9 @@
 import styles from './CheckoutSteps.module.less';
 
 const steps = [
-	{ id: 1, label: 'Payment details' },
-	{ id: 2, label: 'Payment' },
-	{ id: 3, label: 'Confirmation' },
+	{ id: 1, label: _g.lang('payment_details')},
+	{ id: 2, label: _g.lang('payment')},
+	{ id: 3, label: _g.lang('confirmation')},
 ];
 
 const CheckoutSteps = ({ step }) => {

@@ -45,8 +45,8 @@ const ProductCart = ({ cart, setCart }) => {
 						<FontAwesomeIcon icon={faFaceFrown} />
 					</div>
 					<div className={styles.text}>
-						<h2>Your cart is empty</h2>
-						<p>Pick some products to start shopping!</p>
+						<h2>{_g.lang('cart_empty')}</h2>
+						<p>{_g.lang('pick')}</p>
 					</div>
 				</section>
 			) : (

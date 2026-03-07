@@ -28,7 +28,7 @@ const Checkout = () => {
 				<CheckoutSteps step={step} />
 				<div className={styles.checkoutContent}>
 					<section className={styles.checkoutProducts}>
-						<h2>Your Cart</h2>
+						<h2>{_g.lang('your_cart')}</h2>
 						<div className={styles.checkoutProductsCart}>
 							<ProductCart cart={cart} setCart={setCart} />
 						</div>
@@ -36,7 +36,7 @@ const Checkout = () => {
 
 					{step === 1 && (
 						<section className={styles.checkoutInformation}>
-							<h2>Contact Information</h2>
+							<h2>{_g.lang('contact_information')}</h2>
 							<InfoForm setStep={setStep} cart={cart} setOrderId={handleSetOrderId}/>
 						</section>
 					)}

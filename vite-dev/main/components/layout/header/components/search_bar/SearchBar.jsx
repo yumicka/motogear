@@ -12,7 +12,7 @@ const SearchBar = () => {
 						<input
 							type="text"
 							id="search"
-							placeholder={'Search for product, category, brand or bike...'}
+							placeholder={_g.lang('search')}
 						/>
 					</div>
 				</form>

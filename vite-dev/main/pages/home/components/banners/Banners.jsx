@@ -4,28 +4,54 @@ import Image from 'ui/media/image';
 import getMainUrl from 'helpers/getMainUrl';
 import Link from 'core/navigation/link';
 
-const Banners = () => {
-	const bigImage = getMainUrl()+'img/banners/rodrigues-hero.jpg';
-	const RightImage = getMainUrl()+'img/banners/Hero_Dakar2024destacada.jpg';
-	const tyres = getMainUrl()+'img/banners/tyres.jpg';
-	const tent = getMainUrl()+'img/banners/tent.jpg';
-	
+import WithUi from 'hoc/store/ui';
+
+import { head } from 'lodash-es';
+
+import Editable from 'cms/editable';
+
+const uiProps = (ownProps) => {
+	return {
+		content: {
+			homepage_firstBox: {
+				langData: 'langData',
+				data: 'data',
+				media: {
+					images: 'images',
+				},
+			},
+		},
+	};
+};
+
+let Banners = ({langData, data, image}) => {
+	// const bigImage = getMainUrl() + 'img/banners/rodrigues-hero.jpg';
+	const RightImage = getMainUrl() + 'img/banners/Hero_Dakar2024destacada.jpg';
+	const tyres = getMainUrl() + 'img/banners/tyres.jpg';
+	const tent = getMainUrl() + 'img/banners/tent.jpg';
+
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
 				<div className={styles.hero_section}>
 					<section className={styles.hero_grid}>
 						{/* BIG LEFT */}
-						<Link className={`${styles.card} ${styles.hero}`} to="#">
+
+						<Link className={`${styles.card} ${styles.hero}`} to={data.link}>
 							<Image
-								src={bigImage}
+								src={image.image}
 								alt="Winter Sale"
 								className={styles.image}
 							/>
 							<div className={styles.overlay} />
 							<div className={styles.contentLeft}>
-								<h2>Winter Sale!</h2>
-								<button className={styles.btn}>Up to 80% Off</button>
+								<Editable
+									edit={{
+										name: 'homepage_first_box',
+									}}>
+									<h2>{langData.title}</h2>
+									<button className={styles.btn}>{langData.content}</button>
+								</Editable>
 							</div>
 						</Link>
 
@@ -55,7 +81,9 @@ const Banners = () => {
 
 						{/*-- BOTTOM ROW */}
 						<div className={styles.bottom_row}>
-							<Link className={`${styles.card} ${styles.bottomLeftCard}`} to="#">
+							<Link
+								className={`${styles.card} ${styles.bottomLeftCard}`}
+								to="#">
 								<Image
 									src={tyres}
 									alt="Parts and tyres"
@@ -87,4 +115,12 @@ const Banners = () => {
 	);
 };
 
-export default Banners;
+Banners = WithUi((ownProps) => {
+	return {
+		images: {
+			[head(ownProps.images)]: 'image',
+		},
+	};
+})(Banners);
+
+export default WithUi(uiProps)(Banners);
