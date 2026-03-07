@@ -6,7 +6,7 @@
 
   html {
     font-size: 16px; 
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
   }
 
@@ -14,7 +14,7 @@
   html {
     height: 100%;
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 
     /* padding: 0 5px; */
   }
