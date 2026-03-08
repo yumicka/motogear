@@ -137,10 +137,8 @@ class ProductsController extends Controller
 
         $query = ProductEntries::getQuery($lang);
 
-        // ✅ Фильтр по brand_id
         $query->where('b.brand_id', $brandId);
 
-        // ✅ Исключаем текущий продукт
         if ($excludeId > 0) {
             $query->where('b.id', '!=', $excludeId);
         }

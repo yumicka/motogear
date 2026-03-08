@@ -59,7 +59,7 @@ class Main
     $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
     $table->addColumn('brand_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Brand id']);
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
-    $table->addColumn('top_seller', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Top seller']);
+    $table->addColumn('top_seller', 'boolean', ['notnull' => false, 'default' => 0, 'comment' => 'Top seller']);
 
     $table->addColumn('categories', 'text', ['notnull' => false, 'default' => null, 'comment' => '[category_id],[category_id]']);   
 

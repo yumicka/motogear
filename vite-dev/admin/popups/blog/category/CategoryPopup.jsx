@@ -6,6 +6,7 @@ import Tabs from 'ui/controls/tabs';
 
 import Edit from './components/edit';
 import Delete from './components/delete';
+import Media from './components/media';
 import { get, has } from 'lodash-es';
 
 const containerName = 'BlogEntryCategoryAdministration';
@@ -65,7 +66,7 @@ class CategoryPopup extends Component {
 	getTitle = (data) => {
 		//<editor-fold defaultstate="collapsed" desc="getTitle">
 		const id = get(data, 'item.id', '');
-		return `Bloga kategorija #${id}`;
+		return `Produkta kategorija #${id}`;
 		//</editor-fold>
 	};
 
@@ -154,6 +155,16 @@ class CategoryPopup extends Component {
 				name: 'pencil',
 			},
 			content: <Edit {...itemData} />,
+		});
+
+		items.push({
+			name: 'media',
+			title: 'Media',
+			icon: {
+				provider: 'icomoon',
+				name: 'image2',
+			},
+			content: <Media {...itemData} />,
 		});
 
 		items.push({

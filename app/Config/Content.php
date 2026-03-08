@@ -43,15 +43,32 @@ class Content
             
         /*
         |--------------------------------------------------------------------------
-        |                             homepage_left_first_box
+        |                             welcome_banner
         |--------------------------------------------------------------------------|
         */ 
-        //<editor-fold defaultstate="collapsed" desc="homepage_left_first_box"> 
-        $config['homepage_left_first_box'] = [  
+        //<editor-fold defaultstate="collapsed" desc="welcome_banner"> 
+        $config['welcome_banner'] = [  
             'langData' => function ($title, $content, $data) {               
                 return [
                     'title' => $title,
                     'content' => $content,
+                ];
+            },
+        ];
+        //</editor-fold> 
+            
+        /*
+        |--------------------------------------------------------------------------
+        |                             motocross_tyres
+        |--------------------------------------------------------------------------|
+        */ 
+        //<editor-fold defaultstate="collapsed" desc="motocross_tyres"> 
+        $config['motocross_tyres'] = [  
+            'langData' => function ($title, $content, $data) {               
+                return [
+                    'title' => $title,
+                    'content' => $content,
+                    'button_title' => Arr::get($data, 'button_title', ''),
                 ];
             },
             'data' => function ($data) {
@@ -59,14 +76,10 @@ class Content
                     'link' => Arr::get($data, 'link', ''),
                 ];
             },
-            'media' => [
-                'images' => 1,
-            ],  
         ];
-                
+
+        //</editor-fold>
         
         return $config;
-    //</editor-fold>
-    }
-    
+    }  
 }

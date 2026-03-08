@@ -35,9 +35,6 @@ const uiProps = (ownProps) => {
 class Media extends Component {
 	updateBrandImageId = ({ field, imageId }) => {
 		const { id, action, tableName, containerName } = this.props;
-
-		// если у тебя другой клиент для API — замени на свой
-		// (в проекте часто бывает request/post/api/...).
 		return post(action, {
 			action: 'update',
 			id: id,

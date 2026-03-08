@@ -3,6 +3,7 @@ namespace App\Logic\Main\Product;
 
 use DB;
 use App\Logic\Core\ContentTranslations;
+use App\Logic\Media\Images;
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
 class ProductCategories
@@ -19,9 +20,11 @@ class ProductCategories
     //<editor-fold defaultstate="collapsed" desc="getQuery"> 
         $query = DB::connection('main')->table('blog_categories as b');
         
+        
         $columns = [
             'b.id' => 'id',
             'b.parent_id' => 'parent_id',
+            'b.category_image_id' => 'category_image_id',
             "$lang.title" => 'title',
             
         ];
@@ -44,12 +47,13 @@ class ProductCategories
      * @return array
      */
     public static function formatResponseData($item) {
-
     //<editor-fold defaultstate="collapsed" desc="formatResponseData">
+        $image = Images::getImageById($item->category_image_id);
         return [
             'id' => $item->id,
             'title' => $item->title,
             'parent_id' => $item->parent_id,
+            'image' => $image,
         ];
     //</editor-fold>
     }

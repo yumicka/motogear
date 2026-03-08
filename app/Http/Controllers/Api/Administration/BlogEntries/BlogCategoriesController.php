@@ -13,6 +13,8 @@ use App\Logic\Core\Langs;
 use App\Logic\Core\Response;
 use App\Logic\Core\DataSource;
 use App\Logic\Main\Product\ProductCategories;
+use App\Types\Main\Images as ImagesTypes;
+use App\Logic\Media\Images;
 
 use App\Types\Main\ContentTranslations as ContentTranslationsTypes;
 
@@ -48,6 +50,7 @@ class BlogCategoriesController extends Controller
             'b.created_at' => 'created_at',
             'b.updated_at' => 'updated_at',
             'b.position' => 'position',
+            'b.category_image_id' => 'category_image_id',
         ];
 
         $langs = Langs::getAll();
@@ -111,12 +114,14 @@ class BlogCategoriesController extends Controller
                         return Response::error("Blog Category with id {$request->id} doesn't exist!");
                     }
                     
+                    $image = Images::getImageById($item->category_image_id);
 
                     $langs = Langs::getAll();
                     $translations = ContentTranslations::get($langs, ContentTranslationsTypes::blog_category, $item->id);
 
                     return Response::success([
                         'item' => $item,
+                        'image' => $image,
                         'translations' => $translations,
                     ]);
                 //</editor-fold>
@@ -142,6 +147,12 @@ class BlogCategoriesController extends Controller
 
                     $item->position = $position;  
                     $item->parent_id = $request->parent_id !== null ? (int)$request->parent_id : null;
+                    
+                    $item->save();
+                    
+                    $image = Images::createEmpty(ImagesTypes::single_image_optimized->value, $item->id);
+                    $item->category_image_id = $image->id; 
+                    
                     $item->save();
 
                     $langs = Langs::getAll();
@@ -220,6 +231,8 @@ class BlogCategoriesController extends Controller
 
                     ContentTranslations::delete(ContentTranslationsTypes::blog_category, $item->id);
                     BlogCategory::where('position', '>', $item->position)->decrement('position');
+                    
+                    Images::deleteImageById($item->category_image_id);
                     
                     $item->delete();
 

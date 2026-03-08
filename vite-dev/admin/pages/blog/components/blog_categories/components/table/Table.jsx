@@ -142,6 +142,22 @@ class Table extends Component {
 							},
 						},
 						{
+							title: 'Media',
+							icon: {
+								provider: 'icomoon',
+								name: 'image2',
+							},
+							onClick: () => {
+								openPopup({
+									name: popupName,
+									data: {
+										id: id,
+										tab: 'media',
+									},
+								});
+							},
+						},
+						{
 							title: 'Dzēst',
 							icon: {
 								provider: 'icomoon',

@@ -71,9 +71,10 @@ class Pages
     */
     public static function home($lang) {
     //<editor-fold defaultstate="collapsed" desc="home"> 
-
         $content = array_merge(self::getCommonContent(), [
            'homepage_firstBox',
+           'welcome_banner',
+           'motocross_tyres'
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [

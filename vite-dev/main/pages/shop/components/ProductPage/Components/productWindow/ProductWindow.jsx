@@ -42,8 +42,8 @@ const ProductWindow = ({ product, product_sizes }) => {
 	}
 
 	const title = product.title;
-	const rating = product.rating || 4;
-	const reviews = product.reviews || 10;
+	// const rating = product.rating || 4;
+	// const reviews = product.reviews || 10;
 	const imageSrc = product.image?.image;
 	const originalPrice = parseFloat(product.product_price);
 	const discount = parseFloat(product.product_discount);

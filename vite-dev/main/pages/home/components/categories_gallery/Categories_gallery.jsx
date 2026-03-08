@@ -7,51 +7,10 @@ import { useRef } from 'react';
 import Link from 'core/navigation/link';
 import WithUi from 'hoc/store/ui';
 
-const helmet = getMainUrl() + 'img/categories/helmet.jpg';
-const clothes = getMainUrl() + 'img/categories/motocross_clothing.jpg';
-const goggles = getMainUrl() + 'img/categories/motocross_goggles.jpg';
-const boots = getMainUrl() + 'img/categories/motocross_boots.jpg';
-const tools = getMainUrl() + 'img/categories/tools.jpg';
-const gloves = getMainUrl() + 'img/categories/motocross_gloves.jpg';
-const pants = getMainUrl() + 'img/categories/motocross_pants.jpg';
-const protection = getMainUrl() + 'img/categories/motocross_protection.jpg';
-const frame = getMainUrl() + 'img/categories/Frame.jpg';
-const oils = getMainUrl() + 'img/categories/oil_lubricants.jpg';
-
 const uiProps = (ownProps) => {
 	return {
 		categories: 'categories',
 	};
-};
-
-const categoryImages = {
-	'Helmets': helmet,
-	'Ķiveres': helmet,
-	'Шлема' : helmet,
-
-	'Motocross Gear': clothes,
-	'Motokrosa piederumi': clothes,
-	'Экипировка для мотокросса': clothes,
-	
-	'Plastic & Decals': tools,
-	'Plastmasa un uzlīmes': tools,
-	'Детали из пластика и наклейки': tools,
-
-	'Tyres & Wheels': boots,
-	'Riepas un riteņi': boots,
-	'Шины и колеса': boots,
-
-	'Oils & Lubricants': oils,
-	'Eļļas un smērvielas': oils,
-	'Масла и смазочные материалы': oils,
-
-	'Accessories': pants,
-	'Aksesuāri': pants,
-	'Аксессуары': pants,
-
-	'Motocross Parts': protection,
-	'Motokrosa detaļas': protection,
-	'Запчасти для мотокросса': protection,
 };
 
 const CategoriesGallery = ({ categories }) => {
@@ -67,7 +26,7 @@ const CategoriesGallery = ({ categories }) => {
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
 				<div className={styles.titleSection}>
-					<h2>Shop by Category</h2>
+					<h2>{_g.lang('shop_by')}</h2>
 				</div>
 				<div className={styles.carousel}>
 					<button
@@ -87,7 +46,7 @@ const CategoriesGallery = ({ categories }) => {
 										to={getMainUrl(true) + 'veikals?categoryId=' + category.id}>
 										<div className={styles.overlay} />
 										<Image
-											src={categoryImages[category.title]}
+											src={category.image?.image}
 											alt={category.title}
 											className={styles.image}
 										/>

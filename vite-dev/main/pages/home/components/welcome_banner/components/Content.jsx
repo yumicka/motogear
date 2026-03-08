@@ -1,40 +1,41 @@
-import Link from 'core/navigation/link';
+/* eslint-disable react/prop-types */
 import styles from './Content.module.less';
+import WithUi from 'hoc/store/ui';
+import Editable from 'cms/editable';
 
-const Content = () => {
+const uiProps = (ownProps) => {
+	return {
+		content: {
+			welcome_banner: {
+				langData: 'langData',
+			},
+		},
+	};
+};
+
+let Content = ({ langData }) => {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
 				<div className={styles.content}>
-					<div className={styles.text}>
-						<div className={styles.label}>
-							<h1>Welcome to Skujins.Lv</h1>
+					<Editable
+						edit={{
+							name: 'welcome_banner',
+						}}>
+						<div className={styles.text}>
+							<div className={styles.label}>
+								<h1 dangerouslySetInnerHTML={{ __html: langData.title }} />
+							</div>
+
+							<div className={styles.paragraph}>
+								<p dangerouslySetInnerHTML={{ __html: langData.content }} />
+							</div>
 						</div>
-						<div className={styles.paragraph}>
-							<p>
-								<strong>
-									We are more than just Europe’s largest Motocross and Enduro
-									Store. 
-								</strong>
-								At Skujins.Lv, you will find a wide range of products for both you and
-								your bike, regardless of whether you are a beginner or a
-								professional. We offer the world’s hottest brands within these
-								sports for competitive prices. In addition to this, we carry our
-								own high-quality <Link>brands</Link> at consistently best
-								prices.
-							</p>
-							<p>
-								<strong>Find the right parts immediately.</strong> You can easily see products
-								made specifically for your bike by selecting its make, model and
-								year in our <Link>Fit My Bike function</Link>. Doing this allows you to see only parts that are
-								compatible with your bike. <Link>Click here to start browsing our parts</Link>.
-							</p>
-						</div>
-					</div>
+					</Editable>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default Content;
+export default WithUi(uiProps)(Content);
