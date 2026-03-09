@@ -10,10 +10,10 @@ import {
 	faEuroSign,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
-import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+// import { faStar  } from '@fortawesome/free-solid-svg-icons';
 import Image from 'ui/media/image';
 import { useState } from 'react';
+import WithUi from 'hoc/store/ui';
 
 const uiProps = (ownProps) => {
 	return {
@@ -42,8 +42,6 @@ const ProductWindow = ({ product, product_sizes }) => {
 	}
 
 	const title = product.title;
-	// const rating = product.rating || 4;
-	// const reviews = product.reviews || 10;
 	const imageSrc = product.image?.image;
 	const originalPrice = parseFloat(product.product_price);
 	const discount = parseFloat(product.product_discount);
@@ -216,4 +214,4 @@ const ProductWindow = ({ product, product_sizes }) => {
 	);
 };
 
-export default ProductWindow;
+export default WithUi (uiProps)(ProductWindow);

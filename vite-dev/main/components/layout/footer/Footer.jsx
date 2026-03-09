@@ -17,11 +17,8 @@ const Footer = ({ categories }) => {
 	const helpLinks = [
 		{ label: 'Shipping & Delivery', to: '#' },
 		{ label: 'Returns', to: '#' },
-		{ label: 'Right to withdrawal', to: '#' },
 		{ label: 'Payment', to: '#' },
-		{ label: 'Claims & Complaints', to: '#' },
-		{ label: 'Order Status', to: '#' },
-		{ label: 'Privacy Policy', to: getMainUrl(true) + 'privacy_policy' },
+		{ label: 'Privacy Policy', to: getMainUrl(true) + 'privatumu-politika' },
 		{ label: 'Terms & Conditions', to: '#' },
 	];
 

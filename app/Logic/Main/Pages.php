@@ -72,9 +72,14 @@ class Pages
     public static function home($lang) {
     //<editor-fold defaultstate="collapsed" desc="home"> 
         $content = array_merge(self::getCommonContent(), [
-           'homepage_firstBox',
-           'welcome_banner',
-           'motocross_tyres'
+            'homepage_firstBox',
+            'right_image_box',
+            'bottom_left_card',
+            'bottom_right_card',
+            'welcome_banner',
+            'motocross_tyres',
+            'customize_your_look_left',
+            'customize_your_look_right',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -589,6 +594,7 @@ class Pages
 
         $state['Page'] = [];        
         $state['Page']['current'] = 'privacy_policy';
+        $state['categories'] = Product\ProductCategories::get($lang);
         
         $meta_data = MetaData::get($lang, 'privacy_policy');
         

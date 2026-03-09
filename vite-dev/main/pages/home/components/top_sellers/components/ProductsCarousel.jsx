@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Content.module.less';
 import Image from 'ui/media/image';
 import Link from 'core/navigation/link';
+import getMainUrl from 'helpers/getMainUrl';
 
-const ProductsCarousel = ({ products, scrollStep = 500, variant = 'now' }) => {
+const ProductsCarousel = ({ scrollStep = 500, variant = 'now' }) => {
 	const [loading, setLoading] = useState(true);
-	const [recomendationds, setRecomendationds] = useState([]);
+	const [products, setProducts] = useState([]);
 
 	useEffect(() => {
 		setLoading(true);
@@ -20,15 +21,16 @@ const ProductsCarousel = ({ products, scrollStep = 500, variant = 'now' }) => {
 				filters: {
 					top_seller: 1,
 				},
+				category_id: 2,
 				results_per_page: 10,
 			},
 			onSuccess: (response) => {
 				setLoading(false);
-				setRecomendationds(response.rows || []);
+				setProducts(response.rows || []);
 			},
 			onError: () => {
 				setLoading(false);
-				setRecomendationds([]);
+				setProducts([]);
 			},
 		});
 	}, []);
@@ -57,9 +59,12 @@ const ProductsCarousel = ({ products, scrollStep = 500, variant = 'now' }) => {
 		);
 	};
 
-	const ProductImage = ({ src, alt }) => {
-		if (variant === 'gear') return <Image src={src} alt={alt} />;
-		return <Image src={src} alt={alt} />;
+	const formatPrice = (value) => Number(value || 0).toFixed(2);
+
+	const calcDiscountPrice = (price, discount) => {
+		const p = Number(price || 0);
+		const d = Number(discount || 0);
+		return p * (1 - d / 100);
 	};
 
 	return (
@@ -74,41 +79,52 @@ const ProductsCarousel = ({ products, scrollStep = 500, variant = 'now' }) => {
 
 			<div className={styles.viewport}>
 				<div className={styles.galleryGrid} ref={trackRef}>
-					{products.map((p) => (
-						<CardWrapper
-							key={p.id}
-							className={styles.content_box}
-							to={p.to}
-							href={p.href}>
-							<div className={styles.seller_card}>
-								<ProductImage src={p.img} alt={p.name} />
-							</div>
-
-							<div className={styles.price}>
-								<div className={styles.discounted_price}>
-									<h3>
-										<FontAwesomeIcon icon={faEuroSign} /> {p.priceNow}
-									</h3>
-									<span>{p.discount}</span>
+					{products.map((p) => {
+						const priceOld = Number(p.product_price || 0);
+						const discount = Number(p.product_discount || 0);
+						const priceNow = calcDiscountPrice(priceOld, discount);
+						const imageSrc = p.image?.image;
+						return (
+							<CardWrapper
+								key={p.id}
+								className={styles.content_box}
+								to={p.url}
+								href={getMainUrl(true) + 'product/' + p.id}>
+								<div className={styles.seller_card}>
+									<Image src={imageSrc} alt={p.title} />
 								</div>
 
-								<div className={styles.original_price}>
-									<h4>
-										<FontAwesomeIcon icon={faEuroSign} /> {p.priceOld}
-									</h4>
+								<div className={styles.price}>
+									<div
+										className={
+											discount > 0
+												? styles.discounted_price
+												: styles.normal_price
+										}>
+										<h3>
+											<FontAwesomeIcon icon={faEuroSign} />{' '}
+											{formatPrice(priceNow)}
+										</h3>
+
+										{discount > 0 && <span>-{discount}%</span>}
+									</div>
+
+									{discount > 0 && (
+										<div className={styles.original_price}>
+											<h4>
+												<FontAwesomeIcon icon={faEuroSign} />{' '}
+												{formatPrice(priceOld)}
+											</h4>
+										</div>
+									)}
 								</div>
-							</div>
 
-							<div className={styles.reviews}>
-								<span className={styles.review_stars}>{p.rating}</span>
-								<span>{p.reviews} reviews</span>
-							</div>
-
-							<div className={styles.product_name}>
-								<h2>{p.name}</h2>
-							</div>
-						</CardWrapper>
-					))}
+								<div className={styles.product_name}>
+									<h2>{p.title}</h2>
+								</div>
+							</CardWrapper>
+						);
+					})}
 				</div>
 			</div>
 

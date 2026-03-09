@@ -3,7 +3,7 @@
 .wrapper {
     width: 100%;
     background-color: @background;
-    font-family: Lexend;
+    font-family: Inter;
 }
 
 .inner_wrapper {
@@ -26,19 +26,16 @@
   gap: 5px;
 }
 
-/* === CARD BASE === */
 .card {
   position: relative;
   overflow: hidden;
   background: #ddd; 
 }
 
-/* чтобы слева было большое */
 .hero {
     min-height: 520px;
 }
 
-/* справа верх и низ одинаковые */
 .sideTop{
     min-height: 400px;
 }
@@ -46,7 +43,7 @@
      min-height: 102px;
 }
 
-/* картинка внутри карточки */
+
 .image {
     position: absolute;
     inset: 0;
@@ -111,12 +108,16 @@
     cursor: pointer;
 }
 
-/* OUTLET блок */
 .sideBottom {
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: .2s;
+
+  &:hover{
+    background: #141414;
+  }
 }
 
 .outletText {
@@ -134,7 +135,6 @@
 
 }
 
-/* высоты нижнего ряда */
 .bottomLeftCard,
 .bottomRightCard {
   min-height: 260px;

@@ -24,7 +24,7 @@ const FilterElement = ({ categoryId, activeId, setActiveId, categories }) => {
 			<div className={styles.innerWrapper}>
 				<div className={styles.categories}>
 					<div className={linkClass(null)} onClick={() => setActiveId(null)}>
-						All
+						{_g.lang('all')}
 					</div>
 
 					{visibleCategories.map((c) => (

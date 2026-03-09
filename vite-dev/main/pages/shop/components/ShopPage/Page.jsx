@@ -72,7 +72,6 @@ const Page = ({ categoryId }) => {
 				setProducts(response.rows || []);
 				setLastPage(response.lastPage || 1);
 				setCurrentPage(page);
-				// удобно: после смены страницы поднять вверх
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			},
 			onError: () => {
@@ -84,7 +83,6 @@ const Page = ({ categoryId }) => {
 		});
 	};
 
-	// когда меняется категория — сбрасываем на 1 страницу
 	useEffect(() => {
 		fetchPage(1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps

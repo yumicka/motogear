@@ -38,7 +38,7 @@ const HomePage = () => {
 				<TopSellers
 					title={
 						<h2>
-							Top Sellers <span>right now</span>!
+							{_g.lang('top_sellers')}
 						</h2>
 					}>
 					<CartRecomendations />
@@ -54,7 +54,7 @@ const HomePage = () => {
 			</section>
 
 			<section>
-				<TopSellers title="Top Sellers Gear">
+				<TopSellers title={_g.lang('top_sellers_gear')}>
 					<ProductsCarousel
 						products={productsGear}
 						scrollStep={500}

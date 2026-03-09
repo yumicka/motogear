@@ -43,7 +43,7 @@ module.exports = {
 				white: 'var(--white)',
 			},
 			fontFamily: {
-				sans: ['Lexend', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 				'heading-desktop-h1': 'var(--heading-desktop-h1-font-family)',
 				'heading-desktop-h2': 'var(--heading-desktop-h2-font-family)',
 				'heading-desktop-h3': 'var(--heading-desktop-h3-font-family)',

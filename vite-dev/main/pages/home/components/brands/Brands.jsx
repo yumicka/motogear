@@ -6,7 +6,7 @@ const Brands = () => {
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
 				<div className={styles.title}>
-					<h2>Our wide range of brands</h2>
+					<h2>{_g.lang('wide_range')}</h2>
 				</div>
 
 				<div className={styles.content}>

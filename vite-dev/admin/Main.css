@@ -14,7 +14,7 @@
     min-height: 100%;
     position: relative;
     background-color: #e8e8e8;
-    font-family: Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 14px;
     color: #000;
     overflow-y: scroll;
@@ -29,3 +29,4 @@
   #app {
     height: 100%;
   }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
