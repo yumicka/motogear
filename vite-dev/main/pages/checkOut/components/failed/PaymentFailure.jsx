@@ -18,8 +18,7 @@ const PaymentFailure = () => {
 
 				<h1 className={styles.title}>Maksājums neizdevās</h1>
 				<p className={styles.subtitle}>
-					Diemžēl maksājums netika pabeigts. Lūdzu, mēģini vēlreiz vai izvēlies
-					citu apmaksas veidu.
+					{_g.lang('payment_failure')}
 				</p>
 
 				<div className={styles.hr} />
@@ -28,19 +27,19 @@ const PaymentFailure = () => {
 					<Link
 						className={styles.primaryBtn}
 						to={getMainUrl(true) + 'checkout'}>
-						Mēģināt vēlreiz
+						{_g.lang('try_again')}
 					</Link>
 
 					<div className={styles.secondaryActions}>
 						<Link
 							className={styles.secondaryBtn}
 							to={getMainUrl(true) + 'cart'}>
-							Uz grozu
+							{_g.lang('to_the_cart')}
 						</Link>
 						<Link
 							className={styles.secondaryBtn}
 							to={getMainUrl(true) + 'home'}>
-							Uz sākumu
+							{_g.lang('home_page')}
 						</Link>
 					</div>
 				</div>

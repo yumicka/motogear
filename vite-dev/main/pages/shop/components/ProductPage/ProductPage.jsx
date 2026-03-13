@@ -3,7 +3,6 @@ import styles from './ProductPage.module.less';
 import ProductWindow from './Components/productWindow/ProductWindow';
 import Recomendations from './Components/recomendations/Recomendations';
 import AboutProduct from './Components/aboutProduct/AboutProduct';
-import Fitting from './Components/fitting/Fitting';
 import Link from 'core/navigation/link';
 import WithUi from 'hoc/store/ui';
 import getMainUrl from 'helpers/getMainUrl';
@@ -17,8 +16,12 @@ const uiProps = (ownProps) => {
 	};
 };
 
-
-const ProductPage = ({ product, categories, specifications, product_sizes }) => {
+const ProductPage = ({
+	product,
+	categories,
+	specifications,
+	product_sizes,
+}) => {
 	if (!product) return null;
 
 	// console.log('product_sizes', product_sizes);
@@ -32,39 +35,37 @@ const ProductPage = ({ product, categories, specifications, product_sizes }) => 
 
 	return (
 		<div className={styles.wrapper}>
-			<div className={styles.innerWrapper}>
-				<div className={styles.categories}>
-					<Link
-						to={getMainUrl(true) + 'veikals?categoryId=' + categoryId}
-						className={styles.section}>
-						<p>{categoryName} / </p>
-					</Link>
-					<Link
-						to={getMainUrl(true) + 'veikals?categoryId=' + categoryId}
-						className={styles.section}>
-						<p> {subCategoryName} / </p>
-					</Link>
+			<div className="pageFade">
+				<div className={styles.innerWrapper}>
+					<div className={styles.categories}>
+						<Link
+							to={getMainUrl(true) + 'veikals?categoryId=' + categoryId}
+							className={styles.section}>
+							<p>{categoryName} / </p>
+						</Link>
+						<Link
+							to={getMainUrl(true) + 'veikals?categoryId=' + categoryId}
+							className={styles.section}>
+							<p> {subCategoryName} / </p>
+						</Link>
 
-					<div className={styles.section}>
-						<p> {name}</p>
+						<div className={styles.section}>
+							<p> {name}</p>
+						</div>
 					</div>
+
+					<section className={styles.productSection}>
+						<ProductWindow product={product} product_sizes={product_sizes} />
+					</section>
+
+					<section className={styles.recomendations}>
+						<Recomendations product={product} />
+					</section>
+
+					<section className={styles.aboutProduct}>
+						<AboutProduct product={product} specifications={specifications} />
+					</section>
 				</div>
-
-				<section className={styles.productSection}>
-					<ProductWindow product={product} product_sizes={product_sizes}/>
-				</section>
-
-				<section className={styles.recomendations}>
-					<Recomendations product={product} />
-				</section>
-
-				<section className={styles.aboutProduct}>
-					<AboutProduct product={product} specifications={specifications} />
-				</section>
-
-				{/* <section className={styles.helmetFitting}>
-					<Fitting product={product}/>
-				</section> */}
 			</div>
 		</div>
 	);

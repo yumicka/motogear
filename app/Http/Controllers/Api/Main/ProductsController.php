@@ -48,7 +48,6 @@ class ProductsController extends Controller
         $lang = app()->getLocale();
         $query = ProductEntries::getQuery($lang);
 
-        //columns
         $columns = ProductEntries::getColumns($lang);
         
         foreach ($columns as $column => $alias) {
@@ -72,19 +71,37 @@ class ProductsController extends Controller
         # ========================================================================#
 
         $filters = [
+            'search' => function($query, $value) {
+                if (!empty($value)) {
+                    $lang = app()->getLocale();
+                    $query->where("blog_entry_$lang.title", 'LIKE', '%' . $value . '%');
+                }
+            },
             'top_seller' => function($query, $value) {
                 if ((int)$value === 1) {
                     $query->where('b.top_seller', 1);
                 }
             },
         ];
-      
+            
+        
+        $requestFilters = $request->get('filters', []);
+        $brandIds = $requestFilters['brands'] ?? [];
+            
         // Filter by category
         $query = $query->when($request->has('category_id') && 
         $request->category_id !== null, function ($q) use ($request) {
             $categoryId = (int) $request->category_id;
             return $q->where('b.categories', 'LIKE', '%[' . $categoryId . ']%');
         });
+        
+        // Filter by brands
+        $query = $query->when(
+            !empty($brandIds) && is_array($brandIds),
+            function ($q) use ($brandIds) {
+                return $q->whereIn('b.brand_id', $brandIds);
+            }
+        );
 
         $orderBy = $request->get('order_by', 'b.position');
         $orderDir = $request->get('order_dir', 'asc');

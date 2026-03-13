@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import WithUi from 'hoc/store/ui';
+
 import CategoriesGallery from './components/categories_gallery/Categories_gallery';
 import Banners from './components/banners/Banners';
 import ShopNow from './components/shop_now/Shop_Now';
@@ -21,7 +22,7 @@ const uiProps = (ownProps) => {};
 
 const HomePage = () => {
 	return (
-		<>
+		<div className="pageFade">
 			<section>
 				<Banners />
 			</section>
@@ -70,7 +71,7 @@ const HomePage = () => {
 			<section>
 				<WelcomeBanner />
 			</section>
-		</>
+		</div>
 	);
 };
 

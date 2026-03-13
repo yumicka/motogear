@@ -117,8 +117,8 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 								label: styles.radioLabel,
 							},
 							options: [
-								{ value: 'private', label: 'Private individual' },
-								{ value: 'company', label: 'Company' },
+								{ value: 'private', label: _g.lang('private_individual')},
+								{ value: 'company', label: _g.lang('company')},
 							],
 						}}
 					/>
@@ -131,14 +131,14 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							name="name"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: 'Name *' }}
+							componentProps={{ placeholder: _g.lang('name')  + ' *' }}
 							customValidation={validatePersonName('Name')}
 						/>
 						<Field
 							name="surname"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: 'Surname *' }}
+							componentProps={{ placeholder: _g.lang('surname')  + ' *' }}
 							customValidation={validatePersonName('Surname')}
 						/>
 					</div>
@@ -148,7 +148,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							name="phoneNumber"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: 'Phone Number *' }}
+							componentProps={{ placeholder: _g.lang('phone_number')  + ' *' }}
 							customValidation={({ value, msg }) => {
 								const raw = String(value ?? '');
 								const digits = raw.replace(/[^\d+]/g, '');
@@ -170,7 +170,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 									? { passed: true }
 									: {
 										passed: false,
-										msg: msg || 'Ievadiet derīgu tālruņa numuru (8 cipari).',
+										msg: msg || _g.lang('valid_phone_number'),
 									};
 							}}
 						/>
@@ -179,7 +179,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							name="emain"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: 'E-mail *' }}
+							componentProps={{ placeholder: _g.lang('email')  + ' *' }}
 						/>
 					</div>
 
@@ -187,18 +187,18 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						name="adress"
 						component={Input}
 						isRequired={true}
-						componentProps={{ placeholder: 'Adress *' }}
+						componentProps={{ placeholder: _g.lang('adress')  + ' *' }}
 						customValidation={validateTextReasonable(5)}
 					/>
 					<Field
-						name="adress_sec_field"
+						name="adress_sec_field" 
 						component={Input}
-						componentProps={{ placeholder: 'Apartment number ect.' }}
+						componentProps={{ placeholder: _g.lang('adress_sec_field') }}
 					/>
 
 					<div className={styles.labelContainer}>
 						<Field name="isEqual" component={Checkbox} />
-						<label>This address matches the delivery address</label>
+						<label>{_g.lang('address_matches')}</label>
 					</div>
 
 					<Field
@@ -211,11 +211,11 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						}}
 						componentProps={{
 							options: [
-								{ value: 'LV', label: 'Latvia' },
-								{ value: 'LT', label: 'Lithuania' },
-								{ value: 'EE', label: 'Estonia' },
+								{ value: 'LV', label: _g.lang('latvia') },
+								{ value: 'LT', label: _g.lang('lithuania') },
+								{ value: 'EE', label: _g.lang('estonia') },
 							],
-							placeholder: 'Select country *',
+							placeholder: _g.lang('select_country') + ' *',
 						}}
 					/>
 
@@ -224,14 +224,14 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							name="city"
 							isRequired={true}
 							component={Input}
-							componentProps={{ placeholder: 'City *' }}
+							componentProps={{ placeholder: _g.lang('city')  + ' *' }}
 							customValidation={validateTextReasonable(2)}
 						/>
 						<Field
 							name="postcode"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: 'Postal code *' }}
+							componentProps={{ placeholder: _g.lang('postal_code')  + ' *' }}
 							customValidation={({ value, msg }) => {
 								const v = String(value ?? '').trim().toUpperCase();
 
@@ -241,16 +241,16 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 								if (selectedCountry === 'LV') {
 									ok = digits.length === 4;
 								} else if (selectedCountry === 'LT') {
-									ok = digits.length === 5;
+									ok = digits.length === 4;
 								} else if (selectedCountry === 'EE') {
-									ok = digits.length === 5;
+									ok = digits.length === 4;
 								} else {
 									ok = digits.length >= 4; 
 								}
 
 								return ok
 									? { passed: true }
-									: { passed: false, msg: msg || 'Ievadiet derīgu pasta indeksu izvēlētajai valstij.' };
+									: { passed: false, msg: msg || _g.lang('enter_valid_postal') };
 							}}
 						/>
 					</div>
@@ -262,13 +262,13 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 					<Field
 						name="comments"
 						component={TextArea}
-						componentProps={{ placeholder: 'Add a comment to your order' }}
+						componentProps={{ placeholder: _g.lang('add_comment') }}
 					/>
 				</div>
 
 				<div className={styles.divider} />
 
-				<h2>Delivery</h2>
+				<h2>{_g.lang('delivery_checkout')}</h2>
 
 				<div className={styles.deliveryBox}>
 					<div className={styles.deliveryType}>
@@ -282,7 +282,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 									'option-wrapper': styles.radioOptionRow,
 									label: styles.radioLabel,
 								},
-								options: [{ value: 'parcelMachine', label: 'Parcel machine' }],
+								options: [{ value: 'parcelMachine', label: _g.lang('parcel_machine') }],
 								onChange: ({ value }) => setDeliveryType(value),
 							}}
 						/>
@@ -305,8 +305,8 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 								componentProps={{
 									searchable: true,
 									placeholder: selectedCountry
-										? 'Select parcel machine *'
-										: 'Select country first',
+										? _g.lang('select_parcel_machine')
+										: _g.lang('select_parcel_machine_first'),
 									options: filteredLocations.map((loc) => ({
 										value: loc.ZIP,
 										label: `${loc.NAME} (${loc.A0_NAME})`,
@@ -318,11 +318,11 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 
 					<div className={styles.deliveryInfo}>
 						<div className={styles.deliveryPrice}>
-							<h3>Delivery fee:</h3>
+							<h3>{_g.lang('delivery_fee')}</h3>
 							<p>0.00 €</p>
 						</div>
 						<div className={styles.deliveryTime}>
-							<p>Estimated delivery time: 5-6 work days</p>
+							<p>{_g.lang('estimated_delivery_time')}</p>
 						</div>
 					</div>
 				</div>
@@ -336,7 +336,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							component={Checkbox}
 							mustAccept={true}
 						/>
-						<label>I accept the terms of the Privacy Policy. *</label>
+						<label>{_g.lang('terms_policy')} *</label>
 					</div>
 
 					<div className={styles.labelContainer}>
@@ -346,7 +346,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							mustAccept={true}
 						/>
 						<label>
-							I agree to the distance contract at the time of purchase *
+							{_g.lang('distance_contract')} *
 						</label>
 					</div>
 				</div>

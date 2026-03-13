@@ -17,20 +17,20 @@ const Total = ({ total }) => {
 
 	return (
 		<div className={styles.total}>
-			<div className={styles.total_label}>Total summary:</div>
+			<div className={styles.total_label}>{_g.lang('total_summary')}:</div>
 
 			<div className={styles.total_info}>
-				<h3>Cart price: €{productTotal.toFixed(2)}</h3>
-				<h3>Shipping: €{shippingPrice.toFixed(2)}</h3>
+				<h3>{_g.lang('cart_price')}: €{productTotal.toFixed(2)}</h3>
+				<h3>{_g.lang('shipping')}: €{shippingPrice.toFixed(2)}</h3>
 
 				<div className={styles.final_total}>
-					<h1>Total: €{finalTotal.toFixed(2)}</h1>
-					<p>Price without VAT (21%): €{priceWithoutVat.toFixed(2)}</p>
+					<h1>{_g.lang('total')}: €{finalTotal.toFixed(2)}</h1>
+					<p>{_g.lang('vat')} (21%): €{priceWithoutVat.toFixed(2)}</p>
 				</div>
 			</div>
 
 			<div className={styles.checkout_button}>
-				<Link to={getMainUrl(true) + 'checkout'} className={styles.checkout_btn}>Proceed to Checkout</Link>
+				<Link to={getMainUrl(true) + 'checkout'} className={styles.checkout_btn}>{_g.lang('proceed')}</Link>
 			</div>
 		</div>
 	);

@@ -26,16 +26,35 @@
     font-size: 0.875rem;
     color: #000;    
     overflow-y: scroll;
-  } 
+} 
 
   *,
   ::after,
   ::before {
     box-sizing: border-box;
-  }
+}
 
   #app {
     height: 100%;
-  }
+}
 
+.pageFade {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: pageFadeIn 0.8s ease forwards;
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+  
   

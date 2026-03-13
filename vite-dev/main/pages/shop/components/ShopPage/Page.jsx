@@ -24,7 +24,6 @@ function getPageItems(current, last, maxVisible = 7) {
 	let start = Math.max(1, current - half);
 	let end = Math.min(last, current + half);
 
-	// выравниваем окно, чтобы всегда было maxVisible страниц (если возможно)
 	const windowSize = end - start + 1;
 	if (windowSize < maxVisible) {
 		const missing = maxVisible - windowSize;
@@ -32,7 +31,6 @@ function getPageItems(current, last, maxVisible = 7) {
 		end = Math.min(last, end + (missing - (start === 1 ? 0 : 0)));
 	}
 
-	// гарантируем границы
 	start = Math.max(1, start);
 	end = Math.min(last, end);
 
@@ -51,7 +49,7 @@ function getPageItems(current, last, maxVisible = 7) {
 	return pages;
 }
 
-const Page = ({ categoryId }) => {
+const Page = ({ categoryId, filters, setProductCount }) => {
 	const [loading, setLoading] = useState(true);
 	const [products, setProducts] = useState([]);
 	const [lastPage, setLastPage] = useState(1);
@@ -66,11 +64,14 @@ const Page = ({ categoryId }) => {
 				category_id: categoryId,
 				results_per_page: RESULTS_PER_PAGE,
 				page: page,
+				filters: filters,
+				price_range: filters.price_range,
 			},
 			onSuccess: (response) => {
 				setLoading(false);
 				setProducts(response.rows || []);
 				setLastPage(response.lastPage || 1);
+				setProductCount(response.total);
 				setCurrentPage(page);
 				window.scrollTo({ top: 0, behavior: 'smooth' });
 			},
@@ -86,7 +87,7 @@ const Page = ({ categoryId }) => {
 	useEffect(() => {
 		fetchPage(1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [categoryId]);
+	}, [categoryId, filters]);
 
 	const pageItems = useMemo(
 		() => getPageItems(currentPage, lastPage, MAX_VISIBLE_PAGES),

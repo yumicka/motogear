@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 // import { useState } from 'react';
-import styles from './FilterElement.module.less';
+import styles from './CategoriesElement.module.less';
 import {useState} from 'react';
 
 const visibleCount = 7;
 
-const FilterElement = ({ categoryId, activeId, setActiveId, categories }) => {
+const CategoriesElement = ({ categoryId, activeId, setActiveId, categories }) => {
 	const [expanded, setExpanded] = useState(false);
 
 	const linkClass = (id) =>
@@ -52,4 +52,4 @@ const FilterElement = ({ categoryId, activeId, setActiveId, categories }) => {
 	);
 };
 
-export default FilterElement;
+export default CategoriesElement;

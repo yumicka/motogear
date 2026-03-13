@@ -11,25 +11,27 @@ const Cart = () => {
 	const isEmpty = !cart || cart.cart_amount === 0;
 	return (
 		<div className={styles.wrapper}>
-			<div className={styles.inner_wrapper}>
-				<section className={`${styles.box} ${isEmpty ? styles.empty : ''}`}>
-					<div>
-						<ProductCart cart={cart} setCart={setCart} />
-					</div>
+			<div className="pageFade">
+				<div className={styles.inner_wrapper}>
+					<section className={`${styles.box} ${isEmpty ? styles.empty : ''}`}>
+						<div>
+							<ProductCart cart={cart} setCart={setCart} />
+						</div>
 
-					<div>
-						<Total total={cart} />
-					</div>
-				</section>
+						<div>
+							<Total total={cart} />
+						</div>
+					</section>
 
-				<section className={styles.recomendationds}>
-					<div className={styles.recomendationds_title}>
-						<h2>{_g.lang('cart_looking')}</h2>
-					</div>
-					<div className={styles.recommended_products}>
-						<CartRecomendations />
-					</div>
-				</section>
+					<section className={styles.recomendationds}>
+						<div className={styles.recomendationds_title}>
+							<h2>{_g.lang('cart_looking')}</h2>
+						</div>
+						<div className={styles.recommended_products}>
+							<CartRecomendations />
+						</div>
+					</section>
+				</div>
 			</div>
 		</div>
 	);

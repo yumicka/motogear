@@ -15,21 +15,20 @@ const uiProps = (ownProps) => {
 };
 
 const PaymentSuccess = ({ invoiceUrl, orderNumber, status }) => {
-	console.log('Props:', { status });
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.card}>
 				<div className={styles.icon}><FontAwesomeIcon icon={faCircleCheck} /></div>
 
-				<h1 className={styles.title}>Maksājums veiksmīgs</h1>
+				<h1 className={styles.title}>{_g.lang('payment_successful')}</h1>
 				<p className={styles.subtitle}>
-					Paldies! Jūsu pasūtījums ir saņemts un tiek apstrādāts.
+					{_g.lang('thank_you')}
 				</p>
 
 				{orderNumber && (
 					<div className={styles.row}>
-						<span className={styles.label}>Pasūtījuma numurs:</span>
+						<span className={styles.label}>{_g.lang('order_number')}:</span>
 						<span className={styles.value}>{orderNumber}</span>
 					</div>
 				)}
@@ -44,17 +43,17 @@ const PaymentSuccess = ({ invoiceUrl, orderNumber, status }) => {
 							download={orderNumber ? `invoice_${orderNumber}.pdf` : undefined}
 							target="_blank"
 							rel="noopener noreferrer">
-							Lejupielādēt rēķinu (PDF)
+							{_g.lang('download_invoice')} (PDF)
 						</Link>
 					) : (
 						<div className={styles.info}>
-							Rēķins tiek sagatavots… Pamēģini atjaunot lapu pēc brīža.
+							{_g.lang('invoice_preparation')}
 						</div>
 					)}
 
 					<div className={styles.secondaryActions}>
 						<Link className={styles.secondaryBtn} to={getMainUrl(true) + 'home'}>
-							Uz sākumu
+							{_g.lang('home_page')}
 						</Link>
 					</div>
 				</div>

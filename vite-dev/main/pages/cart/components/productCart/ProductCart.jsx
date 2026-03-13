@@ -59,7 +59,7 @@ const ProductCart = ({ cart, setCart }) => {
 									<h3>{item.title}</h3>
 									{item.selected_variant?.product_size && (
 										<h4>
-											Size: {item.selected_variant?.product_size || 'N/A'}
+											{_g.lang('size')}: {item.selected_variant?.product_size || 'N/A'}
 										</h4>
 									)}
 								</div>
@@ -82,7 +82,7 @@ const ProductCart = ({ cart, setCart }) => {
 									)}
 								</p>
 								<p className={styles.total_cart_price}>
-									Total:{' '}
+									{_g.lang('total')}:{' '}
 									<span className={styles.total_price}>€{item.total}</span>
 								</p>
 							</div>

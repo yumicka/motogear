@@ -15,11 +15,10 @@ const Footer = ({ categories }) => {
 	const year = new Date().getFullYear();
 
 	const helpLinks = [
-		{ label: 'Shipping & Delivery', to: '#' },
-		{ label: 'Returns', to: '#' },
-		{ label: 'Payment', to: '#' },
-		{ label: 'Privacy Policy', to: getMainUrl(true) + 'privatumu-politika' },
-		{ label: 'Terms & Conditions', to: '#' },
+		{ label: _g.lang('returns'), to: '#' },
+		{ label: _g.lang('payment'), to: '#' },
+		{ label: _g.lang('privacy_policy'), to: getMainUrl(true) + 'privatumu-politika' },
+		{ label: _g.lang('terms'), to: '#' },
 	];
 
 	return (

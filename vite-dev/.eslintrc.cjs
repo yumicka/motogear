@@ -12,6 +12,10 @@ module.exports = {
 	},
 	extends: ['eslint:recommended', 'plugin:react/recommended'],
 	parserOptions: {
+		requireConfigFile: false,
+		ecmaFeatures: {
+			jsx: true,
+		},
 		sourceType: 'module',
 	},
 	plugins: ['react', 'react-hooks'],

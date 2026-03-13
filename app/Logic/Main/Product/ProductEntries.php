@@ -100,8 +100,6 @@ class ProductEntries
             }
         }
 
-        
-        
         $url = url($lang . '/veikals/' . Str::slug($item->id . '-' . $item->title));
 
         $lang_data = [];

@@ -19,34 +19,40 @@ const Checkout = () => {
 
 	const handleSetOrderId = (id) => {
 		setOrderId(id);
-		uiStore.set('checkout.orderId', id); // чтобы не потерять при переходах
+		uiStore.set('checkout.orderId', id);
 	};
 
 	return (
 		<div className={styles.checkoutWrapper}>
-			<div className={styles.checkoutInnerWrapper}>
-				<CheckoutSteps step={step} />
-				<div className={styles.checkoutContent}>
-					<section className={styles.checkoutProducts}>
-						<h2>{_g.lang('your_cart')}</h2>
-						<div className={styles.checkoutProductsCart}>
-							<ProductCart cart={cart} setCart={setCart} />
-						</div>
-					</section>
-
-					{step === 1 && (
-						<section className={styles.checkoutInformation}>
-							<h2>{_g.lang('contact_information')}</h2>
-							<InfoForm setStep={setStep} cart={cart} setOrderId={handleSetOrderId}/>
+			<div className="pageFade">
+				<div className={styles.checkoutInnerWrapper}>
+					<CheckoutSteps step={step} />
+					<div className={styles.checkoutContent}>
+						<section className={styles.checkoutProducts}>
+							<h2>{_g.lang('your_cart')}</h2>
+							<div className={styles.checkoutProductsCart}>
+								<ProductCart cart={cart} setCart={setCart} />
+							</div>
 						</section>
-					)}
 
-					{step === 2 && (
-						<section className={styles.checkoutInformation}>
-							<h2>Payment</h2>
-							<Payment setStep={setStep} orderId={orderId}/>
-						</section>
-					)}
+						{step === 1 && (
+							<section className={styles.checkoutInformation}>
+								<h2>{_g.lang('contact_information')}</h2>
+								<InfoForm
+									setStep={setStep}
+									cart={cart}
+									setOrderId={handleSetOrderId}
+								/>
+							</section>
+						)}
+
+						{step === 2 && (
+							<section className={styles.checkoutInformation}>
+								<h2>{_g.lang('payment')}</h2>
+								<Payment setStep={setStep} orderId={orderId} />
+							</section>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

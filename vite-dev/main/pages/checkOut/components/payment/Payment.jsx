@@ -89,7 +89,7 @@ const Payment = ({ setStep, payments, orderId }) => {
 							e.preventDefault();
 							setStep(1);
 						}}>
-						Go back <FontAwesomeIcon icon={faArrowLeft} />
+						{_g.lang('go_back_btn')} <FontAwesomeIcon icon={faArrowLeft} />
 					</button>
 				</div>
 
@@ -101,7 +101,7 @@ const Payment = ({ setStep, payments, orderId }) => {
 							e.preventDefault();
 							handleContinue();
 						}}>
-						{loading ? 'Loading...' : 'Continue'}{' '}
+						{loading ? _g.lang('loading')+'...' : _g.lang('continue')}{' '}
 						<FontAwesomeIcon icon={faArrowRight} />
 					</button>
 				</div>

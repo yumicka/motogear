@@ -362,6 +362,7 @@ class Pages
         
         $state['categories'] = Product\ProductCategories::get($lang);
         $state['products'] = Product\ProductEntries::get($lang);
+        $state['brands'] = Product\Brands::get($lang);
         
         $meta_data = MetaData::get($lang, 'shop');
         

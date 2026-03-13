@@ -12,7 +12,7 @@ const CheckoutSteps = ({ step }) => {
 			<div className={styles.progressLineBackground} />
 			<div
 				className={styles.progressLineFilled}
-				style={{ width: `${((step - 1) / (steps.length - 1)) * 100}%` }}
+				style={{ width: `${(step / steps.length) * 100}%` }}
 			/>
 			{steps.map((item) => {
 				const isActive = step === item.id;
