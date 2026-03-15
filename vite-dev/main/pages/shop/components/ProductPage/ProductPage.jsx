@@ -24,8 +24,6 @@ const ProductPage = ({
 }) => {
 	if (!product) return null;
 
-	// console.log('product_sizes', product_sizes);
-
 	const categoryId = product.category;
 	const categoryName =
 		categories.find((cat) => cat.id === product.category)?.title || '';

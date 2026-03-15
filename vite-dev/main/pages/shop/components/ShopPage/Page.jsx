@@ -55,6 +55,8 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 	const [lastPage, setLastPage] = useState(1);
 	const [currentPage, setCurrentPage] = useState(1);
 
+	console.log(products);
+
 	const fetchPage = (page) => {
 		setLoading(true);
 
@@ -65,7 +67,6 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 				results_per_page: RESULTS_PER_PAGE,
 				page: page,
 				filters: filters,
-				price_range: filters.price_range,
 			},
 			onSuccess: (response) => {
 				setLoading(false);
@@ -113,10 +114,7 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 						const originalPrice = parseFloat(item.product_price);
 						const discount = parseFloat(item.product_discount) || 0;
 						const hasDiscount = discount !== 0 && !isNaN(discount);
-
-						const currentPrice = hasDiscount
-							? originalPrice * (1 - discount / 100)
-							: originalPrice;
+						const calculatedPrice = item.calculated_price;
 
 						return (
 							<Link to={item.url} className={styles.card} key={item.id}>
@@ -137,7 +135,7 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 													: styles.price_now
 											}>
 											<FontAwesomeIcon icon={faEuroSign} />
-											{formatPrice(currentPrice)}
+											{formatPrice(calculatedPrice)}
 										</p>
 
 										{hasDiscount && (

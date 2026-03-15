@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         //$schedule->command(\App\Console\Commands\ClearOldLogs::class)->monthly();
 //        $schedule->command(\App\Console\Commands\BlogCategoriesImages::class)->everyMinute();
+//        $schedule->command(\App\Console\Commands\ProductsCalculatedPrice::class)->everyMinute();
+//        $schedule->command(\App\Console\Commands\SeperateCategories::class)->everyMinute();
     }
 
     /**

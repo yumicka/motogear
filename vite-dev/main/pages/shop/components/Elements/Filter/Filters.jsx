@@ -79,19 +79,19 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 
 	const getBrandsLabel = () => {
 		const count = filters?.brands?.length || 0;
-		return count > 0 ? `Brands (${count})` : 'Brands';
+		return count > 0 ? `${_g.lang('brands')} (${count})` : _g.lang('brands');
 	};
 
 	const getSizesLabel = () => {
 		const count = filters?.sizes?.length || 0;
-		return count > 0 ? `Size (${count})` : 'Size';
+		return count > 0 ? `${_g.lang('size')} (${count})` : _g.lang('size');
 	};
 
 	const getPriceLabel = () => {
 		if (filters?.price_range) {
-			return `Price: ${filters.price_range[0]}€ - ${filters.price_range[1]}€`;
+			return `${_g.lang('price')} ${filters.price_range[0]}€ - ${filters.price_range[1]}€`;
 		}
-		return 'Price';
+		return _g.lang('price');
 	};
 
 	return (
@@ -163,14 +163,14 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 											type="button"
 											className={styles.applyBtn}
 											onClick={applyPriceFilter}>
-											Apply
+											{_g.lang('apply')}
 										</button>
 
 										<button
 											type="button"
 											className={styles.clearBtn}
 											onClick={clearPriceFilter}>
-											Clear
+											{_g.lang('clear')}
 										</button>
 									</div>
 								</div>
@@ -204,19 +204,19 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 								</div>
 							)}
 						</div>
+
+						<button
+							type="button"
+							className={styles.resetBtn}
+							onClick={resetAllFilters}>
+							{_g.lang('reset_filters')}
+						</button>
 					</div>
 
 					<div className={styles.productCount}>
 						<p>
 							{productCount} {_g.lang('products')}
 						</p>
-
-						<button
-							type="button"
-							className={styles.resetBtn}
-							onClick={resetAllFilters}>
-							Reset filters
-						</button>
 					</div>
 				</div>
 			</div>

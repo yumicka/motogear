@@ -6,10 +6,14 @@ import styles from './BooleanStatus.module.less';
 const propTypes = {
 	title: PropTypes.string.isRequired,
 	isTrue: PropTypes.bool,
+	status: PropTypes.string,
+	variant: PropTypes.oneOf(['default', 'active', 'pinned']),
 };
 
 const defaultProps = {
 	isTrue: false,
+	status: null,
+	variant: 'default',
 };
 
 const STATUS_CLASSES = {
@@ -32,16 +36,18 @@ const STATUS_CLASSES = {
 };
 
 class BooleanStatus extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
-		const { title, status } = this.props;
+		const { title, status, isTrue, variant } = this.props;
 
 		const className = _g.classNames(
 			styles.wrapper,
-			STATUS_CLASSES[status]
+			status ? STATUS_CLASSES[status] : null,
+			!status && variant === 'active' && isTrue ? styles.activeTrue : null,
+			!status && variant === 'active' && !isTrue ? styles.activeFalse : null,
+			!status && variant === 'pinned' && isTrue ? styles.pinnedTrue : null,
+			!status && variant === 'pinned' && !isTrue ? styles.pinnedFalse : null,
+			!status && variant === 'default' && isTrue ? styles.defaultTrue : null,
+			!status && variant === 'default' && !isTrue ? styles.defaultFalse : null,
 		);
 
 		return <div className={className}>{title}</div>;
@@ -49,7 +55,6 @@ class BooleanStatus extends Component {
 }
 
 BooleanStatus.propTypes = propTypes;
-
 BooleanStatus.defaultProps = defaultProps;
 
 export default BooleanStatus;

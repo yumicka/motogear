@@ -45,13 +45,13 @@ const ProductWindow = ({ product, product_sizes }) => {
 	const imageSrc = product.image?.image;
 	const originalPrice = parseFloat(product.product_price);
 	const discount = parseFloat(product.product_discount);
+	const calculatedPrice = parseFloat(product.calculated_price);
 	const hasDiscount = discount > 0;
 
-	let currentPrice = originalPrice;
+	// let currentPrice = originalPrice;
 	let savings = 0;
 	if (hasDiscount) {
-		currentPrice = originalPrice * (1 - discount / 100);
-		savings = originalPrice - currentPrice;
+		savings = originalPrice - calculatedPrice;
 	}
 
 	const addToCart = () => {
@@ -162,7 +162,7 @@ const ProductWindow = ({ product, product_sizes }) => {
 					className={
 						hasDiscount ? styles.discounted_price : styles.normal_price
 					}>
-					<FontAwesomeIcon icon={faEuroSign} /> {currentPrice.toFixed(2)}
+					<FontAwesomeIcon icon={faEuroSign} /> {calculatedPrice.toFixed(2)}
 				</h2>
 				{hasDiscount && (
 					<div className={styles.price_box}>
@@ -214,4 +214,4 @@ const ProductWindow = ({ product, product_sizes }) => {
 	);
 };
 
-export default WithUi (uiProps)(ProductWindow);
+export default WithUi(uiProps)(ProductWindow);

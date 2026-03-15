@@ -87,12 +87,13 @@ class ProductsController extends Controller
         
         $requestFilters = $request->get('filters', []);
         $brandIds = $requestFilters['brands'] ?? [];
+        $priceRange = $requestFilters['price_range'] ?? [];
             
         // Filter by category
         $query = $query->when($request->has('category_id') && 
         $request->category_id !== null, function ($q) use ($request) {
             $categoryId = (int) $request->category_id;
-            return $q->where('b.categories', 'LIKE', '%[' . $categoryId . ']%');
+            return $q->where('category_id', $categoryId);
         });
         
         // Filter by brands
@@ -100,6 +101,16 @@ class ProductsController extends Controller
             !empty($brandIds) && is_array($brandIds),
             function ($q) use ($brandIds) {
                 return $q->whereIn('b.brand_id', $brandIds);
+            }
+        );
+        
+       // Filter by price
+        $query = $query->when(
+            !empty($priceRange) && is_array($priceRange),
+            function ($q) use ($priceRange) {
+                return $q->whereBetween('b.calculated_price', [
+                $priceRange[0], $priceRange[1]
+                ]);
             }
         );
 

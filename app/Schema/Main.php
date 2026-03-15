@@ -55,19 +55,28 @@ class Main
     
     $table->addColumn('product_price', 'decimal', ['precision' => 10, 'scale' => 2, 'notnull' => true, 'default' => 0, 'comment' => 'Original price']);
     $table->addColumn('product_discount', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Discount in percent']);
-
+    $table->addColumn('calculated_price', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Discount in percent']);
+    
     $table->addColumn('image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Image id']);
     $table->addColumn('brand_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Brand id']);
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
     $table->addColumn('top_seller', 'boolean', ['notnull' => false, 'default' => 0, 'comment' => 'Top seller']);
 
     $table->addColumn('categories', 'text', ['notnull' => false, 'default' => null, 'comment' => '[category_id],[category_id]']);   
-
+    $table->addColumn('category_id', 'integer', ['unsigned' => true, 'notnull' => false, 'default' => null, 'comment' => 'Category ID']);
+    $table->addColumn('sub_category_id', 'integer', ['unsigned' => true, 'notnull' => false, 'default' => null, 'comment' => 'Subcategory ID']);
+    
     $table->addColumn('pinned', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Pinned']);
     
     $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
     
     $table->setPrimaryKey(['id']);
+    
+    $table->addIndex(['created_at'], 'idx_products_created');  
+    $table->addIndex(['calculated_price'], 'idx_products_price');
+    $table->addIndex(['category_id'], 'idx_products_category');
+    $table->addIndex(['sub_category_id'], 'idx_products_sub_category');
+    $table->addIndex(['brand_id'], 'idx_brand_id');
     //</editor-fold>
     
     /*

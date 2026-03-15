@@ -40,6 +40,11 @@ class Table extends Component {
 		});
 
 		columns.push({
+			name: 'calculated_price',
+			title: 'Cena',
+		});
+
+		columns.push({
 			name: 'pinned',
 			title: 'Pin',
 		});
@@ -90,7 +95,8 @@ class Table extends Component {
 			return (
 				<BooleanStatus
 					title={cell ? 'Jā' : 'Nē'}
-					isTrue={cell ? true : false}
+					isTrue={!!cell}
+					variant="active"
 				/>
 			);
 		};
@@ -99,7 +105,8 @@ class Table extends Component {
 			return (
 				<BooleanStatus
 					title={cell ? 'Jā' : 'Nē'}
-					isTrue={cell ? true : false}
+					isTrue={!!cell}
+					variant="pinned"
 				/>
 			);
 		};

@@ -68,17 +68,14 @@ const ProductCart = ({ cart, setCart }) => {
 										<>
 											<span className={styles.discount_price}>
 												€
-												{(
-													item.product_price *
-													(1 - item.product_discount / 100)
-												).toFixed(2)}
+												{item.calculated_price}
 											</span>{' '}
 											<span className={styles.original_price}>
 												€{item.product_price}
 											</span>
 										</>
 									) : (
-										<>€{item.product_price}</>
+										<>€{item.calculated_price}</>
 									)}
 								</p>
 								<p className={styles.total_cart_price}>

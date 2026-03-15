@@ -61,11 +61,11 @@ const ProductsCarousel = ({ scrollStep = 500, variant = 'now' }) => {
 
 	const formatPrice = (value) => Number(value || 0).toFixed(2);
 
-	const calcDiscountPrice = (price, discount) => {
-		const p = Number(price || 0);
-		const d = Number(discount || 0);
-		return p * (1 - d / 100);
-	};
+	// const calcDiscountPrice = (price, discount) => {
+	// 	const p = Number(price || 0);
+	// 	const d = Number(discount || 0);
+	// 	return p * (1 - d / 100);
+	// };
 
 	return (
 		<div className={styles.carousel}>
@@ -82,7 +82,7 @@ const ProductsCarousel = ({ scrollStep = 500, variant = 'now' }) => {
 					{products.map((p) => {
 						const priceOld = Number(p.product_price || 0);
 						const discount = Number(p.product_discount || 0);
-						const priceNow = calcDiscountPrice(priceOld, discount);
+						const priceNow = p.calculated_price;
 						const imageSrc = p.image?.image;
 						return (
 							<CardWrapper

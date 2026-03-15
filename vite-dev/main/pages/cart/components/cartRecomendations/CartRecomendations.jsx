@@ -90,7 +90,7 @@ const CartRecomendations = ({ scrollStep = 500, variant = 'now' }) => {
 					{recomendationds.map((p) => {
 						const priceOld = Number(p.product_price || 0);
 						const discount = Number(p.product_discount || 0);
-						const priceNow = calcDiscountPrice(priceOld, discount);
+						const priceNow = p.calculated_price;
 						const imageSrc = p.image?.image;
 
 						return (

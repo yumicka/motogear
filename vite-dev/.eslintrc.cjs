@@ -13,6 +13,11 @@ module.exports = {
 	extends: ['eslint:recommended', 'plugin:react/recommended'],
 	parserOptions: {
 		requireConfigFile: false,
+
+		babelOptions: {
+			plugins: ['@babel/plugin-syntax-jsx'],
+		},
+		
 		ecmaFeatures: {
 			jsx: true,
 		},
