@@ -12,10 +12,12 @@ import Select from 'ui/inputs/select';
 import TextArea from 'ui/inputs/textarea';
 
 const InfoForm = ({ setStep, cart, setOrderId }) => {
+	const [personType, setPersonType] = useState('private');
 	const [locations, setLocations] = useState([]);
 	const [selectedCountry, setSelectedCountry] = useState('');
 	const [omnivaPackage, setOmnivaPackage] = useState(null);
 	const [deliveryType, setDeliveryType] = useState('parcelMachine');
+	const [hasDifferentDeliveryAddress, setHasDifferentDeliveryAddress] = useState(false);
 
 	useEffect(() => {
 		remoteRequest({
@@ -35,7 +37,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 		data.action = 'create';
 
 		data.items = cart?.product_summary || [];
-
+		data.person_type = personType;
 		data.deliveryType = deliveryType;
 		data.omnivaPackage = omnivaPackage;
 		data.delivery_address = omnivaPackage.label || '';
@@ -82,7 +84,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 			};
 
 	const validateTextReasonable =
-		( minLen = 3) =>
+		(minLen = 3) =>
 			({ value, msg }) => {
 				const v = String(value ?? '').trim();
 				const hasLetter = /[A-Za-zÀ-žĀ-ſ\u0400-\u04FF]/.test(v);
@@ -110,6 +112,8 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 					<Field
 						name="person_type"
 						component={RadioGroup}
+						defaultValue="private"
+						onChange={({ value }) => setPersonType(value)}
 						componentProps={{
 							classNames: {
 								inner: styles.radioGroupRow,
@@ -117,8 +121,8 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 								label: styles.radioLabel,
 							},
 							options: [
-								{ value: 'private', label: _g.lang('private_individual')},
-								{ value: 'company', label: _g.lang('company')},
+								{ value: 'private', label: _g.lang('private_individual') },
+								{ value: 'company', label: _g.lang('company') },
 							],
 						}}
 					/>
@@ -126,29 +130,64 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 
 				{/* Contact fields */}
 				<div className={styles.checkoutInformationInputFields}>
-					<div className={styles.InputField}>
-						<Field
-							name="name"
-							component={Input}
-							isRequired={true}
-							componentProps={{ placeholder: _g.lang('name')  + ' *' }}
-							customValidation={validatePersonName('Name')}
-						/>
-						<Field
-							name="surname"
-							component={Input}
-							isRequired={true}
-							componentProps={{ placeholder: _g.lang('surname')  + ' *' }}
-							customValidation={validatePersonName('Surname')}
-						/>
-					</div>
+					{personType === 'private' ? (
+						<div className={styles.InputField}>
+							<Field
+								name="name"
+								component={Input}
+								isRequired={true}
+								componentProps={{ placeholder: _g.lang('name') + ' *' }}
+								customValidation={validatePersonName('Name')}
+							/>
+							<Field
+								name="surname"
+								component={Input}
+								isRequired={true}
+								componentProps={{ placeholder: _g.lang('surname') + ' *' }}
+								customValidation={validatePersonName('Surname')}
+							/>
+						</div>
+					) : (
+						<>
+							<div className={styles.InputField}>
+								<Field
+									name="company_name"
+									component={Input}
+									isRequired={true}
+									componentProps={{ placeholder: 'Company name *' }}
+									customValidation={validateTextReasonable(2)}
+								/>
+								<Field
+									name="reg_nr"
+									component={Input}
+									isRequired={true}
+									componentProps={{ placeholder: 'Reg nr *' }}
+									customValidation={({ value, msg }) => {
+										const v = String(value ?? '').trim();
+										if (!v) {
+											return {
+												passed: false,
+												msg: msg || 'Reg nr is required',
+											};
+										}
+										return { passed: true };
+									}}
+								/>
+							</div>
+							<Field
+								name="vat_nr"
+								component={Input}
+								componentProps={{ placeholder: 'Vat nr' }}
+							/>
+						</>
+					)}
 
 					<div className={styles.InputField}>
 						<Field
 							name="phoneNumber"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: _g.lang('phone_number')  + ' *' }}
+							componentProps={{ placeholder: _g.lang('phone_number') + ' *' }}
 							customValidation={({ value, msg }) => {
 								const raw = String(value ?? '');
 								const digits = raw.replace(/[^\d+]/g, '');
@@ -158,7 +197,6 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 
 								const onlyDigits = normalized.replace(/\D/g, '');
 
-								
 								const ok =
 									onlyDigits.length === 8 ||
 									(onlyDigits.length === 11 &&
@@ -176,10 +214,10 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						/>
 
 						<Field
-							name="emain"
+							name="email"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: _g.lang('email')  + ' *' }}
+							componentProps={{ placeholder: _g.lang('email') + ' *' }}
 						/>
 					</div>
 
@@ -187,19 +225,34 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 						name="adress"
 						component={Input}
 						isRequired={true}
-						componentProps={{ placeholder: _g.lang('adress')  + ' *' }}
+						componentProps={{ placeholder: _g.lang('adress') + ' *' }}
 						customValidation={validateTextReasonable(5)}
 					/>
 					<Field
-						name="adress_sec_field" 
+						name="adress_sec_field"
 						component={Input}
 						componentProps={{ placeholder: _g.lang('adress_sec_field') }}
 					/>
 
 					<div className={styles.labelContainer}>
-						<Field name="isEqual" component={Checkbox} />
+						<Field
+							name="isEqual"
+							component={Checkbox}
+							defaultValue="0"
+							onChange={({ value }) => setHasDifferentDeliveryAddress(value === '1')}
+						/>
 						<label>{_g.lang('address_matches')}</label>
 					</div>
+
+					{hasDifferentDeliveryAddress && (
+						<Field
+							name="delivery_address_manual"
+							component={Input}
+							isRequired={true}
+							componentProps={{ placeholder: _g.lang('diferent_delivery') }}
+							customValidation={validateTextReasonable(5)}
+						/>
+					)}
 
 					<Field
 						name="country"
@@ -224,16 +277,18 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							name="city"
 							isRequired={true}
 							component={Input}
-							componentProps={{ placeholder: _g.lang('city')  + ' *' }}
+							componentProps={{ placeholder: _g.lang('city') + ' *' }}
 							customValidation={validateTextReasonable(2)}
 						/>
 						<Field
 							name="postcode"
 							component={Input}
 							isRequired={true}
-							componentProps={{ placeholder: _g.lang('postal_code')  + ' *' }}
+							componentProps={{ placeholder: _g.lang('postal_code') + ' *' }}
 							customValidation={({ value, msg }) => {
-								const v = String(value ?? '').trim().toUpperCase();
+								const v = String(value ?? '')
+									.trim()
+									.toUpperCase();
 
 								const digits = v.replace(/\D/g, '');
 
@@ -245,12 +300,15 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 								} else if (selectedCountry === 'EE') {
 									ok = digits.length === 4;
 								} else {
-									ok = digits.length >= 4; 
+									ok = digits.length >= 4;
 								}
 
 								return ok
 									? { passed: true }
-									: { passed: false, msg: msg || _g.lang('enter_valid_postal') };
+									: {
+										passed: false,
+										msg: msg || _g.lang('enter_valid_postal'),
+									};
 							}}
 						/>
 					</div>
@@ -282,7 +340,9 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 									'option-wrapper': styles.radioOptionRow,
 									label: styles.radioLabel,
 								},
-								options: [{ value: 'parcelMachine', label: _g.lang('parcel_machine') }],
+								options: [
+									{ value: 'parcelMachine', label: _g.lang('parcel_machine') },
+								],
 								onChange: ({ value }) => setDeliveryType(value),
 							}}
 						/>
@@ -345,9 +405,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 							component={Checkbox}
 							mustAccept={true}
 						/>
-						<label>
-							{_g.lang('distance_contract')} *
-						</label>
+						<label>{_g.lang('distance_contract')} *</label>
 					</div>
 				</div>
 			</Form>

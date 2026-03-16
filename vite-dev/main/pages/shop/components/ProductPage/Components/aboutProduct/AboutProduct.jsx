@@ -75,9 +75,9 @@ const AboutProduct = ({ product, specifications }) => {
 						<ShippingAndReturns />
 					</DropdownItem> 
 
-					<DropdownItem title={_g.lang('questions')}>
+					{/* <DropdownItem title={_g.lang('questions')}>
 						<AskQuestion />
-					</DropdownItem>
+					</DropdownItem> */}
 
 					{brandId > 0 && (
 						<DropdownItem title={_g.lang('about_brand')}>

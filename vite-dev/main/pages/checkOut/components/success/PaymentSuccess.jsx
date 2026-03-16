@@ -14,7 +14,7 @@ const uiProps = (ownProps) => {
 	};
 };
 
-const PaymentSuccess = ({ invoiceUrl, orderNumber, status }) => {
+const PaymentSuccess = ({ invoiceUrl, orderNumber }) => {
 
 	return (
 		<div className={styles.container}>

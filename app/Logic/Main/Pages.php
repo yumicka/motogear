@@ -521,8 +521,8 @@ class Pages
         $state['Page'] = ['current' => 'klixPaymentSuccess'];
         
         $state['categories'] = Product\ProductCategories::get($lang);
-        $state['order_number'] = $order->numeration;
-        $state['invoice_url'] = "/{$lang}/invoice/{$order->numeration}";
+        $state['order_number'] = $order->order_number;
+        $state['invoice_url'] = "/{$lang}/invoice/{$order->order_number}";
         $state['status'] = $order->order_status?->value;
 
         $meta_data = MetaData::get($lang, 'klixPaymentSuccess');
@@ -551,8 +551,8 @@ class Pages
         $state['categories'] = Product\ProductCategories::get($lang);
 
 
-        $state['order_number'] = $order?->numeration;
-        $state['invoice_url'] = $order ? "/{$lang}/invoice/{$order->numeration}" : null;
+        $state['order_number'] = $order?->order_number;
+        $state['invoice_url'] = $order ? "/{$lang}/invoice/{$order->order_number}" : null;
         $state['status'] = $order?->order_status?->value;
 
         $meta_data = MetaData::get($lang, 'klixPaymentFailed');

@@ -213,6 +213,7 @@ class Main
 
     $table->addColumn('user_id', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'User ID']);
     $table->addColumn('numeration', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order numeration']);
+    $table->addColumn('order_number', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order numeration']);
     $table->addColumn('order_status', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order status']);
     $table->addColumn('payment_type', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order payment type']);
     $table->addColumn('shipping_type', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Order shipping type']);

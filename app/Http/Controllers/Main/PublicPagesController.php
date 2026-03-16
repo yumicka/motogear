@@ -162,6 +162,7 @@ class PublicPagesController extends Controller
     {
         //<editor-fold defaultstate="collapsed" desc="klixPaymentSuccess"> 
         $order = Order::findOrFail($order_id);
+        
         KlixPayments::checkOrderPayment($order);
         $order->refresh();
 
@@ -189,11 +190,11 @@ class PublicPagesController extends Controller
     //</editor-fold>    
     }
     
-    public function downloadInvoiceByNumber($lang, $numeration)
+    public function downloadInvoiceByNumber($lang, $order_number)
     {
-        $order = Order::where('numeration', $numeration)->firstOrFail();
+        $order = Order::where('order_number', $order_number)->firstOrFail();
 
-        $path = storage_path("invoices/invoice_{$numeration}.pdf");
+        $path = storage_path("invoices/invoice_{$order_number}.pdf");
 
         // если pdf ещё не создан — создаём на лету
         if (!File::exists($path)) {
@@ -204,10 +205,9 @@ class PublicPagesController extends Controller
 
         return response()->download(
             $path,
-            "invoice_{$numeration}.pdf",
+            "invoice_{$order_number}.pdf",
             [
                 'Content-Type' => 'application/pdf',
-                // чтобы браузер не пытался открыть и не кешировал криво
                 'Cache-Control' => 'no-store, no-cache, must-revalidate, max-age=0',
                 'Pragma' => 'no-cache',
             ]

@@ -37,7 +37,7 @@ const AboutBrand = ({ brandId }) => {
 
 	return (
 		<div className={styles.AboutBrand}>
-			<h3>{brand.item?.brand_name}</h3>
+			{/* <h3>{brand.item?.brand_name}</h3> */}
 			<div dangerouslySetInnerHTML={{ __html: description }} />
 			{brand.image?.image && <Image src={brand.image.image} />}
 		</div>

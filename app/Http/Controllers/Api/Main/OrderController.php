@@ -7,8 +7,10 @@ use App\Logic\Main\KlixPayments;
 use App\Logic\Main\Cart\Cart;
 use App\Logic\Core\Response;
 use App\Models\Main\Order;
+use App\Logic\Main\Orders;
 use App\Types\Main\OrderStatuses;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -18,10 +20,19 @@ class OrderController extends Controller
             //create
             'create' => [
                 'rules' => [
-                    'name' => 'required|string|max:255',
-                    'surname' => 'required|string|max:255',
+                    'person_type' => ['required', 'string', Rule::in(['private', 'company'])],
+
+                    // private person
+                    'name' => 'nullable|string|max:255|required_if:person_type,private',
+                    'surname' => 'nullable|string|max:255|required_if:person_type,private',
+
+                    // company
+                    'company_name' => 'nullable|string|max:255|required_if:person_type,company',
+                    'reg_nr' => 'nullable|string|max:255|required_if:person_type,company',
+                    'vat_nr' => 'nullable|string|max:255',
+                    
                     'phoneNumber' => 'required|string|max:255',
-                    'emain' => 'required|email|max:255',
+                    'email' => 'required|email|max:255',
                     'adress' => 'required|string|max:255',
                     'postcode' => 'required|string|max:255',
                     'country' => 'required|string|max:255',
@@ -36,11 +47,12 @@ class OrderController extends Controller
                     'delivery_postal_code' => 'nullable|string|max:255',
                 ],
                 'action' => function ($request) {
-
                     $order = new Order();
 
                     $order->created_at = now();
                     $order->updated_at = now();
+                    
+                    $personType = $request->input('person_type', 'private');
 
                     $order->user_id = null; // guest order
 
@@ -58,24 +70,40 @@ class OrderController extends Controller
                     $order->total = $summary['totals']['total_price'];
                     $order->shipping_price = $summary['totals']['shipping_price'];
 
-                    $order->first_name = $request->input('name');
-                    $order->surname = $request->input('surname');
-                    $order->email = $request->input('emain');
-                    $order->phone = $request->input('phoneNumber');
+                    // Private / company data
+                    if ($personType === 'company') {
+                        $order->first_name = null;
+                        $order->surname = null;
 
-                    $order->company_name = $request->input('company_name');
-                    $order->reg_nr = $request->input('reg_nr');
-                    $order->vat_nr = $request->input('vat_nr');
+                        $order->company_name = $request->input('company_name');
+                        $order->reg_nr = $request->input('reg_nr');
+                        $order->vat_nr = $request->input('vat_nr');
+                    } else {
+                        $order->first_name = $request->input('name');
+                        $order->surname = $request->input('surname');
+
+                        $order->company_name = null;
+                        $order->reg_nr = null;
+                        $order->vat_nr = null;
+                    }
+                    
+                    $order->email = $request->input('email');
+                    $order->phone = $request->input('phoneNumber');
 
                     $order->country = $request->input('country');          // LV/LT/EE
                     $order->postal_code = $request->input('postcode');
                     $order->address = $request->input('adress');
                     
-                    $isEqual = $request->input('isEqual'); // может быть '0'/'1'/true/false
-                    $order->other_address = empty($isEqual) ? 1 : 0;
+                    
+                    $deliveryAddressManual = $request->input('delivery_address_manual');
+
+                    $order->other_address = !empty($deliveryAddressManual) ? 1 : 0;
 
                     $order->delivery_country = $request->input('delivery_country');
-                    $order->delivery_address = $request->input('delivery_address');
+                    $order->delivery_address = !empty($deliveryAddressManual)
+                        ? $deliveryAddressManual
+                        : $request->input('delivery_address');
+
                     $order->delivery_postal_code = $request->input('delivery_postal_code');
 
                     $items = $request->input('items', []);
@@ -98,6 +126,10 @@ class OrderController extends Controller
                     $order->tracking_number = null;
 
                     $order->save();
+                    
+                    $order->order_number = 'ORD-' .date('Y') . '-' .str_pad($order->id, 6, '0', STR_PAD_LEFT);
+
+                    $order->save();
 
                     return Response::success([
                         'msg' => 'Jauns pasutijums ir pievienots!',
@@ -116,7 +148,7 @@ class OrderController extends Controller
             $order->payment_type = $request->payment_type;
             $order->order_status = OrderStatuses::payment_pending;
             $order->save();
-
+            
             $purchase = KlixPayments::createOrderPurchase($order);
 
             return Response::success([

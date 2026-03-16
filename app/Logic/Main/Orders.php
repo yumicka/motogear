@@ -2,9 +2,13 @@
 
 namespace App\Logic\Main;
 
+use App\Logic\Core\Translations;
 use App\Models\Main\Order;
+use Illuminate\Support\Facades\Log;
 use Dompdf\Dompdf;
-use Illuminate\Support\Facades\File;
+use File;
+use Mail;
+use Arr;
 
 class Orders
 {
@@ -14,6 +18,8 @@ class Orders
     public static function confirmOrder(Order $order): void
     {
         self::createInvoicePDF($order);
+        self::sendSuccessEmail($order);
+        self::sendAdminNotification($order);
     }
 
     /**
@@ -36,26 +42,25 @@ class Orders
             File::makeDirectory($path, 0755, true);
         }
 
-        File::put($path . '/invoice_' . $order->numeration . '.pdf', $dompdf->output());
+        File::put($path . '/invoice_' . $order->order_number . '.pdf', $dompdf->output());
     }
 
     public static function getData(Order $order, string $lang = 'lv'): array
     {
-        
-        $company_requisites =
+        $companyRequisites =
             config('company_requisites')
             ?? config('configuration.company_requisites')
             ?? [];
 
-        $company_requisites = array_merge([
-            'company_name'         => config('app.name', ''),
-            'physical_address'     => '',
-            'registration_number'  => '',
-            'phone'                => '',
-            'email'                => '',
-            'bank'                 => '',
-            'bank_account'         => '',
-        ], is_array($company_requisites) ? $company_requisites : []);
+        $companyRequisites = array_merge([
+            'company_name'        => config('app.name', ''),
+            'physical_address'    => '',
+            'registration_number' => '',
+            'phone'               => '',
+            'email'               => '',
+            'bank'                => '',
+            'bank_account'        => '',
+        ], is_array($companyRequisites) ? $companyRequisites : []);
 
         $products = $order->order_data ?? [];
         if (is_string($products)) {
@@ -64,77 +69,208 @@ class Orders
                 $products = $decoded;
             }
         }
+
         if (!is_array($products)) {
             $products = [];
         }
 
         $rows = [];
         foreach ($products as $item) {
-            \Log::info('ORDER_DATA_ITEM', $item);
-            $title = (string)($item['title'] ?? $item['name'] ?? $item['product_title'] ?? '');
-            $qty   = (int)($item['quantity'] ?? $item['qty'] ?? 0);
-
-            $price = (float)($item['product_price'] ?? $item['price'] ?? $item['unit_price'] ?? 0);
-
-            $lineTotal = (float)($item['total'] ?? $item['calculated_price'] ?? ($price * $qty));
-
-            $price = round($price, 2);
-            $lineTotal = round($lineTotal, 2);
+            $title = (string) ($item['title'] ?? $item['name'] ?? $item['product_title'] ?? '');
+            $qty = (int) ($item['quantity'] ?? $item['qty'] ?? 0);
+            $price = (float) ($item['product_price'] ?? $item['price'] ?? $item['unit_price'] ?? 0);
+            $lineTotal = (float) ($item['total'] ?? $item['calculated_price'] ?? ($price * $qty));
 
             $rows[] = [
-                'title'            => $title,
-                'quantity'         => $qty,
-                'price'            => round($price, 2),
-                'calculated_price' => $lineTotal,
+                'title' => $title,
+                'quantity' => $qty,
+                'price' => round($price, 2),
+                'calculated_price' => round($lineTotal, 2),
             ];
         }
 
-        $useDelivery = (int)($order->other_address ?? 0) === 1;
+        $useDifferentDeliveryAddress = (int) ($order->other_address ?? 0) === 1;
 
-        $shippingAddress = $useDelivery
-            ? trim((string)($order->delivery_address ?? ''))
-            : trim((string)($order->address ?? ''));
+        $shippingAddress = $useDifferentDeliveryAddress
+            ? trim((string) ($order->delivery_address ?? ''))
+            : trim((string) ($order->address ?? ''));
 
-        $shippingPostalCode = $order->postal_code ?? '';
+        $shippingPostalCode = $useDifferentDeliveryAddress
+            ? trim((string) ($order->delivery_postal_code ?? ''))
+            : trim((string) ($order->postal_code ?? ''));
 
-        $shippingCountry = $useDelivery
-            ? trim((string)($order->delivery_country ?? ''))
-            : trim((string)($order->country ?? ''));
+        $shippingCountry = $useDifferentDeliveryAddress
+            ? trim((string) ($order->delivery_country ?? ''))
+            : trim((string) ($order->country ?? ''));
 
-        $shippingFull = trim(implode(', ', array_filter([
+        $shippingFullAddress = trim(implode(', ', array_filter([
             $shippingAddress,
             $shippingPostalCode,
             $shippingCountry,
         ])));
 
-        
+        $isCompany = !empty($order->company_name);
+
+        $client = [
+            'is_company' => $isCompany,
+            'first_name' => (string) ($order->first_name ?? ''),
+            'last_name' => (string) ($order->surname ?? ''),
+            'full_name' => trim(((string) ($order->first_name ?? '')) . ' ' . ((string) ($order->surname ?? ''))),
+            'company_name' => (string) ($order->company_name ?? ''),
+            'reg_nr' => (string) ($order->reg_nr ?? ''),
+            'vat_nr' => (string) ($order->vat_nr ?? ''),
+            'display_name' => $isCompany
+                ? (string) ($order->company_name ?? '')
+                : trim(((string) ($order->first_name ?? '')) . ' ' . ((string) ($order->surname ?? ''))),
+            'email' => (string) ($order->email ?? ''),
+            'phone' => (string) ($order->phone ?? ''),
+        ];
+
+        $shipping = [
+            'other_address' => $useDifferentDeliveryAddress,
+            'address' => $shippingAddress,
+            'postal_code' => $shippingPostalCode,
+            'country' => $shippingCountry,
+            'full_address' => $shippingFullAddress,
+        ];
+
+        $totals = [
+            'shipping' => (float) ($order->shipping_price ?? $order->shipping ?? 0),
+            'total' => (float) ($order->total ?? 0),
+        ];
+
         $orderData = [
-            'fields' => [
-                ['phone' => (string)($order->phone ?? '')],
-                ['email' => (string)($order->email ?? '')],
-                ['name' => (string)($order->first_name ?? '')],
-                ['last_name' => (string)($order->surname ?? '')],
-            ],
+            'client' => $client,
             'shipping' => [
-                'address' => $shippingFull,
+                'address' => $shipping['full_address'],
             ],
         ];
 
         $orderView = clone $order;
-
-        $orderView->shipping = $order->shipping_price ?? $order->shipping ?? 0;
-
+        $orderView->shipping = $totals['shipping'];
         $orderView->date = $order->created_at ?? $order->date ?? now();
-        $orderView->number = $order->numeration ?? $order->number ?? (string)$order->id;
+        $orderView->number = $order->order_number ?? $order->number ?? (string) $order->id;
         $orderView->type = $order->type ?? 'invoice';
-
-        // самое важное: data как в старом коде
         $orderView->data = $orderData;
 
         return [
             'order' => $orderView,
             'rows' => $rows,
-            'company_requisites' => $company_requisites,
+            'company_requisites' => $companyRequisites,
+            'client' => $client,
+            'shipping' => $shipping,
+            'totals' => $totals,
         ];
+    }
+    
+    /**
+     * Emails
+     *
+     * @access public           
+     * @param  \App\Models\Main\Order - $order 
+     * @return void
+     */
+    
+    protected static function getClientEmail(Order $order, array $data = []): ?string
+    {
+        //<editor-fold defaultstate="collapsed" desc="getClientEmail"> 
+        $email = $order->email
+        ?? $order->contact_email
+        ?? ($data['client']['email'] ?? null);
+
+        $email = is_string($email) ? trim($email) : null;
+
+        return filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
+         //</editor-fold>  
+    }
+    
+    /**
+     * Send email to administrator about new order
+     *
+     * @access public           
+     * @param  \App\Models\Main\Order - $order 
+     * @return void
+     */
+    public static function sendAdminNotification($order) {
+    //<editor-fold defaultstate="collapsed" desc="sendAdminNotification">           
+        try { 
+        Mail::send(
+            'emails.admin_new_order',
+            [
+                'introLines' => [
+                    'Jauns pasūtījums ' . ($order->order_number ?? $order->number ?? $order->id),
+                ],
+                'level' => '',
+                'outroLines' => []
+            ],
+            function ($message) use ($order) {
+                $message->subject('Jauns pasūtījums ' . ($order->order_number ?? $order->number ?? $order->id));
+                $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                $message->to(env('MAIL_TO'));
+            }
+        );
+        } catch (\Exception $ex) {
+            Log::error('sendAdminNotification failed', [
+                'order' => $order,
+                'error' => $ex->getMessage()
+            ]);
+        }     
+    //</editor-fold>  
+    }
+    
+    /**
+     * Send email with order data
+     *
+     * @access public           
+     * @param  \App\Models\Main\Order - $order
+     * @return void
+     */
+    public static function sendSuccessEmail($order): void
+    { 
+        //<editor-fold defaultstate="collapsed" desc="sendSuccessEmail"> 
+        $lang = app()->getLocale();
+        $data = self::getData($order, $lang);
+
+        $clientEmail = self::getClientEmail($order, $data);
+        $info = \App\Logic\Core\Settings::get('paid_email') ?? [];
+
+        if (!$clientEmail) {
+            Log::warning('sendSuccessEmail skipped: client email not found', [
+                'order_id' => $order->id ?? null,
+            ]);
+            return;
+        }
+
+        $subject = Translations::get('order_success_email_subject', $lang);
+
+        try {
+            Mail::send(
+                'emails.order_success',
+                $data,
+                function ($message) use ($subject, $order, $clientEmail) {
+                    $message->subject(
+                        Translations::get('your_order_number_is') . ' ' . ($order->order_number ?? $order->id) . ' ' . $subject
+                    );
+                    $message->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+                    $message->to($clientEmail);
+
+                    $path = storage_path('invoices');
+                    $file = $path . '/invoice_' . ($order->order_number ?? $order->id) . '.pdf';
+
+                    if (File::exists($file)) {
+                        $message->attach($file, [
+                            'as' => ($order->order_number ?? $order->id) . '.pdf',
+                            'mime' => 'application/pdf',
+                        ]);
+                    }
+                }
+            );
+        } catch (\Exception $ex) {
+            Log::error('sendSuccessEmail failed', [
+                'order_id' => $order->id ?? null,
+                'error' => $ex->getMessage(),
+            ]);
+        }
+        //</editor-fold>  
     }
 }

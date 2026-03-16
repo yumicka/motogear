@@ -2,7 +2,12 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import styles from './Filters.module.less';
 
-const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', '36', '37', '38', '39', '40'];
+// const SIZE_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', '36', '37', '38', '39', '40'];
+
+const PRODUCT_AGE_OPTIONS = [
+	{ value: 'new', label: _g.lang('new_products') || 'New' },
+	{ value: 'old', label: _g.lang('old_products') || 'Old' },
+];
 
 const Filters = ({ filters, setFilters, productCount, brands }) => {
 	const [minPrice, setMinPrice] = useState(filters?.price_range?.[0] ?? '');
@@ -33,6 +38,13 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 			[key]: exists
 				? currentValues.filter((item) => item !== value)
 				: [...currentValues, value],
+		});
+	};
+
+	const setSingleFilter = (key, value) => {
+		setFilters({
+			...filters,
+			[key]: filters?.[key] === value ? null : value,
 		});
 	};
 
@@ -71,6 +83,7 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 			brands: [],
 			price_range: null,
 			sizes: [],
+			product_age: null,
 		});
 		setMinPrice('');
 		setMaxPrice('');
@@ -82,16 +95,28 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 		return count > 0 ? `${_g.lang('brands')} (${count})` : _g.lang('brands');
 	};
 
-	const getSizesLabel = () => {
-		const count = filters?.sizes?.length || 0;
-		return count > 0 ? `${_g.lang('size')} (${count})` : _g.lang('size');
-	};
+	// const getSizesLabel = () => {
+	// 	const count = filters?.sizes?.length || 0;
+	// 	return count > 0 ? `${_g.lang('size')} (${count})` : _g.lang('size');
+	// };
 
 	const getPriceLabel = () => {
 		if (filters?.price_range) {
 			return `${_g.lang('price')} ${filters.price_range[0]}€ - ${filters.price_range[1]}€`;
 		}
 		return _g.lang('price');
+	};
+
+	const getProductAgeLabel = () => {
+		if (filters?.product_age === 'new') {
+			return _g.lang('new_products') ;
+		}
+
+		if (filters?.product_age === 'old') {
+			return _g.lang('old_products');
+		}
+
+		return _g.lang('product_type');
 	};
 
 	return (
@@ -177,7 +202,7 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 							)}
 						</div>
 
-						<div className={styles.dropdown}>
+						{/* <div className={styles.dropdown}>
 							<button
 								type="button"
 								className={styles.dropdownButton}
@@ -201,6 +226,42 @@ const Filters = ({ filters, setFilters, productCount, brands }) => {
 											<span>{size}</span>
 										</label>
 									))}
+								</div>
+							)}
+						</div> */}
+
+						<div className={styles.dropdown}>
+							<button
+								type="button"
+								className={styles.dropdownButton}
+								onClick={() => toggleDropdown('product_age')}>
+								<span>{getProductAgeLabel()}</span>
+								<span
+									className={`${styles.arrow} ${openDropdown === 'product_age' ? styles.arrowOpen : ''}`}>
+									⌄
+								</span>
+							</button>
+
+							{openDropdown === 'product_age' && (
+								<div className={styles.dropdownMenu}>
+									{PRODUCT_AGE_OPTIONS.map((item) => (
+										<label key={item.value} className={styles.option}>
+											<input
+												type="radio"
+												name="product_age"
+												checked={filters?.product_age === item.value}
+												onChange={() => setSingleFilter('product_age', item.value)}
+											/>
+											<span>{item.label}</span>
+										</label>
+									))}
+
+									<button
+										type="button"
+										className={styles.clearBtn}
+										onClick={() => setSingleFilter('product_age', null)}>
+										{_g.lang('clear')}
+									</button>
 								</div>
 							)}
 						</div>
@@ -228,6 +289,7 @@ Filters.propTypes = {
 	filters: PropTypes.object,
 	setFilters: PropTypes.func,
 	productCount: PropTypes.number,
+	brands: PropTypes.array,
 };
 
 export default Filters;

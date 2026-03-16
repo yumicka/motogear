@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Main;
 
 use DB;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Logic\Core\Langs;
@@ -88,6 +89,7 @@ class ProductsController extends Controller
         $requestFilters = $request->get('filters', []);
         $brandIds = $requestFilters['brands'] ?? [];
         $priceRange = $requestFilters['price_range'] ?? [];
+        $productAge = $requestFilters['product_age'] ?? null;
             
         // Filter by category
         $query = $query->when($request->has('category_id') && 
@@ -124,13 +126,25 @@ class ProductsController extends Controller
         ];
 
         $orderColumn = $allowedOrder[$orderBy] ?? 'b.position';
+        $finalOrderDir = $orderDir === 'desc' ? 'desc' : 'asc';
+        
+        // product_age overrides sorting
+        if ($productAge === 'new') {
+            $orderColumn = 'b.created_at';
+            $finalOrderDir = 'desc';
+        }
 
+        if ($productAge === 'old') {
+            $orderColumn = 'b.created_at';
+            $finalOrderDir = 'asc';
+        }
+        
         $options = [
             'results_per_page' => 30,
             'order' => [
-                $orderColumn => $orderDir === 'desc' ? 'desc' : 'asc',
+                $orderColumn => $finalOrderDir,
             ]
-        ];  
+        ]; 
        
     
         $params = DataSource::parseRequest($request);
