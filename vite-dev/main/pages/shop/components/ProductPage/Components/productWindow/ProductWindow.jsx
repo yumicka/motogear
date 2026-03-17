@@ -77,13 +77,13 @@ const ProductWindow = ({ product, product_sizes }) => {
 				setAdding(false);
 				uiStore.set('cart', response.cart);
 				setToastType('success');
-				setToast('Product has been added to cart!');
+				setToast(_g.lang('product_success'));
 				setTimeout(() => setToast(null), 5000);
 			},
 			onError: (err) => {
 				setAdding(false);
 				setToastType('error');
-				setToast('Product has not been added to cart!');
+				setToast(_g.lang('product_error'));
 				setTimeout(() => setToast(null), 5000);
 			},
 		});

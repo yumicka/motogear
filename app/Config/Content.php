@@ -206,6 +206,31 @@ class Content
 
         //</editor-fold>
         
+        /*
+        |--------------------------------------------------------------------------
+        |                             contact_form
+        |--------------------------------------------------------------------------|
+        */ 
+        //<editor-fold defaultstate="collapsed" desc="contact_form"> 
+        $config['contact_form'] = [  
+            'langData' => function ($title, $content, $data) {               
+                return [
+                    'social_media1' => Arr::get($data, 'social_media1', ''),
+                    'social_media2' => Arr::get($data, 'social_media2', ''),
+                    'social_media3' => Arr::get($data, 'social_media3', ''),
+                    'social_media4' => Arr::get($data, 'social_media4', ''),
+                ];
+            },
+            'data' => function ($data) {
+                return [
+                    'link_to_media1' => Arr::get($data, 'link_to_media1', ''),
+                    'link_to_media2' => Arr::get($data, 'link_to_media2', ''),
+                    'link_to_media3' => Arr::get($data, 'link_to_media3', ''),
+                    'link_to_media4' => Arr::get($data, 'link_to_media4', ''),
+                ];
+            },
+        ];
+        //</editor-fold>    
         return $config;
     }  
 }

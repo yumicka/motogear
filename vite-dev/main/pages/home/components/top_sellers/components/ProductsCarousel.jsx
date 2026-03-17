@@ -61,12 +61,6 @@ const ProductsCarousel = ({ scrollStep = 500, variant = 'now' }) => {
 
 	const formatPrice = (value) => Number(value || 0).toFixed(2);
 
-	// const calcDiscountPrice = (price, discount) => {
-	// 	const p = Number(price || 0);
-	// 	const d = Number(discount || 0);
-	// 	return p * (1 - d / 100);
-	// };
-
 	return (
 		<div className={styles.carousel}>
 			<button

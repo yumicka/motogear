@@ -65,7 +65,7 @@ class OrderPopup extends Component {
 	getTitle = (data) => {
 		//<editor-fold defaultstate="collapsed" desc="getTitle">
 		const id = get(data, 'item.id', '');
-		return `Bloga ieraksts #${id}`;
+		return `Pasutījuma ieraksts #${id}`;
 		//</editor-fold>
 	};
 

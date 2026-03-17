@@ -25,6 +25,7 @@ class OrderAdmController extends Controller
         $columns = [
             'o.id' => 'id',
             'o.numeration' => 'numeration',
+            'o.order_number' => 'order_number',
             'o.order_status' => 'order_status',
             'o.payment_type' => 'payment_type',
             'o.shipping_type' => 'shipping_type',

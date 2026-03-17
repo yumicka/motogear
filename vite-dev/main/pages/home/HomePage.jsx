@@ -17,9 +17,13 @@ import CartRecomendations from '../cart/components/cartRecomendations/CartRecome
 const propTypes = {};
 const defaultProps = {};
 
-const uiProps = (ownProps) => {};
+const uiProps = (ownProps) => {
+	return{
+		brands: 'brands',
+	};
+};
 
-const HomePage = () => {
+const HomePage = ({brands}) => {
 	return (
 		<div className="pageFade">
 			<section>
@@ -63,7 +67,7 @@ const HomePage = () => {
 			</section>
 
 			<section>
-				<Brands />
+				<Brands brands={brands}/>
 			</section>
 
 			<section>

@@ -36,13 +36,11 @@ let RightBox = ({ langData, data, image }) => {
 					name: 'customize_your_look_right',
 				}}>
 				<div className={styles.text}>
-					<h2>
-						{langData.title_right}
-					</h2>
-					<p>
-						{langData.content_right}
-						
-					</p>
+					<div className={styles.textContent}>
+						<h2>{langData.title_right}</h2>
+						<p>{langData.content_right}</p>
+					</div>
+					
 					<button className={`${styles.ctaButton} ${styles.secondButton}`}>
 						{langData.button_title_right}
 					</button>

@@ -108,6 +108,23 @@ class Collections
             },
         ];
         //</editor-fold>
+            
+        /*
+        |--------------------------------------------------------------------------
+        |                             garantees
+        |--------------------------------------------------------------------------|
+        */ 
+        //<editor-fold defaultstate="collapsed" desc="garantees"> 
+        $config['garantees'] = [  
+            'langData' => function ($title, $content, $data) {               
+                return [
+                    'title' => $title,
+                    'short' => Arr::get($data, 'short', ''),
+                    'full' => Arr::get($data, 'full', ''),
+                ];
+            },
+        ];
+        //</editor-fold>
         return $config;
     //</editor-fold>
     }

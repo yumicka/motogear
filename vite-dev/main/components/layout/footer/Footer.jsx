@@ -5,27 +5,40 @@ import styles from './Footer.module.less';
 import Link from 'core/navigation/link';
 import WithUi from 'hoc/store/ui';
 
+import { head } from 'lodash-es';
+
+import Editable from 'cms/editable';
+
 const uiProps = (ownProps) => {
 	return {
+		content: {
+			contact_form: {
+				langData: 'langData',
+				data: 'data',
+			},
+		},
 		categories: 'categories',
 	};
 };
 
-const Footer = ({ categories }) => {
+const Footer = ({ categories, langData, data }) => {
 	const year = new Date().getFullYear();
 
 	const helpLinks = [
-		{ label: _g.lang('returns'), to: '#' },
-		{ label: _g.lang('payment'), to: '#' },
-		{ label: _g.lang('privacy_policy'), to: getMainUrl(true) + 'privatumu-politika' },
-		{ label: _g.lang('terms'), to: '#' },
+		{ label: _g.lang('returns'), to: getMainUrl(true) + 'privatumu-politika' },
+		{ label: _g.lang('payment'), to: getMainUrl(true) + 'privatumu-politika' },
+		{
+			label: _g.lang('privacy_policy'),
+			to: getMainUrl(true) + 'privatumu-politika',
+		},
+		{ label: _g.lang('terms'), to: getMainUrl(true) + 'privatumu-politika' },
 	];
 
 	return (
 		<footer className={styles.footer}>
 			<div className={styles.inner}>
 				<div className={styles.topGrid}>
-					<div className={styles.ctaCard}>
+					{/* <div className={styles.ctaCard}>
 						<h3 className={styles.ctaTitle}>{_g.lang('riders_club')}</h3>
 						<p className={styles.ctaText}>{_g.lang('riders_club_content')}</p>
 						<div className={styles.ctaActions}>
@@ -36,7 +49,7 @@ const Footer = ({ categories }) => {
 								{_g.lang('read_more')}
 							</Link>
 						</div>
-					</div>
+					</div> */}
 
 					<div className={styles.col}>
 						<h4 className={styles.colTitle}>{_g.lang('footer_help')}</h4>
@@ -63,7 +76,7 @@ const Footer = ({ categories }) => {
 											to={
 												getMainUrl(true) + 'veikals?categoryId=' + category.id
 											}
-											className={styles.category}>
+											className={styles.link}>
 											{category.title}
 										</Link>
 									);
@@ -74,20 +87,25 @@ const Footer = ({ categories }) => {
 					<div className={styles.col}>
 						<h4 className={styles.colTitle}>{_g.lang('sustomer_service')}</h4>
 						<div>
-							<div className={styles.socials}>
-								<Link className={styles.link} href="mailto:info@skujins.lv">
-									info@skujins.lv
-								</Link>
-								<Link className={styles.social} to="#">
-									Instagram
-								</Link>
-								<Link className={styles.social} to="#">
-									Facebook
-								</Link>
-								<Link className={styles.social} to="#">
-									YouTube
-								</Link>
-							</div>
+							<Editable
+								edit={{
+									name: 'contact_form',
+								}}>
+								<div className={styles.socials}>
+									<Link className={styles.link} to={data.link_to_media1}>
+										{langData.social_media1}
+									</Link>
+									<Link className={styles.social} to={data.link_to_media2}>
+										{langData.social_media2}
+									</Link>
+									<Link className={styles.social} to={data.link_to_media3}>
+										{langData.social_media3}
+									</Link>
+									<Link className={styles.social} to={data.link_to_media4}>
+										{langData.social_media3}
+									</Link>
+								</div>
+							</Editable>
 						</div>
 					</div>
 				</div>

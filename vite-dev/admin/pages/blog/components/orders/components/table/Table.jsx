@@ -22,7 +22,9 @@ class OrdersTable extends Component {
 
 		columns.push({ name: 'id', title: 'ID', isHidable: false });
 
-		columns.push({ name: 'numeration', title: 'Numurs' });
+		// columns.push({ name: 'numeration', title: 'Numurs' });
+
+		columns.push({ name: 'order_number', title: 'Klienta pasutijuma numurs' });
 
 		columns.push({ name: 'first_name', title: 'Vārds' });
 

@@ -1,94 +1,54 @@
 // @ts-nocheck
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import styles from './Garantees.module.less';
 import Modal from './Modal/Modal.jsx';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faBagShopping,
-	faBoltLightning,
-	faCircleCheck,
-	faDollarSign,
-	faRepeat,
-} from '@fortawesome/free-solid-svg-icons';
+import WithUi from 'hoc/store/ui';
+import Editable from 'cms/editable';
+import Item from './components/item';
 
-const Garantees = () => {
-	const items = useMemo(
-		() => [
-			{
-				id: 'fast-delivery',
-				icon: faBoltLightning,
-				title: _g.lang('fast_deliveries'),
-				short: 'Every day, we ship orders throughout Europe...',
-				full: 'Every day, we ship orders throughout Europe. We always do our best to ensure that you receive your products as quickly as possible!',
+const uiProps = () => {
+	return {
+		collections: {
+			garantees: {
+				ids: 'ids',
 			},
-			{
-				id: 'lowest-price',
-				icon: faCircleCheck,
-				title: _g.lang('lowest_price'),
-				short: 'We strive to maintain the best prices...',
-				full: 'We strive to maintain the best prices, if you still would find a better price from a competitor, we will match that price. Our price guarantee applies within 14 days after your purchase.',
-			},
-			{
-				id: 'free-shipping',
-				icon: faDollarSign,
-				title: _g.lang('free_shipping'),
-				short: 'Orders over €150 are qualified for free shipping...',
-				full: 'Orders over €150 are qualified for free shipping. *This does not include bulky products.',
-			},
-			{
-				id: 'returns',
-				icon: faRepeat,
-				title: _g.lang('return_policy'),
-				short: 'You have the right to return your order within 60 days...',
-				full: 'You have the right to return your order within 60 days. Return fees apply. *The right to return does not apply for products that are personalised or manufactured upon order. See our Customer Care Section for more details and conditions.',
-			},
-			{
-				id: 'assortment',
-				icon: faBagShopping,
-				title: _g.lang('assortment'),
-				short: 'We offer a wide range of products for all riders...',
-				full: 'We offer a wide range of products for all riders whether you are a beginner or professional. We carry the world’s hottest brands at competitive prices as well as our own range of high-quality brands at consistently low prices.',
-			},
-		],
-		[],
+		},
+	};
+};
+
+const Garantees = ({ ids }) => {
+	const [active, setActive] = useState(null);
+
+	const renderItem = (id) => (
+		<Item key={id} id={id} onClick={(data) => setActive(data)} />
 	);
-
-	const [activeId, setActiveId] = useState(null);
-	const active = items.find((x) => x.id === activeId);
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
-				<div className={styles.card_box}>
-					{items.map((item) => (
-						<button
-							key={item.id}
-							type="button"
-							className={styles.card}
-							onClick={() => setActiveId(item.id)}>
-							<div className={styles.content}>
-								<div className={styles.icon}>
-									<FontAwesomeIcon icon={item.icon} />
-								</div>
-
-								<div className={styles.heading}>{item.title}</div>
-								<div className={styles.text}>{item.short}</div>
-							</div>
-						</button>
-					))}
-				</div>
+				<Editable
+					add={{
+						name: 'garantees',
+						action: 'add',
+					}}
+					sort={{
+						name: 'garantees',
+						action: 'sort',
+					}}>
+					<div className={styles.card_box}>{ids?.map(renderItem)}</div>
+				</Editable>
 			</div>
 
 			<Modal
 				open={!!active}
-				onClose={() => setActiveId(null)}
+				onClose={() => setActive(null)}
 				title={active?.title}
-				icon={active ? <FontAwesomeIcon icon={active.icon} /> : null}>
+				icon={active?.icon}>
 				{active?.full}
 			</Modal>
 		</div>
 	);
 };
 
-export default Garantees;
+export default WithUi(uiProps)(Garantees);

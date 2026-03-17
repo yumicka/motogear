@@ -80,10 +80,13 @@ class Pages
             'motocross_tyres',
             'customize_your_look_left',
             'customize_your_look_right',
+            'contact_form'
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
-
+            'garantees' => [
+                'results_per_page' => 'all'
+            ],
         ]);
       
         $state = self::getCommonState($lang);
@@ -101,6 +104,7 @@ class Pages
      
         $state['Page']['current'] = 'home';
         $state['categories'] = Product\ProductCategories::get($lang);
+        $state['brands'] = Product\Brands::get($lang);
         
         $meta_data = MetaData::get($lang, 'home');
         
@@ -340,7 +344,7 @@ class Pages
     public static function shop($lang) {
     //<editor-fold defaultstate="collapsed" desc="shop"> 
         $content = array_merge(self::getCommonContent(), [
-           
+           'contact_form',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -385,6 +389,13 @@ class Pages
     */
     public static function shopProduct($lang, $product_id) {
        //<editor-fold defaultstate="collapsed" desc="shopProduct"> 
+        $content = array_merge(self::getCommonContent(), [
+           'contact_form',
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+        ]);
+        
         $id = intval(head(explode('-', $product_id)));
 
         $product = Product\ProductEntries::getQuery($lang)->where('b.id', $id)->first();
@@ -398,8 +409,8 @@ class Pages
         $state = self::getCommonState($lang);
 
         $data = Data::get($lang, [
-            'content' => self::getCommonContent(),
-            'collections' => self::getCommonCollections()
+            'content' => $content,
+            'collections' => $collections
         ]);
 
         $state = array_merge($state, $data);
@@ -428,7 +439,7 @@ class Pages
     public static function cart($lang){
         //<editor-fold defaultstate="collapsed" desc="cart"> 
         $content = array_merge(self::getCommonContent(), [
-           
+           'contact_form',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -464,7 +475,7 @@ class Pages
     public static function checkout($lang){
         //<editor-fold defaultstate="collapsed" desc="checkout"> 
         $content = array_merge(self::getCommonContent(), [
-           
+           'contact_form',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -499,7 +510,7 @@ class Pages
     public static function klixPaymentSuccess($lang, $order)
     {
         $content = array_merge(self::getCommonContent(), [
-           
+           'contact_form',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -537,6 +548,10 @@ class Pages
 
     public static function klixPaymentFailed($lang, ?Order $order = null)
     {
+        $content = array_merge(self::getCommonContent(), [
+           'contact_form',
+        ]);
+        
         $state = self::getCommonState($lang);
 
         $data = Data::get($lang, [
@@ -549,7 +564,6 @@ class Pages
         $state['Menu'] = ['current' => 'klixPaymentFailed'];
         $state['Page'] = ['current' => 'klixPaymentFailed'];
         $state['categories'] = Product\ProductCategories::get($lang);
-
 
         $state['order_number'] = $order?->order_number;
         $state['invoice_url'] = $order ? "/{$lang}/invoice/{$order->order_number}" : null;
@@ -573,7 +587,7 @@ class Pages
     //<editor-fold defaultstate="collapsed" desc="privacy_policy"> 
 
         $content = array_merge(self::getCommonContent(), [
-           
+           'contact_form',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -629,6 +643,7 @@ class Pages
         $blog = Product\ProductEntries::formatResponseData($blog, $lang);
         
         $content = array_merge(self::getCommonContent(), [
+            'contact_form',
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [

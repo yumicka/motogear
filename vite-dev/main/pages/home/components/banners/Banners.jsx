@@ -8,10 +8,7 @@ import RightImageBox from './components/RightImageBox';
 import BottomLeftCard from './components/BottomLeftCard';
 import BottomRightCard from './components/BottomRightCard';
 
-
-
 let Banners = () => {
-
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
@@ -24,7 +21,9 @@ let Banners = () => {
 						<div className={styles.side_col}>
 							<RightImageBox />
 
-							<Link className={styles.sideBottom} to={getMainUrl(true) + 'veikals?categoryId=1'}>
+							<Link
+								className={styles.sideBottom}
+								to={getMainUrl(true) + 'veikals?categoryId=1'}>
 								<div className={styles.outletText}>OUTLET</div>
 							</Link>
 						</div>
@@ -33,7 +32,6 @@ let Banners = () => {
 						<div className={styles.bottom_row}>
 							<BottomLeftCard />
 							<BottomRightCard />
-							
 						</div>
 					</section>
 				</div>

@@ -36,8 +36,11 @@ let LeftBox = ({ langData, data, image }) => {
 					name: 'customize_your_look_left',
 				}}>
 				<div className={styles.text}>
-					<h2>{langData.title_left}</h2>
-					<p>{langData.content_left}</p>
+					<div className={styles.textContent}>
+						<h2>{langData.title_left}</h2>
+						<p>{langData.content_left}</p>
+					</div>
+
 					<button className={`${styles.ctaButton} ${styles.firstButton}`}>
 						{langData.button_title_left}
 					</button>

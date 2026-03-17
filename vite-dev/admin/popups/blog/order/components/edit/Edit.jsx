@@ -38,22 +38,22 @@ const uiProps = (ownProps) => {
 };
 
 const ORDER_STATUS_OPTIONS = [
-	{ id: 'pending', title: 'Pending' },
+	{ id: 'pending', title: 'Tiek apstrādāts' },
 
-	{ id: 'payment_pending', title: 'Payment Pending' },
-	{ id: 'paid', title: 'Paid' },
-	{ id: 'failed', title: 'Failed' },
-	{ id: 'cancelled', title: 'Cancelled' },
+	{ id: 'payment_pending', title: 'Maksājums tiek apstrādāts' },
+	{ id: 'paid', title: 'Apmaksāts' },
+	{ id: 'failed', title: 'Pasūtījums neizdevās' },
+	{ id: 'cancelled', title: 'Pasūtījums atcelts' },
 
-	{ id: 'declined', title: 'Declined' },
-	{ id: 'processing', title: 'Processing' },
-	{ id: 'confirmed', title: 'Confirmed' },
+	{ id: 'declined', title: 'Pasūtījums atteikts' },
+	{ id: 'processing', title: 'Pasūtījuma apstrāde' },
+	{ id: 'confirmed', title: 'Pasūtījums apstiprināts' },
 
-	{ id: 'shipped', title: 'Shipped' },
-	{ id: 'delivered', title: 'Delivered' },
+	{ id: 'shipped', title: 'Pasūtījums nosūtīts' },
+	{ id: 'delivered', title: 'Pasūtījums piegādāts' },
 
-	{ id: 'completed', title: 'Completed' },
-	{ id: 'refunded', title: 'Refunded' },
+	{ id: 'completed', title: 'Pasūtījums izpildīts' },
+	{ id: 'refunded', title: 'Pasūtījums atgriezts' },
 ];
 
 class Edit extends Component {
@@ -137,14 +137,14 @@ class Edit extends Component {
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Numeration"
+						label="Numurācija"
 						name="_ro_numeration"
 						component={Input}
 						value={numeration}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Created at"
+						label="Izveidots"
 						name="_ro_created_at"
 						component={Input}
 						value={created_at}
@@ -154,14 +154,14 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="Total"
+						label="Kopā"
 						name="_ro_total"
 						component={Input}
 						value={total}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Shipping price"
+						label="Piegādes maksa"
 						name="_ro_shipping_price"
 						component={Input}
 						value={shipping_price}
@@ -178,14 +178,14 @@ class Edit extends Component {
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Shipping type"
+						label="Maksājuma veids"
 						name="_ro_shipping_type"
 						component={Input}
 						value={shipping_type}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Payment reference"
+						label="Maksājuma atsauce"
 						name="_ro_payment_reference_number"
 						component={Input}
 						value={payment_reference_number}
@@ -195,28 +195,28 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="First name"
+						label="Vārds"
 						name="_ro_first_name"
 						component={Input}
 						value={first_name}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Surname"
+						label="Uzvārds"
 						name="_ro_surname"
 						component={Input}
 						value={surname}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Email"
+						label="E-pasts"
 						name="_ro_email"
 						component={Input}
 						value={email}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Phone"
+						label="Tālrunis"
 						name="_ro_phone"
 						component={Input}
 						value={phone}
@@ -226,21 +226,21 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="Company name"
+						label="Uzņēmuma nosaukums"
 						name="_ro_company_name"
 						component={Input}
 						value={company_name}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Reg. Nr"
+						label="Reģ. Nr"
 						name="_ro_reg_nr"
 						component={Input}
 						value={reg_nr}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="VAT Nr"
+						label="PVN Nr"
 						name="_ro_vat_nr"
 						component={Input}
 						value={vat_nr}
@@ -250,21 +250,21 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="Country"
+						label="Valsts"
 						name="_ro_country"
 						component={Input}
 						value={country}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Postal code"
+						label="Pasta indekss"
 						name="_ro_postal_code"
 						component={Input}
 						value={postal_code}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Address"
+						label="Adrese"
 						name="_ro_address"
 						component={Input}
 						value={address}
@@ -274,28 +274,28 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="Other delivery address"
+						label="Cita piegādes adrese"
 						name="_ro_other_address"
 						component={Checkbox}
 						value={other_address}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Delivery country"
+						label="Piegādes valsts"
 						name="_ro_delivery_country"
 						component={Input}
 						value={delivery_country}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Delivery postal code"
+						label="Piegādes pasta indekss"
 						name="_ro_delivery_postal_code"
 						component={Input}
 						value={delivery_postal_code}
 						componentProps={{ disabled: true }}
 					/>
 					<Field
-						label="Delivery address"
+						label="Piegādes adrese"
 						name="_ro_delivery_address"
 						component={Input}
 						value={delivery_address}
@@ -323,7 +323,7 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="Order status"
+						label="Pasūtījuma statuss"
 						name="order_status"
 						component={Select}
 						value={order_status}
@@ -336,14 +336,14 @@ class Edit extends Component {
 					/>
 
 					<Field
-						label="Courier company"
+						label="Kurjeru kompānija"
 						name="courier_company"
 						component={Input}
 						value={courier_company}
 					/>
 
 					<Field
-						label="Tracking number"
+						label="Sūtījuma numurs"
 						name="tracking_number"
 						component={Input}
 						value={tracking_number}
@@ -352,13 +352,13 @@ class Edit extends Component {
 
 				<div className={styles.detailsRow}>
 					<Field
-						label="Sent email"
+						label="Nosūtīts e-pasts"
 						name="sent_email_status"
 						component={Checkbox}
 						value={sent_email_status}
 					/>
 					<Field
-						label="Sent SMS"
+						label="Nosūtīts SMS"
 						name="sent_sms_status"
 						component={Checkbox}
 						value={sent_sms_status}
@@ -387,7 +387,7 @@ class Edit extends Component {
 				<p className={styles.sectionDescription}>order_data (JSON)</p>
 				<div className={styles.detailsRow}>
 					<Field
-						label="Order data"
+						label="Pasūtījuma dati"
 						name="_ro_order_data"
 						component={TextArea}
 						value={

@@ -18,19 +18,15 @@ const defaultProps = {
 
 const STATUS_CLASSES = {
 	pending: styles.pending,
-
 	payment_pending: styles.payment_pending,
 	paid: styles.paid,
 	failed: styles.failed,
 	cancelled: styles.cancelled,
-
 	declined: styles.declined,
 	processing: styles.processing,
 	confirmed: styles.confirmed,
-
 	shipped: styles.shipped,
 	delivered: styles.delivered,
-
 	completed: styles.completed,
 	refunded: styles.refunded,
 };
@@ -39,6 +35,7 @@ class BooleanStatus extends Component {
 	render() {
 		const { title, status, isTrue, variant } = this.props;
 
+		// CSS класс
 		const className = _g.classNames(
 			styles.wrapper,
 			status ? STATUS_CLASSES[status] : null,
@@ -50,7 +47,10 @@ class BooleanStatus extends Component {
 			!status && variant === 'default' && !isTrue ? styles.defaultFalse : null,
 		);
 
-		return <div className={className}>{title}</div>;
+		// Локализация текста статуса
+		const displayText = status ? _g.lang(`status_${status}`) : title;
+
+		return <div className={className}>{displayText}</div>;
 	}
 }
 

@@ -1,7 +1,7 @@
 import styles from './Brands.module.less';
 import Brands_list from './components/Brands_list';
 
-const Brands = () => {
+const Brands = ({brands}) => {
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.inner_wrapper}>
@@ -10,7 +10,7 @@ const Brands = () => {
 				</div>
 
 				<div className={styles.content}>
-					<Brands_list />
+					<Brands_list brands={brands}/>
 				</div>
 			</div>
 		</div>

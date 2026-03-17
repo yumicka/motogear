@@ -250,6 +250,34 @@ class Main
     $table->setPrimaryKey(['id']);
     //</editor-fold> 
     
+    /*
+    |--------------------------------------------------------------------------
+    |                             delivery_companies
+    |--------------------------------------------------------------------------|
+    */ 
+    //<editor-fold defaultstate="collapsed" desc="delivery_companies"> 
+    $table = $schema->createTable('delivery_companies');
+    $table->addOption('comment', 'Delivery companies');
+    $table->addOption('collate', 'utf8mb4_unicode_ci');//utf8_unicode_ci
+    $table->addOption('engine', 'InnoDB'); 
+    $table->addOption('row_format', 'DYNAMIC');
+    $table->addOption('charset', 'utf8mb4');//utf8
+
+    $table->addColumn('id', 'integer', ['unsigned' => true, 'notnull' => true, 'autoincrement' => true]);
+    $table->addColumn('created_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Created timestamp']);
+    $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'default' => null, 'comment' => 'Updated timestamp']);
+    $table->addColumn('name', 'string', ['notnull'=> false, 'default' => null, 'comment'=>'Company name']);
+    $table->addColumn('lv_price', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Delivery price Latvia']);
+    $table->addColumn('lt_price', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Delivery price Lithuania']);
+    $table->addColumn('ee_price', 'decimal', ['precision' => 5, 'scale' => 2, 'notnull' => true, 'default' => 0,'comment' => 'Delivery price Estonia']);
+    $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
+    $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
+    
+    $table->addColumn('category_image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Category image id']);
+    
+    $table->setPrimaryKey(['id']);
+    //</editor-fold>
+    
     return $schema;
     } 
 }

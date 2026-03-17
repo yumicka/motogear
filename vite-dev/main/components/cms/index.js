@@ -36,6 +36,10 @@ items['motocross_tyres'] = MotocrossTyres;
 import WelcomeBanner from './content/welcome_banner';
 items['welcome_banner'] = WelcomeBanner;
 
+/* Contact Form */
+import ContactForm from './content/contact_form';
+items['contact_form'] = ContactForm;
+
 
 
 
@@ -46,5 +50,8 @@ items['welcome_banner'] = WelcomeBanner;
  * ========================================================================*/
 import PrivacyPolicy from './collections/privacy_policy';
 items['privacy_policy'] = PrivacyPolicy;
+
+import Garantees from './collections/garantees';
+items['garantees'] = Garantees;
 
 export default items;
