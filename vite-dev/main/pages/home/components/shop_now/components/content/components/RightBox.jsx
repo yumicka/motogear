@@ -28,19 +28,19 @@ let RightBox = ({ langData, data, image }) => {
 		<Link
 			className={`${styles.contentBox} ${styles.secondBox}`}
 			to={data.link_right}>
-			<div className={styles.image}>
-				<Image src={image.image} alt={langData.title_right} />
-			</div>
 			<Editable
 				edit={{
 					name: 'customize_your_look_right',
 				}}>
+				<div className={styles.image}>
+					<Image src={image.image} alt={langData.title_right} />
+				</div>
 				<div className={styles.text}>
 					<div className={styles.textContent}>
 						<h2>{langData.title_right}</h2>
 						<p>{langData.content_right}</p>
 					</div>
-					
+
 					<button className={`${styles.ctaButton} ${styles.secondButton}`}>
 						{langData.button_title_right}
 					</button>

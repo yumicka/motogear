@@ -67,9 +67,9 @@ class OrderController extends Controller
 
                     $summary = Cart::getSummary();
                     
-                    $order->total = $summary['totals']['total_price'];
-                    $order->shipping_price = $summary['totals']['shipping_price'];
-
+                    $order->shipping_price = $request->input('shipping_price');
+                    $order->total = (float) $summary['totals']['total_price'] + $order->shipping_price;
+                    
                     // Private / company data
                     if ($personType === 'company') {
                         $order->first_name = null;
@@ -155,11 +155,14 @@ class OrderController extends Controller
                 'redirect_url' => $purchase['checkout_url'] ?? null
             ]);
         } catch (\Throwable $e) {
+            $order->order_status = OrderStatuses::failed;
+            $order->save();
             \Log::error('Order pay failed', ['order_id' => $order->id, 'err' => $e->getMessage()]);
             return response()->json([
                 'redirect_url' => null,
                 'error' => 'PAY_FAILED',
-            ], 500);
+            ], 500)
+            ;
         }
     }
 }

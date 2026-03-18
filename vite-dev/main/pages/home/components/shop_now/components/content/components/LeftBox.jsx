@@ -28,13 +28,14 @@ let LeftBox = ({ langData, data, image }) => {
 		<Link
 			className={`${styles.contentBox} ${styles.firstBox}`}
 			to={data.link_left}>
-			<div className={styles.image}>
-				<Image src={image.image} alt={langData.title_left} />
-			</div>
 			<Editable
 				edit={{
 					name: 'customize_your_look_left',
 				}}>
+				<div className={styles.image}>
+					<Image src={image.image} alt={langData.title_left} />
+				</div>
+
 				<div className={styles.text}>
 					<div className={styles.textContent}>
 						<h2>{langData.title_left}</h2>

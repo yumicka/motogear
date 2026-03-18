@@ -21,64 +21,64 @@ class KlixPayments
      * @return array or null
     */
     private static function request($method, $endpoint, $options = [], $config = [])
-{
-    $apiKey = config('services.klix.secret_key');
-    $base = rtrim(config('services.klix.endpoint'), '/');
-    
-    $client = new Client(array_merge([
-        'base_uri' => $base,
-        'timeout' => 20,
-        'connect_timeout' => 10,
-        'http_errors' => false, // <-- ключ!
-    ], $config));
+    {
+        $apiKey = config('services.klix.secret_key');
+        $base = rtrim(config('services.klix.endpoint'), '/');
 
-    $headers = [
-        'Accept' => 'application/json',
-    ];
-    if ($apiKey) {
-        $headers['Authorization'] = 'Bearer ' . $apiKey;
-    }
+        $client = new Client(array_merge([
+            'base_uri' => $base,
+            'timeout' => 20,
+            'connect_timeout' => 10,
+            'http_errors' => false, // <-- ключ!
+        ], $config));
 
-    $url = $base . $endpoint;
-
-    try {
-        $response = $client->request($method, $url, array_merge([
-            'headers' => $headers,
-        ], $options));
-
-        $status = $response->getStatusCode();
-        $body = (string) $response->getBody();
-
-        $json = json_decode($body, true);
-
-        // логируем любые не-2xx
-        if ($status >= 400) {
-            \Log::error('Klix API error', [
-                'method' => $method,
-                'url' => $url,
-                'status' => $status,
-                'body' => mb_substr($body, 0, 2000),
-                'json' => $json,
-            ]);
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+        if ($apiKey) {
+            $headers['Authorization'] = 'Bearer ' . $apiKey;
         }
 
-        return $json ?? [
-            '_error' => 'NON_JSON',
-            'status' => $status,
-            'raw' => $body,
-        ];
-    } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-        \Log::error('Klix Guzzle exception', [
-            'method' => $method,
-            'url' => $url,
-            'error' => $e->getMessage(),
-        ]);
-        return [
-            '_error' => 'GUZZLE_EXCEPTION',
-            'message' => $e->getMessage(),
-        ];
+        $url = $base . $endpoint;
+
+        try {
+            $response = $client->request($method, $url, array_merge([
+                'headers' => $headers,
+            ], $options));
+
+            $status = $response->getStatusCode();
+            $body = (string) $response->getBody();
+
+            $json = json_decode($body, true);
+
+            // логируем любые не-2xx
+            if ($status >= 400) {
+                \Log::error('Klix API error', [
+                    'method' => $method,
+                    'url' => $url,
+                    'status' => $status,
+                    'body' => mb_substr($body, 0, 2000),
+                    'json' => $json,
+                ]);
+            }
+
+            return $json ?? [
+                '_error' => 'NON_JSON',
+                'status' => $status,
+                'raw' => $body,
+            ];
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            \Log::error('Klix Guzzle exception', [
+                'method' => $method,
+                'url' => $url,
+                'error' => $e->getMessage(),
+            ]);
+            return [
+                '_error' => 'GUZZLE_EXCEPTION',
+                'message' => $e->getMessage(),
+            ];
+        }
     }
-}
         
     /**
      * GetPaymentMethods
@@ -138,10 +138,6 @@ class KlixPayments
         $locale = app()->getLocale();
         $baseUrl = 'https://motogear.dobinnovations.lv';
         
-        //dd(url($locale.'/klix-payment-success/'.$order->id));
-        
-        //dd(url($locale.'/klix-payment-success/'.$order->id));
-        
         $total = (double)$order->total;
         $total = $total * 100;
         $total = intval(round($total));
@@ -162,22 +158,25 @@ class KlixPayments
                     ]
                 ]
             ],  
-//            'success_redirect' => $locale.'/klix-payment-success/'.$order->id,
+                
             'success_redirect' => $baseUrl . '/' . $locale . '/klix-payment-success/' . $order->id,
             'cancel_redirect' => $baseUrl . '/' . $locale . '/klix-payment-failed/' . $order->id,
 //                
-//            "brand_id" => 'a60e117c-8af5-4240-b627-42102588b638',
+//           
             'reference' => $order->numeration,
             "due_strict" => true,
             "payment_method_whitelist" => [$order->payment_type],
         ]
         );
         } catch (\Exception $ex) {
+            
             Log::error('KlixPaymentOrder failed', ['error' => $ex->getMessage()]);
         }
        
 
         if (empty($purchase) || empty($purchase['id'])) {
+            $order->order_status = OrderStatuses::failed;
+            $order->save();
             Log::error('Klix createPurchase failed', [
                 'order_id' => $order->id,
                 'purchase' => $purchase
@@ -192,6 +191,8 @@ class KlixPayments
         //dd($purchase);
         
         if (empty($purchase) || empty($purchase['checkout_url'])) {
+            $order->order_status = OrderStatuses::failed;
+            $order->save();
             Log::error('KlixPayments::createOrderPurchase failed!', ['order' => $order, 'purchase' => $purchase]);
         }
         

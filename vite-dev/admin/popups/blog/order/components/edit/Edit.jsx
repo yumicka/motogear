@@ -9,7 +9,6 @@ import Form from 'ui/form';
 import Field from 'ui/form/field';
 import Input from 'ui/inputs/input';
 import Checkbox from 'ui/inputs/checkbox';
-import TextArea from 'ui/inputs/textarea';
 import Select from 'ui/inputs/select';
 
 import { get } from 'lodash-es';
@@ -126,16 +125,16 @@ class Edit extends Component {
 		return (
 			<div className={styles.section}>
 				<h3 className={styles.sectionTitle}>Pasūtījuma informācija</h3>
-				<p className={styles.sectionDescription}>Tikai apskate (read-only)</p>
+				<p className={styles.sectionDescription}>Pasūtījuma Nr. {id} rediģēšana</p>
 
 				<div className={styles.detailsRow}>
-					<Field
+					{/* <Field
 						label="ID"
 						name="_ro_id"
 						component={Input}
 						value={id}
 						componentProps={{ disabled: true }}
-					/>
+					/> */}
 					<Field
 						label="Numurācija"
 						name="_ro_numeration"
@@ -371,36 +370,56 @@ class Edit extends Component {
 	renderProducts = () => {
 		const { item } = this.props;
 
-		let products = get(item, 'order_data', null);
-		// order_data в схеме text (JSON строка)
+		let products = get(item, 'order_data', []);
+
 		if (typeof products === 'string') {
 			try {
 				products = JSON.parse(products);
 			} catch (e) {
-				// оставим как строку
+				products = [];
 			}
 		}
 
 		return (
 			<div className={styles.section}>
 				<h3 className={styles.sectionTitle}>Produkti</h3>
-				<p className={styles.sectionDescription}>order_data (JSON)</p>
-				<div className={styles.detailsRow}>
-					<Field
-						label="Pasūtījuma dati"
-						name="_ro_order_data"
-						component={TextArea}
-						value={
-							typeof products === 'string'
-								? products
-								: JSON.stringify(products ?? [], null, 2)
-						}
-						componentProps={{
-							disabled: true,
-							rows: 12,
-						}}
-					/>
-				</div>
+
+				{!products.length && <div>Nav produktu</div>}
+
+				{products.map((p, i) => {
+					const title = get(p, 'title', '');
+					const image = get(p, 'image.thumbnail', '');
+					const price = get(p, 'calculated_price', '');
+					const quantity = get(p, 'quantity', '');
+					const total = get(p, 'total', '');
+					const size = get(p, 'selected_variant.product_size', '');
+
+					return (
+						<div key={i} className={styles.productRow}>
+							{image && (
+								<img src={image} alt={title} className={styles.productImage} />
+							)}
+
+							<div className={styles.productInfo}>
+								<div className={styles.productTitle}>{title}</div>
+
+								<div className={styles.productMeta}>
+									<span>Izmērs: {size}</span>
+								</div>
+								<div className={styles.productMeta}>
+									<span>Daudzums: {quantity}</span>
+								</div>
+
+								<div className={styles.productPrices}>
+									<span>Cena: {price} €</span>
+								</div>
+								<div className={styles.productPrices}>
+									<span>Kopā: {total} €</span>
+								</div>
+							</div>
+						</div>
+					);
+				})}
 			</div>
 		);
 	};

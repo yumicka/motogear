@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { PureComponent as Component } from 'react';
 import PropTypes from 'prop-types';
-
+import styles from './View.module.less';
 import WithUi from 'hoc/store/ui';
 import InfoTable from 'ui/tables/info_table';
 import Tabs from 'ui/controls/tabs';
+import Link from 'core/navigation/link';
 
 const propTypes = {
 	containerName: PropTypes.string.isRequired,
@@ -52,6 +53,23 @@ class View extends Component {
 		return [];
 	};
 
+	formatProduct = (p) => {
+		const categories = (p.categories || []).map((c) => c.title).join(' / ');
+
+		return {
+			Nosaukums: (
+				<Link to={p.url} className={styles.productLink}>
+					{p.title}
+				</Link>
+			),
+			Kategorija: categories || '-',
+			Izmērs: p?.selected_variant?.product_size || '-',
+			Daudzums: p.quantity,
+			Cena: `${p.calculated_price} €`,
+			Kopā: `${p.total} €`,
+		};
+	};
+
 	render() {
 		const { item, order: orderProp, products: productsProp } = this.props;
 
@@ -63,53 +81,58 @@ class View extends Component {
 
 		const orderInfo = {
 			ID: order.id,
-			Numeration: order.numeration,
-			Status: order.order_status,
-			Payment: order.payment_type,
-			Shipping: order.shipping_type,
-			Total: order.total,
-			ShippingPrice: order.shipping_price,
-			Created: order.created_at,
-			Updated: order.updated_at,
-			Tracking: order.tracking_number,
-			Courier: order.courier_company,
+			Numurēšana: order.numeration,
+			Statuss: order.order_status,
+			'Maksājuma veids': order.payment_type,
+			'Piegādes veids': order.shipping_type,
+			Kopā: order.total,
+			'Piegādes cena': order.shipping_price,
+			Izveidots: order.created_at,
+			Atjaunināts: order.updated_at,
+			Izsekošana: order.tracking_number,
+			'Kurjeru kompānija': order.courier_company,
 		};
 
 		const customerInfo = {
-			FirstName: order.first_name,
-			Surname: order.surname,
-			Email: order.email,
-			Phone: order.phone,
-			Company: order.company_name,
-			RegNr: order.reg_nr,
-			VAT: order.vat_nr,
-			Country: order.country,
-			PostalCode: order.postal_code,
-			Address: order.address,
-			DeliveryCountry: order.delivery_country,
-			DeliveryAddress: order.delivery_address,
-			DeliveryPostalCode: order.delivery_postal_code,
+			Vārds: order.first_name,
+			Uzvārds: order.surname,
+			'E-pasts': order.email,
+			Tālrunis: order.phone,
+			'Uzņēmuma nosaukums': order.company_name,
+			'Reģ. Nr.': order.reg_nr,
+			'PVN Nr.': order.vat_nr,
+			Valsts: order.country,
+			'Pasta indekss': order.postal_code,
+			Adrese: order.address,
+			'Piegādes valsts': order.delivery_country,
+			'Piegādes adrese': order.delivery_address,
+			'Piegādes pasta indekss': order.delivery_postal_code,
 		};
 
 		const items = [
 			{
 				name: 'order',
-				title: 'Order Info',
+				title: 'Informācija par pasūtījumu',
 				content: <InfoTable rows={orderInfo} />,
 			},
 			{
 				name: 'customer',
-				title: 'Customer',
+				title: 'Informācija par klientu',
 				content: <InfoTable rows={customerInfo} />,
 			},
 			{
 				name: 'products',
-				title: 'Products',
+				title: 'Preces',
 				content: (
 					<div>
 						{products.length > 0
-							? products.map((p, i) => <InfoTable key={i} rows={p} />)
-							: 'No products'}
+							? products.map((p, i) => (
+								<div key={i} className={styles.productBlock}>
+									<div className={styles.productHeader}>Produkts #{i + 1}</div>
+									<InfoTable rows={this.formatProduct(p)} />
+								</div>
+							))
+							: 'Nav produktu'}
 					</div>
 				),
 			},

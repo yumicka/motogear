@@ -10,6 +10,7 @@ import BlogEntries from 'admin/pages/blog/components/blog_entries';
 import BlogCategories from 'admin/pages/blog/components/blog_categories';
 import Orders from 'admin/pages/blog/components/orders';
 import Brands from 'admin/pages/blog/components/brands';
+import Delivery from 'admin/pages/blog/components/delivery/Delivery';
 
 const propTypes = {};
 
@@ -40,6 +41,11 @@ class Content extends Component {
 				<Route
 					path="/administration/blog/orders"
 					component={Orders}
+				/>
+
+				<Route
+					path="/administration/blog/delivery"
+					component={Delivery}
 				/>
 
 				<Route

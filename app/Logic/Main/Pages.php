@@ -496,6 +496,7 @@ class Pages
         $state['Page']['current'] = 'checkout';
         
         $state['categories'] = Product\ProductCategories::get($lang);
+        $state['delivery_fee'] = Product\Deliveries::get();
         $state['payments'] = KlixPayments::getPaymentMethods();
         
         $meta_data = MetaData::get($lang, 'checkout');
@@ -520,7 +521,7 @@ class Pages
         $state = self::getCommonState($lang);
 
         $data = Data::get($lang, [
-            'content' => self::getCommonContent(),
+            'content' => $content,
             'collections' => self::getCommonCollections()
         ]);
 
@@ -555,7 +556,7 @@ class Pages
         $state = self::getCommonState($lang);
 
         $data = Data::get($lang, [
-            'content' => self::getCommonContent(),
+            'content' => $content,
             'collections' => self::getCommonCollections()
         ]);
 
@@ -612,6 +613,138 @@ class Pages
         $state['categories'] = Product\ProductCategories::get($lang);
         
         $meta_data = MetaData::get($lang, 'privacy_policy');
+        
+        MetaHelper::setTitle($meta_data['title']);
+        MetaHelper::setDescription($meta_data['description']);
+        
+        return Store::setState($lang, $state);
+    //</editor-fold>
+    }
+    
+    /**
+     * paymentPolicy
+     *
+     * @access public           
+     * @param  
+     * @return array
+    */
+    public static function paymentPolicy($lang) {
+    //<editor-fold defaultstate="collapsed" desc="privacy_policy"> 
+
+        $content = array_merge(self::getCommonContent(), [
+           'contact_form',
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+            'privacy_policy' => [
+                'results_per_page' => 'all'
+            ]
+        ]);
+      
+        $state = self::getCommonState($lang);
+        
+        $data = Data::get($lang, [
+            'content' => $content,
+            'collections' => $collections
+        ]);
+        
+        $state = array_merge($state, $data);
+          
+        $state['Menu'] = ['current' => 'payment'];
+
+        $state['Page'] = [];        
+        $state['Page']['current'] = 'payment';
+        $state['categories'] = Product\ProductCategories::get($lang);
+        
+        $meta_data = MetaData::get($lang, 'payment');
+        
+        MetaHelper::setTitle($meta_data['title']);
+        MetaHelper::setDescription($meta_data['description']);
+        
+        return Store::setState($lang, $state);
+    //</editor-fold>
+    }
+    
+    /**
+     * shippingReturns
+     *
+     * @access public           
+     * @param  
+     * @return array
+    */
+    public static function shippingReturns($lang) {
+    //<editor-fold defaultstate="collapsed" desc="shippingReturns"> 
+
+        $content = array_merge(self::getCommonContent(), [
+           'contact_form',
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+            'privacy_policy' => [
+                'results_per_page' => 'all'
+            ]
+        ]);
+      
+        $state = self::getCommonState($lang);
+        
+        $data = Data::get($lang, [
+            'content' => $content,
+            'collections' => $collections
+        ]);
+        
+        $state = array_merge($state, $data);
+          
+        $state['Menu'] = ['current' => 'shipping_returns'];
+
+        $state['Page'] = [];        
+        $state['Page']['current'] = 'shipping_returns';
+        $state['categories'] = Product\ProductCategories::get($lang);
+        
+        $meta_data = MetaData::get($lang, 'shipping_returns');
+        
+        MetaHelper::setTitle($meta_data['title']);
+        MetaHelper::setDescription($meta_data['description']);
+        
+        return Store::setState($lang, $state);
+    //</editor-fold>
+    }
+    
+    /**
+     * terms
+     *
+     * @access public           
+     * @param  
+     * @return array
+    */
+    public static function terms($lang) {
+    //<editor-fold defaultstate="collapsed" desc="terms"> 
+
+        $content = array_merge(self::getCommonContent(), [
+           'contact_form',
+        ]);
+        
+        $collections = array_merge(self::getCommonCollections(), [
+            'privacy_policy' => [
+                'results_per_page' => 'all'
+            ]
+        ]);
+      
+        $state = self::getCommonState($lang);
+        
+        $data = Data::get($lang, [
+            'content' => $content,
+            'collections' => $collections
+        ]);
+        
+        $state = array_merge($state, $data);
+          
+        $state['Menu'] = ['current' => 'terms'];
+
+        $state['Page'] = [];        
+        $state['Page']['current'] = 'terms';
+        $state['categories'] = Product\ProductCategories::get($lang);
+        
+        $meta_data = MetaData::get($lang, 'terms');
         
         MetaHelper::setTitle($meta_data['title']);
         MetaHelper::setDescription($meta_data['description']);

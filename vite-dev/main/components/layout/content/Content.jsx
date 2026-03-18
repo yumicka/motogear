@@ -9,6 +9,9 @@ import Checkout from 'main/pages/checkOut/Checkout';
 import PropTypes from 'prop-types';
 import PaymentSuccess from 'main/pages/checkOut/components/success/PaymentSuccess';
 import PaymentFailure from 'main/pages/checkOut/components/failed/PaymentFailure';
+import Payment from 'main/info_pages/payment/Payment';
+import ShippingReturns from 'main/info_pages/shipping_returns/ShippingReturns';
+import Terms from 'main/info_pages/terms/Terms';
 
 const uiProps = (ownProps) => {
 	return {
@@ -31,6 +34,9 @@ function Content(props) {
 		klixPaymentFailed: <PaymentFailure />,
 		//privacy pages
 		privacy_policy: <PrivacyPolicy />,
+		payment: <Payment />,
+		shipping_returns: <ShippingReturns />,
+		terms: <Terms />,
 	};
 
 	const page = get(pageRenderer, current, null);

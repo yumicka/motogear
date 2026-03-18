@@ -32,4 +32,7 @@ Route::group(['middleware' => 'check_lang'], function () {
     Route::get('{lang}/projekti/{id}', 'PublicPagesController@blogEntry');
     
     Route::get('{lang}/privatumu-politika', 'PublicPagesController@privacyPolicy');
+    Route::get('{lang}/payment', 'PublicPagesController@payment');
+    Route::get('{lang}/shippingReturns', 'PublicPagesController@shippingReturns');
+    Route::get('{lang}/terms', 'PublicPagesController@terms');
 }); 

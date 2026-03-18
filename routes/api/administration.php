@@ -44,6 +44,11 @@ Route::group(['namespace' => 'BlogEntries', 'prefix' => 'blog'], function () {
      
     });
     
+    Route::group(['prefix' => 'delivery'], function () {
+        Route::post('search', 'DeliveryCompaniesController@search');
+        Route::post('actions', 'DeliveryCompaniesController@actions');
+    });
+    
     Route::group(['prefix' => 'orders'], function () {
         Route::post('search', 'OrderAdmController@search');
         Route::post('actions', 'OrderAdmController@actions');

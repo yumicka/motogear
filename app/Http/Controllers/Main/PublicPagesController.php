@@ -238,6 +238,42 @@ class PublicPagesController extends Controller
     //</editor-fold>    
     }
     
+    /**
+    * payment_policy
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function payment($lang) {
+    //<editor-fold defaultstate="collapsed" desc="privacy_policy">                 
+        return view('public.main', ['state' => Pages::paymentPolicy($lang)]);
+    //</editor-fold>    
+    }
+    
+    /**
+    * shipping_returns
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function shippingReturns($lang) {
+    //<editor-fold defaultstate="collapsed" desc="privacy_policy">                 
+        return view('public.main', ['state' => Pages::shippingReturns($lang)]);
+    //</editor-fold>    
+    }
+    
+    /**
+    * terms
+    *
+    * @access public       
+    * @return \Illuminate\Http\Response 
+    */
+    public function terms($lang) {
+    //<editor-fold defaultstate="collapsed" desc="terms">                 
+        return view('public.main', ['state' => Pages::terms($lang)]);
+    //</editor-fold>    
+    }
+    
     //Entry opens
     
     /**

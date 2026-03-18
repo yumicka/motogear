@@ -19,6 +19,7 @@
                 <tr>
                     <th>Nosaukums</th>
                     <th>Daudzums</th>
+                    <th>Izmērs</th>
                     <th>Cena</th>
                     <th>Summa</th>
                 </tr>
@@ -28,6 +29,7 @@
                     <tr>
                         <td>{{ $row['title'] ?? '' }}</td>
                         <td>{{ $row['quantity'] ?? 0 }}</td>
+                        <td>{{ $row['size'] ?? '' }}</td>
                         <td>{{ number_format($row['price'] ?? 0, 2, '.', '') }}</td>
                         <td>{{ number_format($row['calculated_price'] ?? 0, 2, '.', '') }}</td>
                     </tr>

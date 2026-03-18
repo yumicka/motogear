@@ -25,13 +25,13 @@ const Footer = ({ categories, langData, data }) => {
 	const year = new Date().getFullYear();
 
 	const helpLinks = [
-		{ label: _g.lang('returns'), to: getMainUrl(true) + 'privatumu-politika' },
-		{ label: _g.lang('payment'), to: getMainUrl(true) + 'privatumu-politika' },
+		{ label: _g.lang('returns'), to: getMainUrl(true) + 'shippingReturns' },
+		{ label: _g.lang('payment'), to: getMainUrl(true) + 'payment' },
 		{
 			label: _g.lang('privacy_policy'),
 			to: getMainUrl(true) + 'privatumu-politika',
 		},
-		{ label: _g.lang('terms'), to: getMainUrl(true) + 'privatumu-politika' },
+		{ label: _g.lang('terms'), to: getMainUrl(true) + 'terms' },
 	];
 
 	return (

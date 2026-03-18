@@ -78,12 +78,19 @@ class Orders
         foreach ($products as $item) {
             $title = (string) ($item['title'] ?? $item['name'] ?? $item['product_title'] ?? '');
             $qty = (int) ($item['quantity'] ?? $item['qty'] ?? 0);
+            $size = (string) (
+                $item['selected_variant']['product_size']
+                ?? $item['selected_variant']['size']
+                ?? $item['size']
+                ?? ''
+            );
             $price = (float) ($item['product_price'] ?? $item['price'] ?? $item['unit_price'] ?? 0);
             $lineTotal = (float) ($item['total'] ?? $item['calculated_price'] ?? ($price * $qty));
 
             $rows[] = [
                 'title' => $title,
                 'quantity' => $qty,
+                'size' => $size,
                 'price' => round($price, 2),
                 'calculated_price' => round($lineTotal, 2),
             ];
@@ -265,6 +272,7 @@ class Orders
                     }
                 }
             );
+            $order->recived_email_status = 1;
         } catch (\Exception $ex) {
             Log::error('sendSuccessEmail failed', [
                 'order_id' => $order->id ?? null,

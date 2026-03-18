@@ -273,8 +273,6 @@ class Main
     $table->addColumn('active', 'boolean', ['notnull' => true, 'default' => 0, 'comment' => 'Active']);
     $table->addColumn('position', 'integer', ['unsigned' => true, 'notnull'=> true, 'default' => 0, 'comment'=>'Item\'s position']);
     
-    $table->addColumn('category_image_id', 'integer', ['unsigned' => true, 'notnull' => true, 'default' => 0, 'comment' => 'Category image id']);
-    
     $table->setPrimaryKey(['id']);
     //</editor-fold>
     

@@ -45,6 +45,17 @@ popups[OrderPopupSettings.name] = {
 };
 
 /*
+ * DeliveryPopup
+ */
+import DeliveryPopup, {
+	settings as DeliveryPopupSettings,
+} from 'admin/popups/blog/delivery';
+popups[DeliveryPopupSettings.name] = {
+	popup: DeliveryPopup,
+	settings: DeliveryPopupSettings,
+};
+
+/*
  * UserPopup
  */
 import UserPopup, { settings as UserPopupSettings } from 'admin/popups/user';

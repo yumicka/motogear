@@ -128,6 +128,7 @@ $shippingAddress = $shipping['full_address'] ?? '';
         <td>Nosaukums</td>
         <td class="text-align-center">Cena</td>
         <td class="text-align-center">Daudzums</td>
+        <td class="text-align-center">Izmērs</td>
         <td class="text-align-center">Kopā</td>
       </tr>
 
@@ -136,6 +137,7 @@ $shippingAddress = $shipping['full_address'] ?? '';
           <td class="products-td-1"><?= e($row['title']) ?></td>
           <td class="products-td-2 text-align-center"><?= FormatHelper::money($row['calculated_price']) ?></td>
           <td class="products-td-2 text-align-center"><?= e($row['quantity']) ?> gab</td>
+          <td class="products-td-2 text-align-center"><?= e($row['size']) ?></td>
           <td class="products-td-3 text-align-center"><?= FormatHelper::money($row['calculated_price']) ?></td>
         </tr>
       <?php endforeach; ?>

@@ -31,6 +31,13 @@ menu.push({
 });
 
 menu.push({
+	name: 'delivery',
+	title: 'Piegādes pārvadātāji',
+	url: baseName + '/blog/delivery',
+	icon: _g.getMainUrl() + 'assets/icons/users.svg',
+});
+
+menu.push({
 	name: 'users',
 	title: 'Lietotāji',
 	url: baseName + '/users',

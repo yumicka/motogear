@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import styles from './InfoForm.module.less';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Form from 'ui/form';
 import Field from 'ui/form/field';
@@ -10,14 +10,33 @@ import Checkbox from 'ui/inputs/checkbox';
 import RadioGroup from 'ui/inputs/radio_group';
 import Select from 'ui/inputs/select';
 import TextArea from 'ui/inputs/textarea';
+import WithUi from 'hoc/store/ui';
 
-const InfoForm = ({ setStep, cart, setOrderId }) => {
+const uiProps = (ownProps) => {
+	return{
+		delivery_fee: 'delivery_fee',
+	};
+};
+
+const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 	const [personType, setPersonType] = useState('private');
 	const [locations, setLocations] = useState([]);
 	const [selectedCountry, setSelectedCountry] = useState('');
 	const [omnivaPackage, setOmnivaPackage] = useState(null);
 	const [deliveryType, setDeliveryType] = useState('parcelMachine');
 	const [hasDifferentDeliveryAddress, setHasDifferentDeliveryAddress] = useState(false);
+
+	const currentDelivery = Array.isArray(delivery_fee) ? delivery_fee[0] : null;
+
+	const deliveryPrice = useMemo(() => {
+		if (!currentDelivery || !selectedCountry) return '0.00';
+
+		if (selectedCountry === 'LV') return currentDelivery.lv_price || '0.00';
+		if (selectedCountry === 'LT') return currentDelivery.lt_price || '0.00';
+		if (selectedCountry === 'EE') return currentDelivery.ee_price || '0.00';
+
+		return '0.00';
+	}, [currentDelivery, selectedCountry]);
 
 	useEffect(() => {
 		remoteRequest({
@@ -43,9 +62,12 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 		data.delivery_address = omnivaPackage.label || '';
 		data.delivery_postal_code = omnivaPackage.value || '';
 		data.delivery_country = selectedCountry || '';
+		data.shipping_price = deliveryPrice;
 
 		data.country = selectedCountry;
 	};
+
+	console.log(cart?.product_summary);
 
 	const onSuccess = ({ response }) => {
 		const id = response?.order?.id ?? response?.data?.order?.id;
@@ -379,7 +401,7 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 					<div className={styles.deliveryInfo}>
 						<div className={styles.deliveryPrice}>
 							<h3>{_g.lang('delivery_fee')}</h3>
-							<p>0.00 €</p>
+							<p>{deliveryPrice} €</p>
 						</div>
 						<div className={styles.deliveryTime}>
 							<p>{_g.lang('estimated_delivery_time')}</p>
@@ -413,4 +435,4 @@ const InfoForm = ({ setStep, cart, setOrderId }) => {
 	);
 };
 
-export default InfoForm;
+export default WithUi(uiProps)(InfoForm);
