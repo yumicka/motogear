@@ -4,6 +4,7 @@ namespace App\Types\Main;
 enum OrderStatuses: string
 {
     case pending = 'pending';
+    case created = 'created';
     
     case payment_pending = 'payment_pending'; 
     case paid = 'paid';

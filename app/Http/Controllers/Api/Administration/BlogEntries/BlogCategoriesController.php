@@ -225,7 +225,11 @@ class BlogCategoriesController extends Controller
                         return Response::error("Item with id {$request->id} doesn't exist!");
                     }
                     
-                    if (Product::where('id', $item->id)->exists()) {
+                    $isUsed = Product::where('category_id', $item->id)
+                        ->orWhere('sub_category_id', $item->id)
+                        ->exists();
+
+                    if ($isUsed) {
                         return Response::error("Ieraksts tiek izmantots!");
                     }
 

@@ -113,8 +113,11 @@ class ProductEntries
         $sizes = DB::connection('main')
             ->table('product_sizes')
             ->where('product_id', $item->id)
-            ->get(['id', 'product_size']);
+            ->get(['id', 'product_size', 'product_count']);
 
+        $hasAvailableSizes = $sizes->contains(function ($size) {
+            return (int)$size->product_count > 0;
+        });
         return [
             'id' => $item->id,
             'category' => $category,
@@ -132,6 +135,7 @@ class ProductEntries
             'lang_data' => $lang_data,
             'image' => $image,
             'sizes' => $sizes,
+            'is_available' => $hasAvailableSizes,
         ];
     }
 

@@ -5,7 +5,7 @@ use GuzzleHttp\Client;
 use App\Logic\Core\Log;
 use App\Logic\Main\Orders;
 use App\Types\Main\OrderStatuses;
-//use App\Models\Main\Order;
+use App\Logic\Main\Product\ProductSizes;
 
 use Arr;
 
@@ -51,7 +51,6 @@ class KlixPayments
 
             $json = json_decode($body, true);
 
-            // логируем любые не-2xx
             if ($status >= 400) {
                 \Log::error('Klix API error', [
                     'method' => $method,
@@ -160,9 +159,7 @@ class KlixPayments
             ],  
                 
             'success_redirect' => $baseUrl . '/' . $locale . '/klix-payment-success/' . $order->id,
-            'cancel_redirect' => $baseUrl . '/' . $locale . '/klix-payment-failed/' . $order->id,
-//                
-//           
+            'cancel_redirect' => $baseUrl . '/' . $locale . '/klix-payment-failed/' . $order->id,         
             'reference' => $order->numeration,
             "due_strict" => true,
             "payment_method_whitelist" => [$order->payment_type],
@@ -187,9 +184,6 @@ class KlixPayments
         $order->payment_reference_number = $purchase['id'];
         $order->save();
         
-        
-        //dd($purchase);
-        
         if (empty($purchase) || empty($purchase['checkout_url'])) {
             $order->order_status = OrderStatuses::failed;
             $order->save();
@@ -198,6 +192,40 @@ class KlixPayments
         
         return $purchase;
     //</editor-fold>  
+    }
+    
+    private static function decreaseOrderProducts($order)
+    {
+        $items = $order->order_data;
+
+        if (is_string($items)) {
+            $decoded = json_decode($items, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $items = $decoded;
+            }
+        }
+
+        if (!is_array($items) || empty($items)) {
+            return;
+        }
+
+        foreach ($items as $item) {
+            $productId = (int)($item['id'] ?? 0);
+            $count = (int)($item['quantity'] ?? 0);
+            $sizeId = (int)($item['selected_variant']['id'] ?? 0);
+
+            if ($productId <= 0 || $count <= 0) {
+                continue;
+            }
+
+            $result = ProductSizes::decreaseCount($productId, $sizeId, $count);
+
+            if ($sizeId > 0 && !$result) {
+                throw new \RuntimeException(
+                    'Not enough stock for product_id=' . $productId . ', size_id=' . $sizeId
+                );
+            }
+        }
     }
     
     /**
@@ -221,9 +249,21 @@ class KlixPayments
                
         switch ($status) {
             case 'paid':
-                $order->order_status = OrderStatuses::paid;
-                $order->save();
-                Orders::confirmOrder($order);
+                if ($order->order_status !== OrderStatuses::paid) {
+                    try {
+                        self::decreaseOrderProducts($order);
+                        $order->order_status = OrderStatuses::paid;
+                        $order->save();
+                        Orders::confirmOrder($order);
+                    } catch (\Throwable $e) {
+                        Log::error('Failed to decrease stock after successful payment', [
+                            'order_id' => $order->id,
+                            'error' => $e->getMessage(),
+                        ]);
+
+                        throw $e;
+                    }
+                }
                 break;
 
             case 'cancelled':
@@ -233,6 +273,11 @@ class KlixPayments
 
             case 'pending':
                 $order->order_status = OrderStatuses::pending;
+                $order->save();
+                break;
+            
+            case 'created':
+                $order->order_status = OrderStatuses::created;
                 $order->save();
                 break;
 

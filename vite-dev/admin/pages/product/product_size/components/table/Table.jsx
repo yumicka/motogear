@@ -45,10 +45,15 @@ class Table extends Component {
 			name: 'created_at',
 			title: 'Datums',
 		});
-
+ 
 		columns.push({
 			name: 'product_size',
 			title: 'Produkta izmērs',
+		});
+
+		columns.push({
+			name: 'product_count',
+			title: 'Produkta daudzums',
 		});
 		
 

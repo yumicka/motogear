@@ -150,7 +150,7 @@ class OrderController extends Controller
             $order->save();
             
             $purchase = KlixPayments::createOrderPurchase($order);
-
+            
             return Response::success([
                 'redirect_url' => $purchase['checkout_url'] ?? null
             ]);

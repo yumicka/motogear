@@ -34,8 +34,6 @@ const CartRecomendations = ({ scrollStep = 500, variant = 'now' }) => {
 			},
 		});
 	}, []);
-	// eslint-disable-next-line no-console
-	console.log('CartRecomendations products:', recomendationds);
 	const trackRef = useRef(null);
 
 	const scroll = (dir) => {

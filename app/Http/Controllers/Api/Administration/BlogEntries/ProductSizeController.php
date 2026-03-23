@@ -42,6 +42,7 @@ class ProductSizeController extends Controller
             's.updated_at' => 'updated_at',
             's.product_id' => 'product_id',
             's.product_size' => 'product_size',
+            's.product_count' => 'product_count',
         ];
 
 
@@ -119,6 +120,7 @@ class ProductSizeController extends Controller
 
                     $item->product_id = $request->product_id;
                     $item->product_size = $request->product_size;
+                    $item->product_count = $request->product_count;
                
                     $item->save();
                     
@@ -143,6 +145,7 @@ class ProductSizeController extends Controller
                     }
 
                     $item->product_size = $request->product_size;
+                    $item->product_count = $request->product_count;
                     $item->save();
                     
                     return Response::success([

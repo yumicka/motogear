@@ -230,7 +230,23 @@ class Content
                 ];
             },
         ];
-        //</editor-fold>    
+        //</editor-fold> 
+            
+        /*
+        |--------------------------------------------------------------------------
+        |                             delivery_and_return
+        |--------------------------------------------------------------------------|
+        */ 
+        //<editor-fold defaultstate="collapsed" desc="delivery_and_return"> 
+        $config['delivery_and_return'] = [  
+            'langData' => function ($title, $content, $data) {               
+                return [
+                    'content' => $content,
+                ];
+            },
+        ];
+
+        //</editor-fold>
         return $config;
     }  
 }

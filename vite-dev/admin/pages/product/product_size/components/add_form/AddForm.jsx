@@ -43,11 +43,17 @@ class AddForm extends Component {
 
 	renderFields = () => {
 		//<editor-fold defaultstate="collapsed" desc="renderFields">
-		return (
+		return ( 
 			<Fragment>
 				<Field
 					label={'Produkta izmērs'}
 					name={'product_size'}
+					component={Input}
+				/>
+
+				<Field
+					label={'Produkta daudzums'}
+					name={'product_count'}
 					component={Input}
 				/>
 			</Fragment>

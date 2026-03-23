@@ -13,7 +13,7 @@ import TextArea from 'ui/inputs/textarea';
 import WithUi from 'hoc/store/ui';
 
 const uiProps = (ownProps) => {
-	return{
+	return {
 		delivery_fee: 'delivery_fee',
 	};
 };
@@ -26,15 +26,28 @@ const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 	const [deliveryType, setDeliveryType] = useState('parcelMachine');
 	const [hasDifferentDeliveryAddress, setHasDifferentDeliveryAddress] = useState(false);
 
-	const currentDelivery = Array.isArray(delivery_fee) ? delivery_fee[0] : null;
+	const currentDelivery = useMemo(() => {
+		if (!Array.isArray(delivery_fee)) return null;
 
+		if (deliveryType === 'parcelMachine') {
+			return delivery_fee.find((item) => item.name === 'omniva') || null;
+		}
+
+		if (deliveryType === 'courier') {
+			return delivery_fee.find((item) => item.name === 'courier') || null;
+		}
+
+		return null;
+	}, [delivery_fee, deliveryType]);
+
+	
 	const deliveryPrice = useMemo(() => {
 		if (!currentDelivery || !selectedCountry) return '0.00';
-
+		
 		if (selectedCountry === 'LV') return currentDelivery.lv_price || '0.00';
 		if (selectedCountry === 'LT') return currentDelivery.lt_price || '0.00';
 		if (selectedCountry === 'EE') return currentDelivery.ee_price || '0.00';
-
+		
 		return '0.00';
 	}, [currentDelivery, selectedCountry]);
 
@@ -58,16 +71,21 @@ const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 		data.items = cart?.product_summary || [];
 		data.person_type = personType;
 		data.deliveryType = deliveryType;
-		data.omnivaPackage = omnivaPackage;
-		data.delivery_address = omnivaPackage.label || '';
-		data.delivery_postal_code = omnivaPackage.value || '';
-		data.delivery_country = selectedCountry || '';
 		data.shipping_price = deliveryPrice;
-
 		data.country = selectedCountry;
-	};
 
-	console.log(cart?.product_summary);
+		if (deliveryType === 'parcelMachine') {
+			data.omnivaPackage = omnivaPackage;
+			data.delivery_address = omnivaPackage?.label || '';
+			data.delivery_postal_code = omnivaPackage?.value || '';
+			data.delivery_country = selectedCountry || '';
+		} else {
+			data.omnivaPackage = null;
+			data.delivery_address = '';
+			data.delivery_postal_code = '';
+			data.delivery_country = selectedCountry || '';
+		}
+	};
 
 	const onSuccess = ({ response }) => {
 		const id = response?.order?.id ?? response?.data?.order?.id;
@@ -261,7 +279,9 @@ const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 							name="isEqual"
 							component={Checkbox}
 							defaultValue="0"
-							onChange={({ value }) => setHasDifferentDeliveryAddress(value === '1')}
+							onChange={({ value }) =>
+								setHasDifferentDeliveryAddress(value === '1')
+							}
 						/>
 						<label>{_g.lang('address_matches')}</label>
 					</div>
@@ -356,6 +376,13 @@ const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 							name="deliveryTypeField"
 							component={RadioGroup}
 							isRequired={true}
+							onChange = {({ value }) => {
+								setDeliveryType(value);
+
+								if (value === 'courier') {
+									setOmnivaPackage(null);
+								}
+							}}
 							componentProps={{
 								classNames: {
 									inner: styles.radioGroupRow,
@@ -364,13 +391,13 @@ const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 								},
 								options: [
 									{ value: 'parcelMachine', label: _g.lang('parcel_machine') },
+									{ value: 'courier', label: _g.lang('courier') },
 								],
-								onChange: ({ value }) => setDeliveryType(value),
 							}}
 						/>
 					</div>
 
-					<div className={styles.deliveryType}>
+					{deliveryType === 'parcelMachine' && (
 						<div className={styles.deliveryType}>
 							<Field
 								name="omnivaPackage"
@@ -396,7 +423,7 @@ const InfoForm = ({ setStep, cart, setOrderId, delivery_fee }) => {
 								}}
 							/>
 						</div>
-					</div>
+					)}
 
 					<div className={styles.deliveryInfo}>
 						<div className={styles.deliveryPrice}>

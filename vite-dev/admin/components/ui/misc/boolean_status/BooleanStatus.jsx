@@ -18,6 +18,7 @@ const defaultProps = {
 
 const STATUS_CLASSES = {
 	pending: styles.pending,
+	created: styles.processing,
 	payment_pending: styles.payment_pending,
 	paid: styles.paid,
 	failed: styles.failed,

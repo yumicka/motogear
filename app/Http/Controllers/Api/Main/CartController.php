@@ -10,50 +10,58 @@ use App\Models\Main\Product;
 use App\Logic\Core\Translations;
 use App\Logic\Core\Response;
 use App\Logic\Main\Cart\Cart;
+use App\Logic\Main\Product\ProductSizes;
 
 class CartController extends Controller
 {
-    /**
-    * Constructor
-    *
-    * @return void
-    */
     public function __construct()
     {
-
     }
-    
-    /**
-    * Actions
-    *
-    * @access public
-    * @return json 
-    */
+
     public function actions(Request $request) {
     //<editor-fold defaultstate="collapsed" desc="actions"> 
         
         $actions = [
 
-            //add
             'add' => [
                 'rules' => [
                     'product_id' => 'required|integer',
                     'variant_id' => 'required|integer|min:0',
-                    'quantity' => 'required|integer',
+                    'quantity' => 'required|integer|min:1',
                 ],
                 'action' => function($request) {
                     $product = Product::where('id', $request->product_id)->firstOrFail();
+
                     $cart = session('cart', []);
-                    $quantity = (int)$request->quantity;
-                    $cartKey = $request->product_id . '_' . $request->variant_id;
+                    $quantity = (int) $request->quantity;
+                    $variantId = (int) $request->variant_id;
+                    $cartKey = $request->product_id . '_' . $variantId;
+
+                    $currentQuantity = isset($cart[$cartKey])
+                        ? (int) $cart[$cartKey]['quantity']
+                        : 0;
+
+                    if ($variantId > 0) {
+                        $size = ProductSizes::getBySizeId($variantId);
+
+                        if (!$size || empty($size['id'])) {
+                            return Response::error('Product variant not found');
+                        }
+
+                        $availableCount = (int) ($size['product_count'] ?? 0);
+                        $requestedTotal = $currentQuantity + $quantity;
+
+                        if ($requestedTotal > $availableCount) {
+                            return Response::error('Not enough stock available');
+                        }
+                    }
 
                     if (isset($cart[$cartKey])) {
                         $cart[$cartKey]['quantity'] += $quantity;
                     } else {
-                        // новый товар в корзине
                         $cart[$cartKey] = [
                             'product_id' => $request->product_id,
-                            'variant_id' => $request->variant_id,
+                            'variant_id' => $variantId,
                             'quantity' => $quantity,
                         ];
                     }
@@ -74,11 +82,32 @@ class CartController extends Controller
                 ],
                 'action' => function($request)  {
                     $cart = session('cart', []);
-                    $cartKey = $request->product_id . '_' . $request->variant_id;
+                    $variantId = (int) $request->variant_id;
+                    $cartKey = $request->product_id . '_' . $variantId;
 
-                    $currentQuantity = isset($cart[$cartKey]) ? (int)$cart[$cartKey]['quantity'] : 0;
+                    $currentQuantity = isset($cart[$cartKey])
+                        ? (int) $cart[$cartKey]['quantity']
+                        : 0;
+
+                    if ($currentQuantity <= 0) {
+                        return Response::error('Cart item not found');
+                    }
 
                     if ($request->quantity_type === 'increase') {
+                        if ($variantId > 0) {
+                            $size = ProductSizes::getBySizeId($variantId);
+
+                            if (!$size || empty($size['id'])) {
+                                return Response::error('Product variant not found');
+                            }
+
+                            $availableCount = (int) ($size['product_count'] ?? 0);
+
+                            if ($currentQuantity >= $availableCount) {
+                                return Response::error('Not enough stock available');
+                            }
+                        }
+
                         $newQuantity = min($currentQuantity + 1, 50);
                     } else {
                         $newQuantity = max($currentQuantity - 1, 1);
@@ -88,7 +117,7 @@ class CartController extends Controller
                         $cart[$cartKey] ?? [],
                         [
                             'product_id' => $request->product_id,
-                            'variant_id' => $request->variant_id,
+                            'variant_id' => $variantId,
                             'quantity' => $newQuantity
                         ]
                     );
@@ -101,14 +130,12 @@ class CartController extends Controller
                 },
             ],
                                              
-            //remove
             'remove' => [        
                 'rules' => [
                     'product_id' => 'required|integer',
                     'variant_id' => 'required|integer|min:0',
                 ],
                 'action' => function($request) {
-                    //<editor-fold defaultstate="collapsed" desc="remove"> 
                     $cart = session('cart', []);
                     $cartKey = $request->product_id . '_' . $request->variant_id;
 
@@ -121,7 +148,6 @@ class CartController extends Controller
                     return Response::success([
                          'cart' => Cart::getSummary()
                     ]);
-                    //</editor-fold>     
                 },
             ],
         ];        

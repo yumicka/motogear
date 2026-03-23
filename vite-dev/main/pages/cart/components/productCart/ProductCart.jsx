@@ -12,6 +12,7 @@ import Image from 'ui/media/image';
 
 const ProductCart = ({ cart, setCart }) => {
 	const [toast, setToast] = useState(null);
+
 	// console.log('Cart state from Redux:', cart);
 	const isEmpty = !cart || cart.cart_amount === 0;
 
@@ -26,7 +27,7 @@ const ProductCart = ({ cart, setCart }) => {
 				if (res?.cart) {
 					uiStore.set('cart', res.cart);
 					setCart(res.cart);
-					setToast('Cart updated successfully');
+					setToast(_g.lang('updated_success'));
 					setTimeout(() => setToast(null), 2000);
 				}
 			},
@@ -51,82 +52,99 @@ const ProductCart = ({ cart, setCart }) => {
 				</section>
 			) : (
 				<div className={styles.products}>
-					{cart.product_summary.map((item) => (
-						<div key={item.id} className={styles.product_item}>
-							<Image src={item.image?.image} alt={item.title} />
-							<div className={styles.product_info}>
-								<div className={styles.title_size}>
-									<h3>{item.title}</h3>
-									{item.selected_variant?.product_size && (
-										<h4>
-											{_g.lang('size')}: {item.selected_variant?.product_size || 'N/A'}
-										</h4>
-									)}
-								</div>
-								<p>
-									{item.product_discount > 0 ? (
-										<>
-											<span className={styles.discount_price}>
-												€
-												{item.calculated_price}
-											</span>{' '}
-											<span className={styles.original_price}>
-												€{item.product_price}
-											</span>
-										</>
-									) : (
-										<>€{item.calculated_price}</>
-									)}
-								</p>
-								<p className={styles.total_cart_price}>
-									{_g.lang('total')}:{' '}
-									<span className={styles.total_price}>€{item.total}</span>
-								</p>
-							</div>
+					{cart.product_summary.map((item) => {
+						const availableCount = Number(
+							item.selected_variant?.product_count ?? 0,
+						);
+						const currentQuantity = Number(item.quantity ?? 0);
+						const canIncrease = currentQuantity < availableCount;
 
-							<div className={styles.change}>
-								<div className={styles.edit_block}>
+						return (
+							<div key={item.id} className={styles.product_item}>
+								<Image src={item.image?.image} alt={item.title} />
+								<div className={styles.product_info}>
+									<div className={styles.title_size}>
+										<h3>{item.title}</h3>
+										{item.selected_variant?.product_size && (
+											<h4>
+												{_g.lang('size')}:{' '}
+												{item.selected_variant?.product_size || 'N/A'}
+											</h4>
+										)}
+									</div>
+									<p>
+										{item.product_discount > 0 ? (
+											<>
+												<span className={styles.discount_price}>
+													€{item.calculated_price}
+												</span>{' '}
+												<span className={styles.original_price}>
+													€{item.product_price}
+												</span>
+											</>
+										) : (
+											<>€{item.calculated_price}</>
+										)}
+									</p>
+									<p className={styles.total_cart_price}>
+										{_g.lang('total')}:{' '}
+										<span className={styles.total_price}>€{item.total}</span>
+									</p>
+								</div>
+
+								<div className={styles.change}>
+									<div className={styles.edit_block}>
+										<button
+											onClick={() => {
+												if (!canIncrease ? styles.disabledBtn : '') {
+													setToast(_g.lang('not_available'));
+													setTimeout(() => setToast(null), 2000);
+													return;
+												}
+
+												updateCart(
+													'change_quantity',
+													item.id,
+													item.selected_variant?.id,
+													'increase',
+												);
+											}}>
+											<FontAwesomeIcon icon={faChevronUp} />
+										</button>
+
+										{item.quantity}
+
+										<button
+											onClick={() => {
+												if (item.quantity <= 1) {
+													setToast(_g.lang('quantity_less'));
+													setTimeout(() => setToast(null), 2000);
+													return;
+												}
+
+												updateCart(
+													'change_quantity',
+													item.id,
+													item.selected_variant?.id,
+													'decrease',
+												);
+											}}>
+											<FontAwesomeIcon icon={faChevronDown} />
+										</button>
+									</div>
+
 									<button
+										className={styles.delete_btn}
+										aria-label={`Remove ${item.title} from cart`}
 										onClick={() =>
-											updateCart(
-												'change_quantity',
-												item.id,
-												item.selected_variant?.id,
-												'increase',
-											)
+											handleRemove(item.id, item.selected_variant?.id)
 										}>
-										<FontAwesomeIcon icon={faChevronUp} />
-									</button>
-									{item.quantity}
-									<button
-										onClick={() => {
-											if (item.quantity <= 1) {
-												setToast('Product quantity cannot be less than 1');
-												setTimeout(() => setToast(null), 2000);
-												return;
-											}
-
-											updateCart(
-												'change_quantity',
-												item.id,
-												item.selected_variant?.id,
-												'decrease',
-											);
-										}}>
-										<FontAwesomeIcon icon={faChevronDown} />
+										<FontAwesomeIcon icon={faTrash} />
 									</button>
 								</div>
-								<button
-									className={styles.delete_btn}
-									aria-label={`Remove ${item.title} from cart`}
-									onClick={() =>
-										handleRemove(item.id, item.selected_variant?.id)
-									}>
-									<FontAwesomeIcon icon={faTrash} />
-								</button>
 							</div>
-						</div>
-					))}
+						);
+					})}
 				</div>
 			)}
 			{toast && <div className={styles.toast}>{toast}</div>}

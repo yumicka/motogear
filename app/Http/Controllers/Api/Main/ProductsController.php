@@ -54,8 +54,6 @@ class ProductsController extends Controller
         foreach ($columns as $column => $alias) {
             $query->addSelect(DB::raw("{$column} as {$alias}"));
         }
-        
-        
 
         # ========================================================================#
         #
@@ -92,11 +90,31 @@ class ProductsController extends Controller
         $productAge = $requestFilters['product_age'] ?? null;
             
         // Filter by category
-        $query = $query->when($request->has('category_id') && 
-        $request->category_id !== null, function ($q) use ($request) {
+        $query = $query->when(
+        $request->filled('category_id'),
+        function ($q) use ($request) {
             $categoryId = (int) $request->category_id;
-            return $q->where('category_id', $categoryId);
-        });
+
+            if ($categoryId <= 0) {
+                return $q;
+            }
+
+            $children = DB::table('blog_categories')
+                ->where('parent_id', $categoryId)
+                ->pluck('id')
+                ->toArray();
+            
+            if (!empty($children)) {
+                return $q->where(function ($subQuery) use ($categoryId, $children) {
+                    $subQuery->where('b.category_id', $categoryId)
+                        ->orWhereIn('b.sub_category_id', $children);
+                });
+            }
+
+            return $q->where('b.sub_category_id', $categoryId);
+        }
+    );
+
         
         // Filter by brands
         $query = $query->when(
@@ -145,8 +163,8 @@ class ProductsController extends Controller
                 $orderColumn => $finalOrderDir,
             ]
         ]; 
-       
-    
+             
+        
         $params = DataSource::parseRequest($request);
         $page = DataSource::getPage($params);
         $limit = DataSource::getLimit($page, 30);
@@ -198,13 +216,13 @@ class ProductsController extends Controller
     }
     
     
-/**
- * Get all subcategory IDs including the selected category itself
- * This only looks for children, not parents
- *
- * @param int $categoryId
- * @return array
- */
+    /**
+     * Get all subcategory IDs including the selected category itself
+     * This only looks for children, not parents
+     *
+     * @param int $categoryId
+     * @return array
+     */
     private function getAllSubcategoryIds($categoryId)
     {
         $categoryIds = [$categoryId];
@@ -252,5 +270,5 @@ class ProductsController extends Controller
     //</editor-fold>
     }
 }
-
+ 
 ?>

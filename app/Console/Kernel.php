@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
 //        $schedule->command(\App\Console\Commands\BlogCategoriesImages::class)->everyMinute();
 //        $schedule->command(\App\Console\Commands\ProductsCalculatedPrice::class)->everyMinute();
 //        $schedule->command(\App\Console\Commands\SeperateCategories::class)->everyMinute();
+           $schedule->command(\App\Console\Commands\checkOrderPayment::class)->everyMinute();
     }
 
     /**

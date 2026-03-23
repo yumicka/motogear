@@ -40,7 +40,8 @@ items['welcome_banner'] = WelcomeBanner;
 import ContactForm from './content/contact_form';
 items['contact_form'] = ContactForm;
 
-
+import DeliveryAndReturn from './content/delivery_and_return';
+items['delivery_and_return'] = DeliveryAndReturn;
 
 
 /* ========================================================================*

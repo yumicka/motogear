@@ -52,7 +52,7 @@ class Edit extends Component {
 	renderFields = () => {
 		//<editor-fold defaultstate="collapsed" desc="renderFields">
 		const { item } = this.props;
-		const { product_size } = item;
+		const { product_size, product_count } = item;
 
 		return (
 			<Fragment>
@@ -61,6 +61,13 @@ class Edit extends Component {
 					name={'product_size'}
 					component={Input}
 					value={product_size}
+				/>
+
+				<Field
+					label={'Produkta daudzums'}
+					name={'product_count'}
+					component={Input}
+					value={product_count}
 				/>
 			</Fragment>
 		);

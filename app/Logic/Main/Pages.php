@@ -391,6 +391,7 @@ class Pages
        //<editor-fold defaultstate="collapsed" desc="shopProduct"> 
         $content = array_merge(self::getCommonContent(), [
            'contact_form',
+           'delivery_and_return'
         ]);
         
         $collections = array_merge(self::getCommonCollections(), [
@@ -424,6 +425,9 @@ class Pages
         $state['Menu'] = ['current' => 'shop'];
         $state['Page'] = [];
         $state['Page']['current'] = 'shop_product';
+        
+        MetaHelper::setTitle($product['title']);
+//        MetaHelper::setDescription($meta_data['description']);
 
         return Store::setState($lang, $state);
         //</editor-fold>

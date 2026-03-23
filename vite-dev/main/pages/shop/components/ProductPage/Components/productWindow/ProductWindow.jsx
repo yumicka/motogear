@@ -192,8 +192,8 @@ const ProductWindow = ({ product, product_sizes }) => {
 							</option>
 
 							{SIZES.map((s) => (
-								<option key={s.id} value={s.id}>
-									{s.product_size}
+								<option key={s.id} value={s.id} disabled={s.product_count <= 0}>
+									{s.product_size} ({s.product_count})
 								</option>
 							))}
 						</select>

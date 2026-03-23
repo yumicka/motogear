@@ -2,7 +2,11 @@
 import Image from 'ui/media/image';
 import styles from './Page.module.less';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeftLong, faArrowRightLong, faEuroSign } from '@fortawesome/free-solid-svg-icons';
+import {
+	faArrowLeftLong,
+	faArrowRightLong,
+	faEuroSign,
+} from '@fortawesome/free-solid-svg-icons';
 import Link from 'core/navigation/link';
 import WithUi from 'hoc/store/ui';
 import { useEffect, useMemo, useState } from 'react';
@@ -54,8 +58,6 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 	const [products, setProducts] = useState([]);
 	const [lastPage, setLastPage] = useState(1);
 	const [currentPage, setCurrentPage] = useState(1);
-
-	console.log(products);
 
 	const fetchPage = (page) => {
 		setLoading(true);
@@ -110,6 +112,7 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 			<div className={styles.innerWrapper}>
 				<div className={styles.container}>
 					{products.map((item) => {
+						const isAvailable = item.is_available;
 						const imgSrc = item.image?.image;
 						const originalPrice = parseFloat(item.product_price);
 						const discount = parseFloat(item.product_discount) || 0;
@@ -117,13 +120,16 @@ const Page = ({ categoryId, filters, setProductCount }) => {
 						const calculatedPrice = item.calculated_price;
 
 						return (
-							<Link to={item.url} className={styles.card} key={item.id}>
+							<Link to={item.url} className={`${styles.card} ${!isAvailable ? styles.unavailableCard : ''}`} key={item.id}>
 								<div className={styles.imageWrap}>
 									<Image
 										src={imgSrc}
 										alt={item.title}
 										className={styles.image}
 									/>
+									{!isAvailable && (
+										<div className={styles.outOfStockBadge}>Out of stock</div>
+									)}
 								</div>
 
 								<div className={styles.text}>
